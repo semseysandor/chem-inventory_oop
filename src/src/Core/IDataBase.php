@@ -20,13 +20,6 @@ namespace Inventory\Core;
 interface IDataBase
 {
   /**
-   * Initialize database
-   *
-   * @return mixed
-   */
-  public function initialize(): bool;
-
-  /**
    * Stores data in a database
    *
    * @param array $data
@@ -42,5 +35,5 @@ interface IDataBase
    *
    * @return array requested data
    */
-  public function retrieve(array $whatToRetrieve): array;
+  public function retrieve(array $whatToRetrieve);
 }

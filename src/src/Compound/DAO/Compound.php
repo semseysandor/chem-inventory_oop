@@ -11,8 +11,9 @@
 
 namespace Inventory\Compound\DAO;
 
+use Inventory\Core\SQLDataBase;
 
-class Compound
+class Compound extends SQLDataBase
 {
 
 }

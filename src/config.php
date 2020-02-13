@@ -11,13 +11,15 @@ define('LDAP_USR_DOM', '@company.local');  # LDAP user domain
 // Array to store config
 return [
     // # SQL server host name
-  'DBHost' => 'localhost',
+  'DB_host' => 'localhost',
     // SQL user name
-  'DBUser' => 'leltar_ADMIN',
+  'DB_user' => 'leltar_ADMIN',
     // password
-  'DBPass' => 'admin',
+  'DB_pass' => 'admin',
     // database name
-  'DBName' => 'inventory',
+  'DB_name' => 'inventory',
+    // database port
+  'DB_port' => '3306',
 
     // HTML title
   'title' => 'Leltár',

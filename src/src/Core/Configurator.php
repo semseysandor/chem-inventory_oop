@@ -14,7 +14,7 @@ namespace Inventory\Core;
 
 class Configurator
 {
-    public static $config;
+    private $config;
 
     private static $instance;
 
@@ -24,6 +24,17 @@ class Configurator
      */
     private function __construct()
     {
+        $this->config = self::getDefaults();
+    }
+
+    private static function getDefaults(): array
+    {
+        $configFile = ROOT.'/config.php';
+        if (!file_exists($configFile)) {
+            return [];
+        }
+
+        return include($configFile);
     }
 
     public static function singleton()
@@ -35,8 +46,19 @@ class Configurator
         return self::$instance;
     }
 
-    public static function getDefaults()
+    public function getConfig(string $key)
     {
-        self::$config = ROOT . 'config.php';
+        if (!array_key_exists($key, $this->config)) {
+            return null;
+        }
+
+        return $this->config[$key];
+    }
+
+    public function addConfig(array $cfgToAdd): void
+    {
+        foreach ($cfgToAdd as $key => $value) {
+            $this->config[$key] = $value;
+        }
     }
 }

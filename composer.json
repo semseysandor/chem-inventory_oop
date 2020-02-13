@@ -1,0 +1,20 @@
+{
+  "name": "es-progress/inventory",
+  "description": "description_text",
+  "minimum-stability": "stable",
+  "license": "AGPL-3.0-or-later",
+  "authors": [
+    {
+      "name": "Sandor Semsey",
+      "email": "sandorsemsey@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Inventory\\": "src/src"
+    }
+  },
+  "require": {
+    "ext-mysqli": "*"
+  }
+}
