@@ -14,7 +14,7 @@ a compound can have *batch*es and a batch can have many *pack*s.
 Locationwise you can design *laboratories* (rooms), inside laboratories different
 *storages* (like cabinets, cupboards, fridges, etc.) and inside storages some *sub-
 storages* (e.g. shelves of a cupboard). Anyway, you can use any logic, nevertheless
-there is a 3-tier location system.
+there is a pre-defined 3-tier location system.
 
 Compound, batch and pack management is through the web interface.
 Locations & manufacturers are stored in the database as well as user right levels,
