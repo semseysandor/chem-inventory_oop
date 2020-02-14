@@ -16,7 +16,7 @@ namespace Inventory\Core\SQL;
  *
  * @package Inventory\Core\SQL
  */
-class QueryBuilder extends DataBase
+abstract class QueryBuilder extends DataBase
 {
     /**
      * @var string SQL query
@@ -188,7 +188,7 @@ class QueryBuilder extends DataBase
      *
      * @return $this fluent method
      */
-    public function create(string $table, array $data): QueryBuilder
+    public function initQueryInsert(string $table, array $data): QueryBuilder
     {
         $this->initQuery(false);
 
@@ -216,7 +216,7 @@ class QueryBuilder extends DataBase
      *
      * @return $this fluent method
      */
-    public function retrieve(array $columns): QueryBuilder
+    public function initQuerySelect(array $columns): QueryBuilder
     {
         $this->initQuery();
         $columnString = '';
@@ -238,7 +238,7 @@ class QueryBuilder extends DataBase
      *
      * @return $this fluent method
      */
-    public function update(string $table, array $data): QueryBuilder
+    public function InitQueryUpdate(string $table, array $data): QueryBuilder
     {
         $this->initQuery(false);
 
@@ -261,7 +261,7 @@ class QueryBuilder extends DataBase
      *
      * @return $this fluent method
      */
-    public function delete(string $table): QueryBuilder
+    public function initQueryDelete(string $table): QueryBuilder
     {
         $this->initQuery(false);
 

@@ -8,20 +8,20 @@
 function getCompoundInfo() {
 
 	// Edit form
-	var form = document.getElementById('e_comp');
+	var form = document.getElementById('e_comp')
 
-	if (!form) {return;}
+	if (!form) {return}
 
 	// Retrieve URL
-	var url = 'exec/retrieve.php?q=comp_info&cas=' + form.cas.value;
+	var url = 'exec/initQuerySelect.php?q=comp_info&cas=' + form.cas.value
 
-	var xhttp = new XMLHttpRequest(); // New AJAX request
+	var xhttp = new XMLHttpRequest() // New AJAX request
 
-	xhttp.onreadystatechange = function() {
+	xhttp.onreadystatechange = function () {
 
 		// Set cursor back to default
 		if (this.readyState == 4) {
-			document.body.style.cursor = 'auto';
+			document.body.style.cursor = 'auto'
 		}
 
 		if ((this.readyState == 4) && (this.status == 200)) { // When response is ready from server

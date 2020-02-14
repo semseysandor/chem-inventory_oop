@@ -11,7 +11,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "Inventory\\": "src/src"
+      "Inventory\\": "src/inventory"
     }
   },
   "require": {

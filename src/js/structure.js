@@ -11,15 +11,15 @@
  */
 function getSmiles(type, ID) {
 
-	var smiles = '';
-	var url = 'exec/retrieve.php?q=smiles&';
-	var xhttp = new XMLHttpRequest(); // New AJAX request
+	var smiles = ''
+	var url = 'exec/initQuerySelect.php?q=smiles&'
+	var xhttp = new XMLHttpRequest() // New AJAX request
 
-	xhttp.onreadystatechange = function() {
+	xhttp.onreadystatechange = function () {
 
 		// Set cursor back to default
 		if (this.readyState == 4) {
-			document.body.style.cursor = 'auto';
+			document.body.style.cursor = 'auto'
 		}
 
 		if ((this.readyState == 4) && (this.status == 200)) { // When response is ready from PHP

@@ -13,7 +13,7 @@ function liveSearch(input) {
 	if (input != '') {
 
 		// Get live search results
-		retrieveData('exec/retrieve.php?q=live_search&search=' + input, 'live_search', show, container);
+		retrieveData('exec/initQuerySelect.php?q=live_search&search=' + input, 'live_search', show, container)
 
 	} else {
 

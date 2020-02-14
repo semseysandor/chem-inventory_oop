@@ -6,9 +6,8 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Inventory\\Compound\\DAO\\Compound' => $baseDir . '/src/src/Compound/DAO/Compound.php',
-    'Inventory\\Core\\Configurator' => $baseDir . '/src/src/Core/Configurator.php',
-    'Inventory\\Core\\DAO' => $baseDir . '/src/src/Core/DAO.php',
-    'Inventory\\Core\\IDataBase' => $baseDir . '/src/src/Core/IDataBase.php',
-    'Inventory\\Core\\SQLDataBase' => $baseDir . '/src/src/Core/SQLDataBase.php',
+    'Inventory\\Core\\Configurator' => $baseDir . '/src/inventory/Core/Configurator.php',
+    'Inventory\\Core\\SQL\\DataBase' => $baseDir . '/src/inventory/Core/SQL/DataBase.php',
+    'Inventory\\Core\\SQL\\QueryBuilder' => $baseDir . '/src/inventory/Core/SQL/QueryBuilder.php',
+    'Inventory\\DAO\\SQL\\Compound' => $baseDir . '/src/inventory/DAO/SQL/Compound.php',
 );

@@ -14,17 +14,17 @@ session_start();
 if (session_status() != PHP_SESSION_ACTIVE) {exit;}
 
 try {
-	// Get query (what to retrieve)
-	$query = get_query('q', TRUE, 'string');
+    // Get query (what to initQuerySelect)
+    $query = get_query('q', true, 'string');
 
-	// Security check
-	switch ($query) {
-		case 'a_comp':
-		case 'e_comp':
-		case 'up_coa':
-		case 'up_msds':
-			security_check('leltar', 1);
-			break;
+    // Security check
+    switch ($query) {
+        case 'a_comp':
+        case 'e_comp':
+        case 'up_coa':
+        case 'up_msds':
+            security_check('leltar', 1);
+            break;
 
 		case 'a_batch':
 		case 'a_pack':

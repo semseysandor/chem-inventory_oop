@@ -22,7 +22,7 @@ use mysqli_sql_exception;
  *
  * @package Inventory\Core\SQL
  */
-class DataBase
+abstract class DataBase implements IDataBase
 {
     /**
      * General error message
@@ -82,6 +82,34 @@ class DataBase
         // Set character set
         $this->link->set_charset('utf8');
     }
+
+    /**
+     * @param $data
+     *
+     * @return mixed
+     */
+    abstract public function retrieve($data);
+
+    /**
+     * @param $data
+     *
+     * @return mixed
+     */
+    abstract public function create($data);
+
+    /**
+     * @param $data
+     *
+     * @return mixed
+     */
+    abstract public function update($data);
+
+    /**
+     * @param $data
+     *
+     * @return mixed
+     */
+    abstract public function delete($data);
 
     /**
      * Executes a query on DataBase

@@ -12,12 +12,11 @@ session_start();
 if (session_status() != PHP_SESSION_ACTIVE) {exit;}
 
 try {
-
 	// Security check
 	security_check('leltar', 3);
 
-	// Get query (what to retrieve)
-	$selector = get_query('q', TRUE, 'string');
+	// Get query (what to initQuerySelect)
+	$selector = get_query('q', true, 'string');
 
 	// Start
 	if ($selector == 'start') {

@@ -14,19 +14,18 @@ session_start();
 if (session_status() != PHP_SESSION_ACTIVE) {exit;}
 
 try {
-	// Get query (what to retrieve)
-	$query = get_query('q', TRUE, 'string');
+    // Get query (what to initQuerySelect)
+    $query = get_query('q', true, 'string');
 
-	// Index compound
-	if ($query == 'compound') {
+    // Index compound
+    if ($query == 'compound') {
+        // Rows per page
+        $limit = 15;
 
-		// Rows per page
-		$limit = 15;
+        // Array for GET params (URL query string)
+        $get_array = [];
 
-		// Array for GET params (URL query string)
-		$get_array = array();
-
-		// Get category & subcategory
+        // Get category & subcategory
 		$cat = get_query('cat', FALSE);
 		$subcat = get_query('subcat', FALSE);
 

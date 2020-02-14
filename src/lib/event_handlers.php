@@ -12,24 +12,22 @@
  * @return	string		JS code
  */
 function js($select, array $p = NULL) {
-
-	$retr = 'onclick="retrieveData(\'exec/retrieve.php?q=';
+	$retr = 'onclick="retrieveData(\'exec/initQuerySelect.php?q=';
 	$prevent = 'onsubmit="event.preventDefault();';
 
 	switch ($select) {
-
 		case 'get':
 		case 'index_drop':
-        case 'menu':
+		case 'menu':
 			$js = $retr;
 			break;
 
 		case 'submit':
-			$js = $prevent.'submitForm(this, \'msg_center\', retrieveData, \'exec/retrieve.php?q=';
+			$js = $prevent.'submitForm(this, \'msg_center\', retrieveData, \'exec/initQuerySelect.php?q=';
 			break;
 
 		case 'upload':
-			$js = $prevent.'submitFormUpload(this, \'msg_center\', retrieveData, \'exec/retrieve.php?q=';
+			$js = $prevent.'submitFormUpload(this, \'msg_center\', retrieveData, \'exec/initQuerySelect.php?q=';
 			break;
 
 		default:
@@ -112,9 +110,9 @@ function js_spec($select, array $p = NULL) {
 		break;
 
 	// Retrieve data
-	case 'compound':
-		$js = $cli.$retr.'retrieve.php?q=compound_det&cid='.$p[0].'\', \'popup\', getSmiles, \'compID\', '.$p[0].')"';
-		break;
+		case 'compound':
+			$js = $cli.$retr.'initQuerySelect.php?q=compound_det&cid='.$p[0].'\', \'popup\', getSmiles, \'compID\', '.$p[0].')"';
+			break;
 
 	case 'barcode':
 		$js = $cli.$retr.'search.php?q='.$p[0].'\', \'index\', getSmiles, \'barcode\', \''.$p[0].'\');';
@@ -193,19 +191,19 @@ function js_spec($select, array $p = NULL) {
 		break;
 
 	// Manufacturers
-	case 'manfac':
-		$js = $cli.$retr.'retrieve.php?q=manfac\', \'index\');erasePopup()"';
-		break;
+		case 'manfac':
+			$js = $cli.$retr.'initQuerySelect.php?q=manfac\', \'index\');erasePopup()"';
+			break;
 
 	// Locations
-	case 'location':
-		$js = $cli.$retr.'retrieve.php?q=location\', \'index\');erasePopup()"';
-		break;
+		case 'location':
+			$js = $cli.$retr.'initQuerySelect.php?q=location\', \'index\');erasePopup()"';
+			break;
 
 	// User rights
-	case 'rights':
-		$js = $cli.$retr.'retrieve.php?q=rights\', \'index\');erasePopup()"';
-		break;
+		case 'rights':
+			$js = $cli.$retr.'initQuerySelect.php?q=rights\', \'index\');erasePopup()"';
+			break;
 
 	// Inventory
 	case 'invent_start':

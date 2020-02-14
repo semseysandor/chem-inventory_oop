@@ -12,20 +12,19 @@ session_start();
 if (session_status() != PHP_SESSION_ACTIVE) {exit;}
 
 try {
+    // Security check
+    security_check('leltar', 2);
 
-	// Security check
-	security_check('leltar', 2);
+    // Get query (what to initQuerySelect)
+    $query = get_query('q', true, 'string');
 
-	// Get query (what to retrieve)
-	$query = get_query('q', TRUE, 'string');
+    // Start screen
+    if ($query == 'start') {
+        include(ROOT.'/templates/incoming/start.php');
+    }
 
-	// Start screen
-	if ($query == 'start') {
-		include(ROOT.'/templates/incoming/start.php');
-	}
-
-	// Compound list
-	if ($query == 'compound') {
+    // Compound list
+    if ($query == 'compound') {
 
 		$comp = get_query('comp', TRUE, 'string');
 

@@ -16,16 +16,15 @@ class ComposerStaticInit9bc77ff40a972bedc15b827d3cfaa2d8
     public static $prefixDirsPsr4 = array (
         'Inventory\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/src/src',
+            0 => __DIR__ . '/../..' . '/src/inventory',
         ),
     );
 
     public static $classMap = array (
-        'Inventory\\Compound\\DAO\\Compound' => __DIR__ . '/../..' . '/src/src/Compound/DAO/Compound.php',
-        'Inventory\\Core\\Configurator' => __DIR__ . '/../..' . '/src/src/Core/Configurator.php',
-        'Inventory\\Core\\DAO' => __DIR__ . '/../..' . '/src/src/Core/DAO.php',
-        'Inventory\\Core\\IDataBase' => __DIR__ . '/../..' . '/src/src/Core/IDataBase.php',
-        'Inventory\\Core\\SQLDataBase' => __DIR__ . '/../..' . '/src/src/Core/SQLDataBase.php',
+        'Inventory\\Core\\Configurator' => __DIR__ . '/../..' . '/src/inventory/Core/Configurator.php',
+        'Inventory\\Core\\SQL\\DataBase' => __DIR__ . '/../..' . '/src/inventory/Core/SQL/DataBase.php',
+        'Inventory\\Core\\SQL\\QueryBuilder' => __DIR__ . '/../..' . '/src/inventory/Core/SQL/QueryBuilder.php',
+        'Inventory\\DAO\\SQL\\Compound' => __DIR__ . '/../..' . '/src/inventory/DAO/SQL/Compound.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
