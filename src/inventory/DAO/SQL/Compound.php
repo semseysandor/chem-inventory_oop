@@ -11,10 +11,8 @@
 
 namespace Inventory\DAO\SQL;
 
-use Exception;
 use Inventory\Core\SQL\QueryBuilder;
 
-include('/home/jurkov/work/projects/chem-inventory_oop/src/bootstrap.php'); # Bootstrap
 class Compound extends QueryBuilder
 {
     /**
@@ -31,13 +29,9 @@ class Compound extends QueryBuilder
 
         return $result->fetch_object()->total;
     }
-
-    public function create($data)
-    {
-        return $this->initQueryInsert('leltar_compound', $data)->bind('si')->execute();
-    }
-
     /**
+     * Retrieves entity from table
+     *
      * @param $data
      *
      * @return mixed
@@ -46,6 +40,11 @@ class Compound extends QueryBuilder
     {
         return;
         // TODO: Implement retrieve() method.
+    }
+
+    public function create($data)
+    {
+        return $this->initQueryInsert('leltar_compound', $data)->bind('si')->execute();
     }
 
     /**
@@ -70,27 +69,3 @@ class Compound extends QueryBuilder
         return;
     }
 }
-
-class controller
-{
-    public function run()
-    {
-        try {
-            $maki = new Compound();
-            echo $maki->create(
-              [
-                'nam' => 'maki',
-                'sub_category_id' => '9',
-
-              ]
-            );
-        } catch (Exception $exception) {
-            echo 'kakker';
-            echo $exception->getMessage()."\n";
-            echo $exception->getTraceAsString();
-        }
-    }
-}
-
-$contr = new controller();
-$contr->run();
