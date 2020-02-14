@@ -79,13 +79,15 @@ class controller
             $maki = new Compound();
             echo $maki->create(
               [
-                'name' => 'maki',
+                'nam' => 'maki',
                 'sub_category_id' => '9',
 
               ]
             );
         } catch (Exception $exception) {
             echo 'kakker';
+            echo $exception->getMessage()."\n";
+            echo $exception->getTraceAsString();
         }
     }
 }
