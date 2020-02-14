@@ -39,4 +39,4 @@ require(ROOT.'/templates/menu.php');?>
 <script src="js/structure.js"></script>
 <script src="js/incoming.js"></script>
 <script src="js/inventory.js"></script>
-<?php require(ROOT.'/templates/footer.php')?>
+<?php require(ROOT.'/templates/footer.php') ?>

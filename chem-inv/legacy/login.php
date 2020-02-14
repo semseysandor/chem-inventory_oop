@@ -1,5 +1,15 @@
 <?php
 /**
+ * This file is part of chem-inventory.
+ * Written by Sandor Semsey.
+ *
+ * Copyright (c)  2020.
+ * This is work licenced under the GNU General Public License v3.0. All rights reserved.
+ *
+ * This is a free software;)
+ */
+
+/**
  * Login page
  *********************************************************/
 
@@ -10,7 +20,7 @@ $config['title'] = 'LelTár - Bejelentkezés';
 require(ROOT.'/templates/head.php');?>
 <header>
 	<div>
-		<a href ="index.php">
+		<a href ="../index.php">
 			<img src="icon/logo.png" alt="logofasz" class="rwd" width="293" height="91" />
 		</a>
 	</div>

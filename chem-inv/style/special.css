@@ -44,7 +44,7 @@
 
 .changelog {
 	flex-direction: row;
-	flex-wrap: no-wrap;
+	flex-wrap: nowrap;
 	max-width: 800px;
 }
 

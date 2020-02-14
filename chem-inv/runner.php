@@ -9,21 +9,21 @@
  * This is a free software;)
  */
 
-use Inventory\DAO\SQL\Compound;
-
-include('/home/jurkov/work/projects/chem-inventory_oop/src/bootstrap.php'); # Bootstrap
+include('/home/jurkov/work/projects/chem-inventory_oop/chem-inv/bootstrap.php'); # Bootstrap
+ini_set('display_errors', 0);
 try {
-    $maki = new Compound();
+    $maki = new Inventory\BAO\Compound();
     $data = [
       'name' => 'kutya',
       'sub_category_id' => '9',
 
     ];
-    echo $maki->getCountAll()."\n";
-    $maki->create($data);
-    echo $maki->getCountAll();
+
+    $maki->create();
+
+    echo "\n";
 } catch (Exception $exception) {
-    echo 'kakker';
-    echo $exception->getMessage()."\n";
-    echo $exception->getTraceAsString();
+    echo "kakker\n";
+    echo $exception->getMessage();
+    // echo $exception->getTraceAsString();
 }

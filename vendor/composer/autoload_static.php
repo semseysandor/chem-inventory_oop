@@ -16,15 +16,17 @@ class ComposerStaticInit9bc77ff40a972bedc15b827d3cfaa2d8
     public static $prefixDirsPsr4 = array (
         'Inventory\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/src/inventory',
+            0 => __DIR__ . '/../..' . '/chem-inv/src',
         ),
     );
 
     public static $classMap = array (
-        'Inventory\\Core\\Configurator' => __DIR__ . '/../..' . '/src/inventory/Core/Configurator.php',
-        'Inventory\\Core\\SQL\\DataBase' => __DIR__ . '/../..' . '/src/inventory/Core/SQL/DataBase.php',
-        'Inventory\\Core\\SQL\\QueryBuilder' => __DIR__ . '/../..' . '/src/inventory/Core/SQL/QueryBuilder.php',
-        'Inventory\\DAO\\SQL\\Compound' => __DIR__ . '/../..' . '/src/inventory/DAO/SQL/Compound.php',
+        'Inventory\\BAO\\Compound' => __DIR__ . '/../..' . '/chem-inv/src/BAO/Compound.php',
+        'Inventory\\Core\\Configurator' => __DIR__ . '/../..' . '/chem-inv/src/Core/Configurator.php',
+        'Inventory\\Core\\SQL\\DataBase' => __DIR__ . '/../..' . '/chem-inv/src/Core/SQL/DataBase.php',
+        'Inventory\\Core\\SQL\\IDataBase' => __DIR__ . '/../..' . '/chem-inv/src/Core/SQL/IDataBase.php',
+        'Inventory\\Core\\SQL\\QueryBuilder' => __DIR__ . '/../..' . '/chem-inv/src/Core/SQL/QueryBuilder.php',
+        'Inventory\\DAO\\SQL\\Compound' => __DIR__ . '/../..' . '/chem-inv/src/DAO/SQL/Compound.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

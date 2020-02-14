@@ -44,7 +44,7 @@ class Compound extends QueryBuilder
 
     public function create($data)
     {
-        return $this->initQueryInsert('leltar_compound', $data)->bind('si')->execute();
+        return $this->initQueryInsert('leltar_compound', $data)->bind('sis')->execute();
     }
 
     /**
