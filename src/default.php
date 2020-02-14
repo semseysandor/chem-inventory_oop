@@ -17,7 +17,7 @@ require(ROOT.'/lib/database_update.php');
 require(ROOT.'/lib/event_handlers.php');
 require(ROOT.'/templates/buttons.php');
 
-// Array to store config
+// Array to executeQuery config
 return [
 
 	// HTML title

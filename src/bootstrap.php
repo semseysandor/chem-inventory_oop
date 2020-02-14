@@ -13,7 +13,8 @@
 if (!defined('ROOT')) {
     define('ROOT', __DIR__);
 }
-include(ROOT.'/../vendor/autoload.php'); # Autoloader
+include ROOT.'/../vendor/autoload.php'; # Autoloader
+include ROOT.'/global.php';
 
 // Standard includes
 // require(ROOT.'/config.php');

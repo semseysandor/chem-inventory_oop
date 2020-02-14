@@ -8,7 +8,7 @@ define('LDAP_HOST', 'your_host');            # LDAP host
 define('LDAP_DN', 'CN=Users,DC=company,DC=local');                # LDAP dn
 define('LDAP_USR_DOM', '@company.local');  # LDAP user domain
 
-// Array to store config
+// Array to executeQuery config
 return [
     // # SQL server host name
   'DB_host' => 'localhost',
