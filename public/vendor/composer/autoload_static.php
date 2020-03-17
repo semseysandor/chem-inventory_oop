@@ -16,24 +16,24 @@ class ComposerStaticInite280a4b389486da05c3274bc11be086d
     public static $prefixDirsPsr4 = array (
         'Inventory\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/src',
+            0 => __DIR__ . '/../..' . '/source',
         ),
     );
 
     public static $classMap = array (
-        'Inventory\\Compound\\BAO\\Compound' => __DIR__ . '/../..' . '/src/Compound/BAO/Compound.php',
-        'Inventory\\Compound\\DAO\\SQL\\Compound' => __DIR__ . '/../..' . '/src/Compound/DAO/SQL/Compound.php',
-        'Inventory\\Core\\Controller' => __DIR__ . '/../..' . '/src/Core/Controller.php',
-        'Inventory\\Core\\DataBase\\IDataBase' => __DIR__ . '/../..' . '/src/Core/DataBase/IDataBase.php',
-        'Inventory\\Core\\DataBase\\SQLDaO' => __DIR__ . '/../..' . '/src/Core/DataBase/SQLDaO.php',
-        'Inventory\\Core\\DataBase\\SQLDataBase' => __DIR__ . '/../..' . '/src/Core/DataBase/SQLDataBase.php',
-        'Inventory\\Core\\Exception\\BadArgument' => __DIR__ . '/../..' . '/src/Core/Exception/BadArgument.php',
-        'Inventory\\Core\\Exception\\FieldMissing' => __DIR__ . '/../..' . '/src/Core/Exception/FieldMissing.php',
-        'Inventory\\Core\\Exception\\FileMissing' => __DIR__ . '/../..' . '/src/Core/Exception/FileMissing.php',
-        'Inventory\\Core\\Exception\\InventoryException' => __DIR__ . '/../..' . '/src/Core/Exception/InventoryException.php',
-        'Inventory\\Core\\Exception\\SQLException' => __DIR__ . '/../..' . '/src/Core/Exception/SQLException.php',
-        'Inventory\\Core\\Settings' => __DIR__ . '/../..' . '/src/Core/Settings.php',
-        'Inventory\\Inv' => __DIR__ . '/../..' . '/src/Inv.php',
+        'Inventory\\Compound\\BAO\\Compound' => __DIR__ . '/../..' . '/source/Compound/BAO/Compound.php',
+        'Inventory\\Compound\\DAO\\SQL\\Compound' => __DIR__ . '/../..' . '/source/Compound/DAO/SQL/Compound.php',
+        'Inventory\\Core\\Controller' => __DIR__ . '/../..' . '/source/Core/Controller.php',
+        'Inventory\\Core\\DataBase\\IDataBase' => __DIR__ . '/../..' . '/source/Core/DataBase/IDataBase.php',
+        'Inventory\\Core\\DataBase\\SQLDaO' => __DIR__ . '/../..' . '/source/Core/DataBase/SQLDaO.php',
+        'Inventory\\Core\\DataBase\\SQLDataBase' => __DIR__ . '/../..' . '/source/Core/DataBase/SQLDataBase.php',
+        'Inventory\\Core\\Exception\\BadArgument' => __DIR__ . '/../..' . '/source/Core/Exception/BadArgument.php',
+        'Inventory\\Core\\Exception\\FieldMissing' => __DIR__ . '/../..' . '/source/Core/Exception/FieldMissing.php',
+        'Inventory\\Core\\Exception\\FileMissing' => __DIR__ . '/../..' . '/source/Core/Exception/FileMissing.php',
+        'Inventory\\Core\\Exception\\InventoryException' => __DIR__ . '/../..' . '/source/Core/Exception/InventoryException.php',
+        'Inventory\\Core\\Exception\\SQLException' => __DIR__ . '/../..' . '/source/Core/Exception/SQLException.php',
+        'Inventory\\Core\\Settings' => __DIR__ . '/../..' . '/source/Core/Settings.php',
+        'Inventory\\Inv' => __DIR__ . '/../..' . '/source/Inv.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
