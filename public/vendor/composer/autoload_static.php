@@ -21,6 +21,7 @@ class ComposerStaticInite280a4b389486da05c3274bc11be086d
     );
 
     public static $classMap = array (
+        'Inventory\\Application' => __DIR__ . '/../..' . '/source/Application.php',
         'Inventory\\Compound\\BAO\\Compound' => __DIR__ . '/../..' . '/source/Compound/BAO/Compound.php',
         'Inventory\\Compound\\DAO\\SQL\\Compound' => __DIR__ . '/../..' . '/source/Compound/DAO/SQL/Compound.php',
         'Inventory\\Core\\Controller' => __DIR__ . '/../..' . '/source/Core/Controller.php',
@@ -32,8 +33,11 @@ class ComposerStaticInite280a4b389486da05c3274bc11be086d
         'Inventory\\Core\\Exception\\FileMissing' => __DIR__ . '/../..' . '/source/Core/Exception/FileMissing.php',
         'Inventory\\Core\\Exception\\InventoryException' => __DIR__ . '/../..' . '/source/Core/Exception/InventoryException.php',
         'Inventory\\Core\\Exception\\SQLException' => __DIR__ . '/../..' . '/source/Core/Exception/SQLException.php',
+        'Inventory\\Core\\Request' => __DIR__ . '/../..' . '/source/Core/Request.php',
+        'Inventory\\Core\\Router' => __DIR__ . '/../..' . '/source/Core/Router.php',
         'Inventory\\Core\\Settings' => __DIR__ . '/../..' . '/source/Core/Settings.php',
         'Inventory\\Inv' => __DIR__ . '/../..' . '/source/Inv.php',
+        'Inventory\\Page\\Index' => __DIR__ . '/../..' . '/source/Page/Index.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

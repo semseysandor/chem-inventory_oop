@@ -22,9 +22,31 @@
  * +---------------------------------------------------------------------+
  */
 
-use Inventory\Application;
+namespace Inventory\Core;
 
-require 'bootstrap.php';
+class Request
+{
+    public string $query;
 
-$app = new Application();
-$app->run();
+    public array $get;
+
+    public array $post;
+
+    public array $route;
+
+    public function parse()
+    {
+        switch ($_SERVER['REQUEST_METHOD']) {
+            case 'GET':
+                $this->get = $_REQUEST;
+                break;
+            case 'POST':
+                $this->post = $_REQUEST;
+        }
+        $this->query = $_SERVER['QUERY_STRING'];
+
+        $this->route = explode('/', $_SERVER['SCRIPT_URL']);
+
+        array_shift($this->route);
+    }
+}

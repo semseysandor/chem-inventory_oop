@@ -22,9 +22,26 @@
  * +---------------------------------------------------------------------+
  */
 
-use Inventory\Application;
+namespace Inventory\Core;
 
-require 'bootstrap.php';
+class Router
+{
+    public function route()
+    {
+        $request = new Request();
+        $request->parse();
 
-$app = new Application();
-$app->run();
+        $route = $request->route;
+
+        switch ($route[0]) {
+            case 'list':
+                array_shift($route);
+                $controller = 'majom';
+                break;
+            default:
+                $controller = '\Inventory\Page\Index';
+        }
+
+        return $controller;
+    }
+}

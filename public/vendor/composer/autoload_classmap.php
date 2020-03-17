@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Inventory\\Application' => $baseDir . '/source/Application.php',
     'Inventory\\Compound\\BAO\\Compound' => $baseDir . '/source/Compound/BAO/Compound.php',
     'Inventory\\Compound\\DAO\\SQL\\Compound' => $baseDir . '/source/Compound/DAO/SQL/Compound.php',
     'Inventory\\Core\\Controller' => $baseDir . '/source/Core/Controller.php',
@@ -17,6 +18,9 @@ return array(
     'Inventory\\Core\\Exception\\FileMissing' => $baseDir . '/source/Core/Exception/FileMissing.php',
     'Inventory\\Core\\Exception\\InventoryException' => $baseDir . '/source/Core/Exception/InventoryException.php',
     'Inventory\\Core\\Exception\\SQLException' => $baseDir . '/source/Core/Exception/SQLException.php',
+    'Inventory\\Core\\Request' => $baseDir . '/source/Core/Request.php',
+    'Inventory\\Core\\Router' => $baseDir . '/source/Core/Router.php',
     'Inventory\\Core\\Settings' => $baseDir . '/source/Core/Settings.php',
     'Inventory\\Inv' => $baseDir . '/source/Inv.php',
+    'Inventory\\Page\\Index' => $baseDir . '/source/Page/Index.php',
 );

@@ -22,9 +22,22 @@
  * +---------------------------------------------------------------------+
  */
 
-use Inventory\Application;
+namespace Inventory;
 
-require 'bootstrap.php';
+use Inventory\Core\Router;
 
-$app = new Application();
-$app->run();
+class Application
+{
+    public function run()
+    {
+        $router = new Router();
+        $controller = $this->factory($router->route());
+
+        $controller->render();
+    }
+
+    public function factory(string $class)
+    {
+        return new $class();
+    }
+}

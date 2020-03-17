@@ -22,9 +22,12 @@
  * +---------------------------------------------------------------------+
  */
 
-use Inventory\Application;
+namespace Inventory\Page;
 
-require 'bootstrap.php';
-
-$app = new Application();
-$app->run();
+class Index
+{
+    public function render()
+    {
+        echo 'index';
+    }
+}
