@@ -22,10 +22,19 @@
  * +---------------------------------------------------------------------+
  */
 
-namespace Inventory\BAO;
+// Set error reporting level
+error_reporting(E_ALL);
 
-class Compound
-{
-
-
+if (!function_exists('ts')) {
+    /**
+     * Translate function
+     *
+     * @param string $string
+     *
+     * @return string
+     */
+    function ts(string $string)
+    {
+        return $string;
+    }
 }

@@ -10,18 +10,18 @@
 
 /* Body */
 body {
-	background: hsl(0, 0%, 96%);
-	font-family: Tahoma, Geneva, sans-serif;
-	margin: auto;
-	padding: .25em;
+  background: hsl(0, 0%, 96%);
+  font-family: Tahoma, Geneva, sans-serif;
+  margin: auto;
+  padding: .25em;
 }
 
 hr {margin: .12em 0;}
 
 /* Images */
 img {
-	max-width: 100%;
-	height: auto;
+  max-width: 100%;
+  height: auto;
 }
 
 /* Heading */
@@ -59,22 +59,22 @@ h1, h2, h3, h4, h5 {margin: .5em 0;}
 
 /* Floats */
 .float-left {
-	display: block;
-	float: none;
+  display: block;
+  float: none;
 }
 .float-right {
-	display: block;
-	float: none;
+  display: block;
+  float: none;
 }
 @media only screen and (min-width: 350px) {
-	.float-left {
-		display: block;
-		float: left;
-	}
-	.float-right {
-		display: block;
-		float: right;
-	}
+  .float-left {
+    display: block;
+    float: left;
+  }
+  .float-right {
+    display: block;
+    float: right;
+  }
 }
 
 /* Cursor */

@@ -297,7 +297,7 @@ class SQLDaO
         $this->initSelect();
         $this->parseParams($params);
 
-        $this->setSelect(...$this->fields);
+        $this->setSelect($this->fields);
         $this->addFrom($this->tableName);
 
         return $this->execute();
@@ -367,7 +367,7 @@ class SQLDaO
     public function update(array $params = null)
     {
         $this->initUpdate();
-        $this->setUpdate(...$this->getFields());
+        $this->setUpdate($this->getFields());
 
         if (!empty($this->id) && $this->id > 0) {
             $this->addWhere('id', '=', $this->id);
@@ -465,18 +465,18 @@ class SQLDaO
      *
      * @return $this fluent method
      */
-    public function setSelect(string ...$fields)
+    public function setSelect(array $fields = null)
     {
         $field_string = '';
 
-        // Parse fields
-        foreach ($fields as $field) {
-            $field_string .= ($this->metadata[$field])['uniq_name'].',';
-        }
-
-        // If no fields specified, then select all
-        if (empty($field_string)) {
+        if (empty($fields)) {
+            // If no fields specified, then select all
             $field_string = '*';
+        } else {
+            // Parse fields
+            foreach ($fields as $field) {
+                $field_string .= ($this->metadata[$field])['uniq_name'].',';
+            }
         }
 
         // Remove last comma
@@ -491,14 +491,14 @@ class SQLDaO
     /**
      * Compose insert query
      *
-     * @param string ...$fields Fields to insert
+     * @param array $fields Fields to insert
      *
      * @return $this
      *
      * @throws BadArgument
      * @throws FieldMissing
      */
-    public function setInsert(string ...$fields)
+    public function setInsert(array $fields)
     {
         $column_string = '(';
         $values_string = 'VALUES(';
@@ -536,14 +536,14 @@ class SQLDaO
     /**
      * Compose update query
      *
-     * @param string ...$fields Fields to update
+     * @param array $fields Fields to update
      *
      * @return $this fluent method
      *
      * @throws BadArgument
      * @throws FieldMissing
      */
-    public function setUpdate(string ...$fields): SQLDaO
+    public function setUpdate(array $fields): SQLDaO
     {
         $column_string = '';
 
@@ -659,7 +659,7 @@ class SQLDaO
     /**
      * Adds order by clause.
      *
-     * @param string ...$params Order by values
+     * @param string ...$params Order-by values
      *
      * @return $this fluent method
      */

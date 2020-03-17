@@ -97,17 +97,24 @@ class Settings
     /**
      * Gets a particular setting
      *
+     * @param string $domain
      * @param string $key Name of setting to fetch
      *
      * @return mixed|null
      */
-    public function getSetting(string $key)
+    public function getSetting(string $domain, string $key)
     {
-        if (!array_key_exists($key, $this->settings)) {
+        // Check for domain
+        if (!array_key_exists($domain, $this->settings)) {
             return null;
         }
 
-        return $this->settings[$key];
+        // Check for key
+        if (!array_key_exists($key, ($this->settings)[$domain])) {
+            return null;
+        }
+
+        return ($this->settings)[$domain][$key];
     }
 
     /**

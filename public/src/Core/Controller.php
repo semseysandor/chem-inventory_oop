@@ -22,16 +22,9 @@
  * +---------------------------------------------------------------------+
  */
 
-if (!function_exists('ts')) {
-    /**
-     * Translate function
-     *
-     * @param string $string
-     *
-     * @return string
-     */
-    function ts(string $string)
-    {
-        return $string;
-    }
+namespace Inventory\Core;
+
+class Controller
+{
+
 }

@@ -6,10 +6,17 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Inventory\\BAO\\Compound' => $baseDir . '/chem-inv/src/BAO/Compound.php',
-    'Inventory\\Core\\Configurator' => $baseDir . '/chem-inv/src/Core/Configurator.php',
-    'Inventory\\Core\\SQL\\DataBase' => $baseDir . '/chem-inv/src/Core/SQL/DataBase.php',
-    'Inventory\\Core\\SQL\\IDataBase' => $baseDir . '/chem-inv/src/Core/SQL/IDataBase.php',
-    'Inventory\\Core\\SQL\\QueryBuilder' => $baseDir . '/chem-inv/src/Core/SQL/QueryBuilder.php',
-    'Inventory\\DAO\\SQL\\Compound' => $baseDir . '/chem-inv/src/DAO/SQL/Compound.php',
+    'Inventory\\BAO\\Compound' => $baseDir . '/public/src/Compound/BAO/Compound.php',
+    'Inventory\\Core\\Controller' => $baseDir . '/public/src/Core/Controller.php',
+    'Inventory\\Core\\DataBase\\IDataBase' => $baseDir . '/public/src/Core/DataBase/IDataBase.php',
+    'Inventory\\Core\\DataBase\\SQLDaO' => $baseDir . '/public/src/Core/DataBase/SQLDaO.php',
+    'Inventory\\Core\\DataBase\\SQLDataBase' => $baseDir . '/public/src/Core/DataBase/SQLDataBase.php',
+    'Inventory\\Core\\Exception\\BadArgument' => $baseDir . '/public/src/Core/Exception/BadArgument.php',
+    'Inventory\\Core\\Exception\\FieldMissing' => $baseDir . '/public/src/Core/Exception/FieldMissing.php',
+    'Inventory\\Core\\Exception\\FileMissing' => $baseDir . '/public/src/Core/Exception/FileMissing.php',
+    'Inventory\\Core\\Exception\\InventoryException' => $baseDir . '/public/src/Core/Exception/InventoryException.php',
+    'Inventory\\Core\\Exception\\SQLException' => $baseDir . '/public/src/Core/Exception/SQLException.php',
+    'Inventory\\Core\\Settings' => $baseDir . '/public/src/Core/Settings.php',
+    'Inventory\\DAO\\SQL\\Compound' => $baseDir . '/public/src/Compound/DAO/SQL/Compound.php',
+    'Inventory\\Inv' => $baseDir . '/public/src/Inv.php',
 );

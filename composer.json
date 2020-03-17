@@ -1,17 +1,26 @@
 {
   "name": "es-progress/inventory",
-  "description": "description_text",
+  "description": "Chemical Inventory",
   "minimum-stability": "stable",
-  "license": "AGPL-3.0-or-later",
+  "license": "MIT",
+  "keywords": [
+    "chemical",
+    "inventory",
+    "chemistry",
+    "lab",
+    "laboratory"
+  ],
+  "readme": "README.md",
   "authors": [
     {
       "name": "Sandor Semsey",
-      "email": "sandorsemsey@gmail.com"
+      "email": "sandorsemsey@gmail.com",
+      "role": "Developer"
     }
   ],
   "autoload": {
     "psr-4": {
-      "Inventory\\": "chem-inv/src"
+      "Inventory\\": "public/src"
     }
   },
   "require": {

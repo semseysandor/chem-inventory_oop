@@ -16,17 +16,24 @@ class ComposerStaticInit9bc77ff40a972bedc15b827d3cfaa2d8
     public static $prefixDirsPsr4 = array (
         'Inventory\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/chem-inv/src',
+            0 => __DIR__ . '/../..' . '/public/src',
         ),
     );
 
     public static $classMap = array (
-        'Inventory\\BAO\\Compound' => __DIR__ . '/../..' . '/chem-inv/src/BAO/Compound.php',
-        'Inventory\\Core\\Configurator' => __DIR__ . '/../..' . '/chem-inv/src/Core/Configurator.php',
-        'Inventory\\Core\\SQL\\DataBase' => __DIR__ . '/../..' . '/chem-inv/src/Core/SQL/DataBase.php',
-        'Inventory\\Core\\SQL\\IDataBase' => __DIR__ . '/../..' . '/chem-inv/src/Core/SQL/IDataBase.php',
-        'Inventory\\Core\\SQL\\QueryBuilder' => __DIR__ . '/../..' . '/chem-inv/src/Core/SQL/QueryBuilder.php',
-        'Inventory\\DAO\\SQL\\Compound' => __DIR__ . '/../..' . '/chem-inv/src/DAO/SQL/Compound.php',
+        'Inventory\\BAO\\Compound' => __DIR__ . '/../..' . '/public/src/Compound/BAO/Compound.php',
+        'Inventory\\Core\\Controller' => __DIR__ . '/../..' . '/public/src/Core/Controller.php',
+        'Inventory\\Core\\DataBase\\IDataBase' => __DIR__ . '/../..' . '/public/src/Core/DataBase/IDataBase.php',
+        'Inventory\\Core\\DataBase\\SQLDaO' => __DIR__ . '/../..' . '/public/src/Core/DataBase/SQLDaO.php',
+        'Inventory\\Core\\DataBase\\SQLDataBase' => __DIR__ . '/../..' . '/public/src/Core/DataBase/SQLDataBase.php',
+        'Inventory\\Core\\Exception\\BadArgument' => __DIR__ . '/../..' . '/public/src/Core/Exception/BadArgument.php',
+        'Inventory\\Core\\Exception\\FieldMissing' => __DIR__ . '/../..' . '/public/src/Core/Exception/FieldMissing.php',
+        'Inventory\\Core\\Exception\\FileMissing' => __DIR__ . '/../..' . '/public/src/Core/Exception/FileMissing.php',
+        'Inventory\\Core\\Exception\\InventoryException' => __DIR__ . '/../..' . '/public/src/Core/Exception/InventoryException.php',
+        'Inventory\\Core\\Exception\\SQLException' => __DIR__ . '/../..' . '/public/src/Core/Exception/SQLException.php',
+        'Inventory\\Core\\Settings' => __DIR__ . '/../..' . '/public/src/Core/Settings.php',
+        'Inventory\\DAO\\SQL\\Compound' => __DIR__ . '/../..' . '/public/src/Compound/DAO/SQL/Compound.php',
+        'Inventory\\Inv' => __DIR__ . '/../..' . '/public/src/Inv.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

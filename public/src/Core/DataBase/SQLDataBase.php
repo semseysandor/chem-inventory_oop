@@ -106,11 +106,11 @@ class SQLDataBase implements IDataBase
     private function initialize(): void
     {
         // Get configs
-        $db_host = Inv::settings()->getSetting('DB_host');
-        $db_user = Inv::settings()->getSetting('DB_user');
-        $db_pass = Inv::settings()->getSetting('DB_pass');
-        $db_name = Inv::settings()->getSetting('DB_name');
-        $db_port = Inv::settings()->getSetting('DB_port');
+        $db_host = Inv::settings()->getSetting('db', 'host');
+        $db_user = Inv::settings()->getSetting('db', 'user');
+        $db_pass = Inv::settings()->getSetting('db', 'pass');
+        $db_name = Inv::settings()->getSetting('db', 'name');
+        $db_port = Inv::settings()->getSetting('db', 'port');
 
         // Open a connection
         $this->link = new mysqli($db_host, $db_user, $db_pass, $db_name, $db_port);

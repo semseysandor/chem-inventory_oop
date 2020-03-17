@@ -10,11 +10,11 @@
  */
 
 // Bootstrap
+use Inventory\Compound\DAO\SQL\Compound;
 use Inventory\Core\Exception\BadArgument;
 use Inventory\Core\Exception\InventoryException;
-use Inventory\DAO\SQL\Compound;
 
-require '/home/jurkov/work/projects/chem-inventory_oop/chem-inv/bootstrap.php';
+require 'bootstrap.php';
 ini_set('display_errors', '0');
 // var_export(ini_get_all());
 try {
