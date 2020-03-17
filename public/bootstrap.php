@@ -13,5 +13,6 @@
 if (!defined('ROOT')) {
     define('ROOT', __DIR__);
 }
-include ROOT.'/../vendor/autoload.php';
+
+include ROOT.'/vendor/autoload.php';
 include ROOT.'/global.php';
