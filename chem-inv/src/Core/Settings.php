@@ -22,101 +22,106 @@
  * +---------------------------------------------------------------------+
  */
 
-namespace Inventory\DAO\SQL;
+namespace Inventory\Core;
 
-use Inventory\Core\DataBase\SQLDaO;
+use Inventory\Core\Exception\FileMissing;
 
 /**
- * Compound entity DataObject
+ * Settings Manager
  *
- * @category DataBase
+ * @category Config
  * @package  Inventory
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class Compound extends SQLDaO
+class Settings
 {
     /**
-     * Table name
-     *
-     * @var string
-     */
-    protected string $tableName = "leltar_compound";
-
-    /**
-     * Compound ID
-     *
-     * @var int|null
-     */
-    public ?int $id;
-
-    /**
-     * Compound name
-     *
-     * @var string|null
-     */
-    public ?string $name;
-
-    /**
-     * Compound alternative name
-     *
-     * @var string|null
-     */
-    public ?string $nameAlt;
-
-    /**
-     * Subcategory ID
-     *
-     * @var int|null
-     */
-    public ?int $subCategory;
-
-    /**
-     * CAS number
-     *
-     * @var string|null
-     */
-    public ?string $cas;
-
-    /**
-     * Field metadata
+     * Array to hold configs
      *
      * @var array
      */
-    public array $metadata = [
-      'id' => [
-        'type' => 'int',
-        'uniq_name' => 'compound_id',
-        'required' => false,
-      ],
-      'name' => [
-        'type' => 'string',
-        'uniq_name' => 'name',
-        'required' => true,
-      ],
-      'subCategory' => [
-        'type' => 'int',
-        'uniq_name' => 'sub_category_id',
-        'required' => true,
-      ],
-      'cas' => [
-        'type' => 'string',
-        'uniq_name' => 'cas',
-        'required' => false,
-      ],
-    ];
+    private array $settings;
 
     /**
-     * Compound constructor.
+     * Singleton instance
+     *
+     * @var \Inventory\Core\Settings|null
      */
-    public function __construct()
-    {
-        $this->id = null;
-        $this->name = null;
-        $this->subCategory = null;
-        $this->cas = null;
+    private static ?Settings $instance = null;
 
-        parent::__construct();
+    /**
+     * Settings constructor.
+     *
+     * @throws FileMissing
+     */
+    private function __construct()
+    {
+        $this->settings = self::getDefaults();
+    }
+
+    /**
+     * Loads defaults settings from file
+     *
+     * @return array
+     *
+     * @throws FileMissing
+     */
+    private static function getDefaults(): array
+    {
+        $config_file = ROOT.'/config.php';
+        if (!file_exists($config_file)) {
+            throw new FileMissing(ts('Settings file could not be loaded'));
+        }
+
+        return include $config_file;
+    }
+
+    /**
+     * Singleton
+     *
+     * @return $this
+     *
+     * @throws FileMissing
+     */
+    public static function singleton()
+    {
+        if (self::$instance == null) {
+            self::$instance = new Settings();
+        }
+
+        return self::$instance;
+    }
+
+    /**
+     * Gets a particular setting
+     *
+     * @param string $key Name of setting to fetch
+     *
+     * @return mixed|null
+     */
+    public function getSetting(string $key)
+    {
+        if (!array_key_exists($key, $this->settings)) {
+            return null;
+        }
+
+        return $this->settings[$key];
+    }
+
+    /**
+     * Adds a config
+     *
+     * @param array $cfgToAdd Config to add
+     *                        format: ['name' => 'value']
+     *
+     * @return void
+     */
+    public function addSetting(array $cfgToAdd): void
+    {
+        foreach ($cfgToAdd as $key => $value) {
+            $this->settings[$key] = $value;
+        }
     }
 }

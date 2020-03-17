@@ -1,37 +1,31 @@
 <?php
 /**
- * This file is part of chem-inventory.
- * Written by Sandor Semsey.
- *
- * Copyright (c)  2020.
- * This is work licenced under the GNU General Public License v3.0. All rights reserved.
- *
- * This is a free software;)
+ * +---------------------------------------------------------------------+
+ * | This file is part of chem-inventory.                                |
+ * |                                                                     |
+ * | Copyright (c) 2020 Sandor Semsey                                    |
+ * | All rights reserved.                                                |
+ * |                                                                     |
+ * | This work is published under the MIT License.                       |
+ * | https://choosealicense.com/licenses/mit/                            |
+ * |                                                                     |
+ * | It's a free software;)                                              |
+ * |                                                                     |
+ * | THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,     |
+ * | EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES     |
+ * | OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND            |
+ * | NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS |
+ * | BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN  |
+ * | ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN   |
+ * | CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE    |
+ * | SOFTWARE.                                                           |
+ * +---------------------------------------------------------------------+
  */
 
 namespace Inventory\BAO;
 
 class Compound
 {
-    public function create()
-    {
-        $name = 'manki';
-        $subcat = 9;
-        $cas = '123';
 
-        $dao = new \Inventory\DAO\SQL\Compound();
 
-        echo $dao->getCountAll();
-        echo "\n";
-        $dao->create(
-          [
-            'name' => $name,
-            'sub_category_id' => $subcat,
-            'cas' => $cas,
-
-          ]
-        );
-
-        echo $dao->getCountAll();
-    }
 }
