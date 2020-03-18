@@ -29,6 +29,7 @@ use Inventory\Core\Exception\FieldMissing;
 use Inventory\Core\Exception\FileMissing;
 use Inventory\Core\Exception\SQLException;
 use Inventory\Inv;
+use mysqli_result;
 
 /**
  * Core SQL DataObject.
@@ -182,6 +183,18 @@ class SQLDaO
      * Parse parameter array
      *
      * @param array $params Parameter array
+     *   $params =
+     *   [
+     *    fields   => [field_1, field_2],
+     *    where    => [
+     *                 [field_1, operator1, value1],
+     *                 [field_2, operator2, value2]
+     *                ]
+     *    limit    => 1,
+     *    offset   => 25,
+     *    order_by => [first_order (heh), second_order]
+     *    values   => [value_1, value_2]
+     *   ]
      *
      * @return $this
      *
@@ -201,11 +214,16 @@ class SQLDaO
 
         // Where clause
         if (array_key_exists('where', $params)) {
-            foreach ($params['where'] as $where) {
+            foreach ($params['where'] as $where_array) {
+                // Check argument
+                if (!is_array($where_array) || count($where_array) < 3) {
+                    continue;
+                }
+
                 // Parse where params
-                $field = $where[0];
-                $operator = $where[1];
-                $value = $where[2];
+                $field = $where_array[0];
+                $operator = $where_array[1];
+                $value = $where_array[2];
 
                 // Prepared statement
                 if ($value === '?') {
@@ -228,12 +246,12 @@ class SQLDaO
         }
 
         // Order by
-        if (array_key_exists('order_by', $params)) {
-            $this->addOrderBy(...$params['order_by']);
+        if (array_key_exists('order_by', $params) && is_array($params['order_by'])) {
+            $this->addOrderBy($params['order_by']);
         }
 
         // Values
-        if (array_key_exists('values', $params)) {
+        if (array_key_exists('values', $params) && is_array($params['values'])) {
             foreach ($params['values'] as $value) {
                 $this->values[] = $value;
             }
@@ -259,7 +277,7 @@ class SQLDaO
             case 'string':
                 return 's';
             default:
-                throw new BadArgument(ts('Invalid field type: ').'SQLDao');
+                throw new BadArgument(ts('Invalid field type: ').$type);
         }
     }
 
@@ -347,7 +365,7 @@ class SQLDaO
         }
 
         $this->initInsert();
-        $this->setInsert(...$this->getFields());
+        $this->setInsert($this->getFields());
 
         return $this->execute();
     }
@@ -503,6 +521,10 @@ class SQLDaO
         $column_string = '(';
         $values_string = 'VALUES(';
 
+        if (empty($fields)) {
+            throw new BadArgument(ts('No fields to insert: ').$this->tableName);
+        }
+
         // Parse fields
         foreach ($fields as $field) {
             // Compose query
@@ -546,6 +568,10 @@ class SQLDaO
     public function setUpdate(array $fields): SQLDaO
     {
         $column_string = '';
+
+        if (empty($fields)) {
+            throw new BadArgument(ts('No fields to update: ').$this->tableName);
+        }
 
         // Parse fields
         foreach ($fields as $field) {
@@ -659,11 +685,11 @@ class SQLDaO
     /**
      * Adds order by clause.
      *
-     * @param string ...$params Order-by values
+     * @param array $params
      *
      * @return $this fluent method
      */
-    public function addOrderBy(string ...$params): SQLDaO
+    public function addOrderBy(array $params): SQLDaO
     {
         // Check argument
         if (null == $params) {
@@ -675,7 +701,7 @@ class SQLDaO
 
         // Add clauses
         foreach ($params as $order) {
-            $order_by .= $order.',';
+            $order_by .= ($this->metadata[$order])['uniq_name'].',';
         }
 
         // Remove last comma
@@ -777,5 +803,64 @@ class SQLDaO
         } else {
             return $db->import($params);
         }
+    }
+
+    /**
+     * Parse results from select query
+     *
+     * @param \mysqli_result $result Result from query
+     *
+     * @return null|array
+     * Format:
+     * [ fields => [field1, field2],
+     *   rows   => [row1, row2]
+     * ]
+     */
+    public function fetchResults(mysqli_result $result)
+    {
+        // If no rows then return null
+        if ($result->num_rows < 1) {
+            return null;
+        }
+
+        // Get fields
+        $fields=$result->fetch_fields();
+        foreach ($fields as $field) {
+            $data['fields'] []=($field->name);
+        }
+
+        // Get results
+        $data['rows']=$result->fetch_all(MYSQLI_NUM);
+
+        return $data;
+    }
+
+    /**
+     * Check if a query affecting one row was successful
+     *
+     * @param \mysqli_result $result Result from query
+     *
+     * @return bool
+     */
+    public function isSuccessfulOne(mysqli_result $result)
+    {
+        if ($result->num_rows == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Returns auto-increment ID for last insert query
+     *
+     * @return int
+     *
+     * @throws \Inventory\Core\Exception\FileMissing
+     * @throws \Inventory\Core\Exception\SQLException
+     */
+    public function getInsertID()
+    {
+        return Inv::database()->getLastID();
     }
 }

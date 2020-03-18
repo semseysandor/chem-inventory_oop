@@ -43,6 +43,14 @@ use mysqli_stmt;
 class SQLDataBase implements IDataBase
 {
     /**
+     * Error reporting
+     *
+     * Development = true
+     * Production  = false
+     */
+    private const ERROR_REPORTING = true;
+
+    /**
      * Singleton instance.
      *
      * @var \Inventory\Core\DataBase\SQLDataBase
@@ -120,11 +128,9 @@ class SQLDataBase implements IDataBase
             throw new SQLException(ts('No connection to SQL Database'));
         }
 
-        // Show errors
-        // DEVELOPMENT: MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT
-        // PRODUCTION: MYSQLI_REPORT_OFF
+        // Error reporting level
         $this->driver = new mysqli_driver();
-        $this->driver->report_mode = MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT;
+        $this->driver->report_mode = self::ERROR_REPORTING ? MYSQLI_REPORT_ERROR : MYSQLI_REPORT_OFF;
 
         // Set character set
         $this->link->set_charset('utf8');
@@ -162,7 +168,7 @@ class SQLDataBase implements IDataBase
     }
 
     /**
-     * Imports data to the database.
+     * Imports data to the DataBase.
      *
      * @param array $params Data and metadata
      *
@@ -248,6 +254,16 @@ class SQLDataBase implements IDataBase
     public function execute(array $params)
     {
         // TODO: implement execute method
+    }
+
+    /**
+     * Gets auto-increment ID for last insertion
+     *
+     * @return int
+     */
+    public function getLastID(): int
+    {
+        return (int)$this->link->insert_id;
     }
 
     /**
