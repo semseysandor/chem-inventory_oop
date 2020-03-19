@@ -1,52 +1,92 @@
 <?php
 /**
- * +---------------------------------------------------------------------+
- * | This file is part of chem-inventory.                                |
- * |                                                                     |
- * | Copyright (c) 2020 Sandor Semsey                                    |
- * | All rights reserved.                                                |
- * |                                                                     |
- * | This work is published under the MIT License.                       |
- * | https://choosealicense.com/licenses/mit/                            |
- * |                                                                     |
- * | It's a free software;)                                              |
- * |                                                                     |
- * | THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,     |
- * | EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES     |
- * | OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND            |
- * | NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS |
- * | BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN  |
- * | ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN   |
- * | CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE    |
- * | SOFTWARE.                                                           |
- * +---------------------------------------------------------------------+
+ +---------------------------------------------------------------------+
+ | This file is part of chem-inventory.                                |
+ |                                                                     |
+ | Copyright (c) 2020 Sandor Semsey                                    |
+ | All rights reserved.                                                |
+ |                                                                     |
+ | This work is published under the MIT License.                       |
+ | https://choosealicense.com/licenses/mit/                            |
+ |                                                                     |
+ | It's a free software;)                                              |
+ |                                                                     |
+ | THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,     |
+ | EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES     |
+ | OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND            |
+ | NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS |
+ | BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN  |
+ | ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN   |
+ | CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE    |
+ | SOFTWARE.                                                           |
+ +---------------------------------------------------------------------+
  */
 
 namespace Inventory\Core;
 
+/**
+ * Class Request
+ *
+ * @category Routing
+ * @package  Inventory
+ * @author   Sandor Semsey <semseysandor@gmail.com>
+ * @license  MIT https://choosealicense.com/licenses/mit/
+ * php version 7.4
+ */
 class Request
 {
-    public string $query;
+    /**
+     * Query string from URL
+     *
+     * @var string|null
+     */
+    public ?string $query;
 
-    public array $get;
+    /**
+     * GET request parameters
+     *
+     * @var array|null
+     */
+    public ?array $get;
 
-    public array $post;
+    /**
+     * POST request parameters
+     *
+     * @var array|null
+     */
+    public ?array $post;
 
-    public array $route;
+    /**
+     * Route from URI
+     *
+     * @var array|null
+     */
+    public ?array $route = null;
 
+    /**
+     * Parse route from URL
+     */
     public function parse()
     {
-        switch ($_SERVER['REQUEST_METHOD']) {
-            case 'GET':
-                $this->get = $_REQUEST;
-                break;
-            case 'POST':
-                $this->post = $_REQUEST;
+        if (in_array('REQUEST_METHOD', $_SERVER)) {
+            switch ($_SERVER['REQUEST_METHOD']) {
+                case 'GET':
+                    $this->get = $_REQUEST;
+                    break;
+                case 'POST':
+                    $this->post = $_REQUEST;
+                    break;
+            }
         }
-        $this->query = $_SERVER['QUERY_STRING'];
 
-        $this->route = explode('/', $_SERVER['SCRIPT_URL']);
-
-        array_shift($this->route);
+        if (in_array('QUERY_STRING', $_SERVER)) {
+            $this->query = $_SERVER['QUERY_STRING'];
+        }
+        if (in_array('SCRIPT_URL', $_SERVER)) {
+            $this->route = explode('/', $_SERVER['SCRIPT_URL']);
+        }
+        if ($this->route) {
+            array_shift($this->route);
+        }
     }
 }

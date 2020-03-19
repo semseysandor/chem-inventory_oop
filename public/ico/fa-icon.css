@@ -1,4 +1,27 @@
 /*
+ * +---------------------------------------------------------------------+
+ * | This file is part of chem-inventory.                                |
+ * |                                                                     |
+ * | Copyright (c) 2020 Sandor Semsey                                    |
+ * | All rights reserved.                                                |
+ * |                                                                     |
+ * | This work is published under the MIT License.                       |
+ * | https://choosealicense.com/licenses/mit/                            |
+ * |                                                                     |
+ * | It's a free software;)                                              |
+ * |                                                                     |
+ * | THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,     |
+ * | EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES     |
+ * | OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND            |
+ * | NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS |
+ * | BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN  |
+ * | ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN   |
+ * | CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE    |
+ * | SOFTWARE.                                                           |
+ * +---------------------------------------------------------------------+
+ */
+
+/*
  * Font Awesome Icons
  *********************************************************/
 
@@ -7,19 +30,19 @@
 .far,
 .fal,
 .fab {
-	-moz-osx-font-smoothing: grayscale;
-	-webkit-font-smoothing: antialiased;
-	display: inline-block;
-	font-style: normal;
-	font-variant: normal;
-	text-rendering: auto;
-	line-height: 1;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  line-height: 1;
 }
 
 .fa-lg {
-	font-size: 1.33333em;
-	line-height: 0.75em;
-	vertical-align: -.0667em;
+  font-size: 1.33333em;
+  line-height: 0.75em;
+  vertical-align: -.0667em;
 }
 
 .fa-xs {font-size: .75em; }
@@ -36,27 +59,27 @@
 .fa-10x {font-size: 10em; }
 
 .fa-fw {
-	text-align: center;
-	width: 1.25em; }
+  text-align: center;
+  width: 1.25em; }
 
 .fa-ul {
-	list-style-type: none;
-	margin-left: 2.5em;
-	padding-left: 0; }
-	.fa-ul > li {
-		position: relative; }
+  list-style-type: none;
+  margin-left: 2.5em;
+  padding-left: 0; }
+.fa-ul > li {
+  position: relative; }
 
 .fa-li {
-	left: -2em;
-	position: absolute;
-	text-align: center;
-	width: 2em;
-	line-height: inherit; }
+  left: -2em;
+  position: absolute;
+  text-align: center;
+  width: 2em;
+  line-height: inherit; }
 
 .fa-border {
-	border: solid 0.08em #eee;
-	border-radius: .1em;
-	padding: .2em .25em .15em; }
+  border: solid 0.08em #eee;
+  border-radius: .1em;
+  padding: .2em .25em .15em; }
 
 .fa-pull-left {float: left; }
 .fa-pull-right {float: right; }
@@ -74,58 +97,60 @@
 .fab.fa-pull-right {margin-left: .3em; }
 
 .fa-spin {
-	-webkit-animation: fa-spin 2s infinite linear;
-					animation: fa-spin 2s infinite linear; }
+  -webkit-animation: fa-spin 2s infinite linear;
+  animation: fa-spin 2s infinite linear; }
 
 .fa-pulse {
-	-webkit-animation: fa-spin 1s infinite steps(8);
-					animation: fa-spin 1s infinite steps(8); }
+  -webkit-animation: fa-spin 1s infinite steps(8);
+  animation: fa-spin 1s infinite steps(8); }
 
 @-webkit-keyframes fa-spin {
-	0% {
-		-webkit-transform: rotate(0deg);
-						transform: rotate(0deg); }
-	100% {
-		-webkit-transform: rotate(360deg);
-						transform: rotate(360deg); } }
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg); }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg); }
+}
 
 @keyframes fa-spin {
-	0% {
-		-webkit-transform: rotate(0deg);
-						transform: rotate(0deg); }
-	100% {
-		-webkit-transform: rotate(360deg);
-						transform: rotate(360deg); } }
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg); }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg); }
+}
 
 .fa-rotate-90 {
-	-ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=1)";
-	-webkit-transform: rotate(90deg);
-					transform: rotate(90deg); }
+  -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=1)";
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg); }
 
 .fa-rotate-180 {
-	-ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=2)";
-	-webkit-transform: rotate(180deg);
-					transform: rotate(180deg); }
+  -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=2)";
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg); }
 
 .fa-rotate-270 {
-	-ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=3)";
-	-webkit-transform: rotate(270deg);
-					transform: rotate(270deg); }
+  -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=3)";
+  -webkit-transform: rotate(270deg);
+  transform: rotate(270deg); }
 
 .fa-flip-horizontal {
-	-ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1)";
-	-webkit-transform: scale(-1, 1);
-					transform: scale(-1, 1); }
+  -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1)";
+  -webkit-transform: scale(-1, 1);
+  transform: scale(-1, 1); }
 
 .fa-flip-vertical {
-	-ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1)";
-	-webkit-transform: scale(1, -1);
-					transform: scale(1, -1); }
+  -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1)";
+  -webkit-transform: scale(1, -1);
+  transform: scale(1, -1); }
 
 .fa-flip-both, .fa-flip-horizontal.fa-flip-vertical {
-	-ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1)";
-	-webkit-transform: scale(-1, -1);
-					transform: scale(-1, -1); }
+  -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1)";
+  -webkit-transform: scale(-1, -1);
+  transform: scale(-1, -1); }
 
 :root .fa-rotate-90,
 :root .fa-rotate-180,
@@ -133,23 +158,23 @@
 :root .fa-flip-horizontal,
 :root .fa-flip-vertical,
 :root .fa-flip-both {
-	-webkit-filter: none;
-					filter: none; }
+  -webkit-filter: none;
+  filter: none; }
 
 .fa-stack {
-	display: inline-block;
-	height: 2em;
-	line-height: 2em;
-	position: relative;
-	vertical-align: middle;
-	width: 2.5em; }
+  display: inline-block;
+  height: 2em;
+  line-height: 2em;
+  position: relative;
+  vertical-align: middle;
+  width: 2.5em; }
 
 .fa-stack-1x,
 .fa-stack-2x {
-	left: 0;
-	position: absolute;
-	text-align: center;
-	width: 100%; }
+  left: 0;
+  position: absolute;
+  text-align: center;
+  width: 100%; }
 
 .fa-stack-1x {line-height: inherit; }
 .fa-stack-2x {font-size: 2em; }
@@ -1510,22 +1535,22 @@ readers do not read off random characters that represent icon */
 .fa-zhihu:before {content: "\f63f"; }
 
 .sr-only {
-	border: 0;
-	clip: rect(0, 0, 0, 0);
-	height: 1px;
-	margin: -1px;
-	overflow: hidden;
-	padding: 0;
-	position: absolute;
-	width: 1px; }
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px; }
 
 .sr-only-focusable:active, .sr-only-focusable:focus {
-	clip: auto;
-	height: auto;
-	margin: 0;
-	overflow: visible;
-	position: static;
-	width: auto; }
+  clip: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  position: static;
+  width: auto; }
 
 @font-face {
   font-family: "Font Awesome 5 Brands";

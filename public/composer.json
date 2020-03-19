@@ -24,6 +24,7 @@
     }
   },
   "require": {
-    "ext-mysqli": "*"
+    "ext-mysqli": "*",
+    "smarty/smarty": "v3.1.34"
   }
 }

@@ -1,25 +1,25 @@
 <?php
 /**
- * +---------------------------------------------------------------------+
- * | This file is part of chem-inventory.                                |
- * |                                                                     |
- * | Copyright (c) 2020 Sandor Semsey                                    |
- * | All rights reserved.                                                |
- * |                                                                     |
- * | This work is published under the MIT License.                       |
- * | https://choosealicense.com/licenses/mit/                            |
- * |                                                                     |
- * | It's a free software;)                                              |
- * |                                                                     |
- * | THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,     |
- * | EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES     |
- * | OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND            |
- * | NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS |
- * | BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN  |
- * | ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN   |
- * | CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE    |
- * | SOFTWARE.                                                           |
- * +---------------------------------------------------------------------+
+ +---------------------------------------------------------------------+
+ | This file is part of chem-inventory.                                |
+ |                                                                     |
+ | Copyright (c) 2020 Sandor Semsey                                    |
+ | All rights reserved.                                                |
+ |                                                                     |
+ | This work is published under the MIT License.                       |
+ | https://choosealicense.com/licenses/mit/                            |
+ |                                                                     |
+ | It's a free software;)                                              |
+ |                                                                     |
+ | THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,     |
+ | EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES     |
+ | OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND            |
+ | NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS |
+ | BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN  |
+ | ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN   |
+ | CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE    |
+ | SOFTWARE.                                                           |
+ +---------------------------------------------------------------------+
  */
 
 namespace Inventory\Core\DataBase;
@@ -124,7 +124,7 @@ class SQLDaO
      *
      * @var array
      */
-    protected array $metadata;
+    protected array $metadata = [];
 
     /**
      * ID of entity
@@ -276,8 +276,10 @@ class SQLDaO
                 return 'i';
             case 'string':
                 return 's';
+            case 'double':
+                return 'd';
             default:
-                throw new BadArgument(ts('Invalid field type: ').$type);
+                throw new BadArgument(ts('Invalid field type "%s"', $type));
         }
     }
 
@@ -297,6 +299,60 @@ class SQLDaO
         }
 
         return true;
+    }
+
+    /**
+     * Adds metadata
+     *
+     * @param string $field Field name
+     * @param string $type Field type (i|s|d)
+     * @param string $uniq Uniq name (SQL)
+     * @param string $desc Description
+     * @param bool $req Is required field
+     *
+     * @return void
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
+     */
+    protected function addMetadata(string $field, string $type, string $uniq, string $desc, bool $req = false): void
+    {
+        // Check for field
+        if (empty($field)) {
+            throw new BadArgument(ts('Field missing in "%s"', $this->tableName));
+        }
+
+        // Check for metadata
+        if (empty($type) || empty($uniq) || empty($desc)) {
+            throw new BadArgument(ts('Metadata missing for "%s"', $field));
+        }
+
+        // Check if field already defined
+        if (array_key_exists($field, $this->metadata)) {
+            throw new BadArgument(ts('Metadata already defined for "%s"', $field));
+        }
+
+        // Check type
+        switch ($type) {
+            case 'i':
+                $type = 'int';
+                break;
+            case 's':
+                $type = 'string';
+                break;
+            case 'd':
+                $type = 'double';
+                break;
+            default:
+                throw new BadArgument(ts('Invalid field type for "%s". Available options: i|s|d', $field));
+        }
+
+        // Add metadata
+        $this->metadata[$field] = [
+          'type' => $type,
+          'uniq_name' => $uniq,
+          'description' => $desc,
+          'required' => $req,
+        ];
     }
 
     /**
@@ -336,7 +392,7 @@ class SQLDaO
     public function retrieveRecord(int $id, array $fields = null)
     {
         if ($id <= 0) {
-            throw new BadArgument(ts('Not valid record ID at: ').$this->tableName);
+            throw new BadArgument(ts('Not valid record ID in "%s"', $this->tableName));
         }
 
         $this->initSelect();
@@ -361,7 +417,7 @@ class SQLDaO
     {
         // Checks if required fields are set
         if (!$this->checkReqFields()) {
-            throw new FieldMissing(ts('Creating new record in: ').$this->tableName);
+            throw new FieldMissing(ts('Creating new record in "%s"', $this->tableName));
         }
 
         $this->initInsert();
@@ -439,7 +495,7 @@ class SQLDaO
      *
      * @return $this fluent method
      */
-    public function initInsert()
+    public function initInsert(): SQLDaO
     {
         $this->initQuery();
         $this->queryType = 'insert';
@@ -453,7 +509,7 @@ class SQLDaO
      *
      * @return $this fluent method
      */
-    public function initUpdate()
+    public function initUpdate(): SQLDaO
     {
         $this->initQuery();
         $this->queryType = 'update';
@@ -467,7 +523,7 @@ class SQLDaO
      *
      * @return $this fluent method
      */
-    public function initDelete()
+    public function initDelete(): SQLDaO
     {
         $this->initQuery();
         $this->queryType = 'delete';
@@ -479,7 +535,7 @@ class SQLDaO
     /**
      * Set select return fields
      *
-     * @param string ...$fields Fields to return
+     * @param array $fields Fields to return
      *
      * @return $this fluent method
      */
@@ -522,7 +578,7 @@ class SQLDaO
         $values_string = 'VALUES(';
 
         if (empty($fields)) {
-            throw new BadArgument(ts('No fields to insert: ').$this->tableName);
+            throw new BadArgument(ts('No fields to insert into "%s"', $this->tableName));
         }
 
         // Parse fields
@@ -538,12 +594,12 @@ class SQLDaO
             if (!empty($this->$field)) {
                 $this->values[] = $this->$field;
             } else {
-                throw new FieldMissing(ts('Inserting into: ').$this->tableName);
+                throw new FieldMissing(ts('Inserting into "%s"', $this->tableName));
             }
         }
 
         if (empty($this->values)) {
-            throw new BadArgument(ts('No values to insert: ').$this->tableName);
+            throw new BadArgument(ts('No values to insert into "%s"', $this->tableName));
         }
 
         // Remove last comma
@@ -570,7 +626,7 @@ class SQLDaO
         $column_string = '';
 
         if (empty($fields)) {
-            throw new BadArgument(ts('No fields to update: ').$this->tableName);
+            throw new BadArgument(ts('No fields to update "%s"', $this->tableName));
         }
 
         // Parse fields
@@ -585,12 +641,12 @@ class SQLDaO
             if (!empty($this->$field)) {
                 $this->values[] = $this->$field;
             } else {
-                throw new FieldMissing(ts('Updating: ').$this->tableName);
+                throw new FieldMissing(ts('Updating "%s"', $this->tableName));
             }
         }
 
         if (empty($this->values)) {
-            throw new BadArgument(ts('No values to update: ').$this->tableName);
+            throw new BadArgument(ts('No values to update "%s"', $this->tableName));
         }
 
         // Remove last comma
@@ -615,7 +671,7 @@ class SQLDaO
     public function addWhere(string $field, string $operator, $value): SQLDaO
     {
         // Check arguments
-        if (null == $field || null == $operator || null == $value) {
+        if (empty($field) || empty($operator) || empty($value)) {
             return $this;
         }
 
@@ -623,6 +679,9 @@ class SQLDaO
         $where_string = empty($this->where) ? 'WHERE ' : ' AND ';
 
         // Add field
+        if (!array_key_exists($field, $this->metadata)) {
+            throw new BadArgument(ts('No such field "%s"', $field));
+        }
         $where_string .= ($this->metadata[$field])['uniq_name'];
 
         // Add operator
@@ -649,7 +708,7 @@ class SQLDaO
                 $where_string .= ' LIKE ';
                 break;
             default:
-                throw new BadArgument(ts('Invalid operator: ').$this->tableName);
+                throw new BadArgument(ts('Invalid operator "%s"', $this->tableName));
                 break;
         }
 
@@ -672,7 +731,7 @@ class SQLDaO
     public function addFrom(string $from): SQLDaO
     {
         // Check argument
-        if ($from == null) {
+        if (empty($from)) {
             return $this;
         }
 
@@ -692,7 +751,7 @@ class SQLDaO
     public function addOrderBy(array $params): SQLDaO
     {
         // Check argument
-        if (null == $params) {
+        if (empty($params)) {
             return $this;
         }
 
@@ -723,7 +782,7 @@ class SQLDaO
     public function addLimit(string $limit): SQLDaO
     {
         // Check argument
-        if (null == $limit) {
+        if (empty($limit)) {
             return $this;
         }
 
@@ -743,7 +802,7 @@ class SQLDaO
     public function addOffset(string $offset): SQLDaO
     {
         // Check argument
-        if (null == $offset) {
+        if (empty($offset)) {
             return $this;
         }
 
@@ -811,10 +870,10 @@ class SQLDaO
      * @param \mysqli_result $result Result from query
      *
      * @return null|array
-     * Format:
-     * [ fields => [field1, field2],
-     *   rows   => [row1, row2]
-     * ]
+     *   Format:
+     *     [ fields => [field1, field2],
+     *       rows   => [row1, row2]
+     *     ]
      */
     public function fetchResults(mysqli_result $result)
     {
@@ -824,13 +883,13 @@ class SQLDaO
         }
 
         // Get fields
-        $fields=$result->fetch_fields();
+        $fields = $result->fetch_fields();
         foreach ($fields as $field) {
-            $data['fields'] []=($field->name);
+            $data['fields'] [] = ($field->name);
         }
 
         // Get results
-        $data['rows']=$result->fetch_all(MYSQLI_NUM);
+        $data['rows'] = $result->fetch_all(MYSQLI_NUM);
 
         return $data;
     }
@@ -842,7 +901,7 @@ class SQLDaO
      *
      * @return bool
      */
-    public function isSuccessfulOne(mysqli_result $result)
+    public function isSuccessfulOne(mysqli_result $result): bool
     {
         if ($result->num_rows == 1) {
             return true;
@@ -859,7 +918,7 @@ class SQLDaO
      * @throws \Inventory\Core\Exception\FileMissing
      * @throws \Inventory\Core\Exception\SQLException
      */
-    public function getInsertID()
+    public function getInsertID(): int
     {
         return Inv::database()->getLastID();
     }
