@@ -79,7 +79,12 @@ class Renderer
             $smarty->assign($name, $value);
         }
 
-        $smarty->display($template['template']);
+        foreach ($template['templates'] as $name => $value) {
+            $smarty->assign('_'.$name, $value.'.tpl');
+        }
+
+        $base_template = $template['templates']['base'].'.tpl';
+        $smarty->display($base_template);
     }
 
     /**

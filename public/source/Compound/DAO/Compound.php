@@ -22,12 +22,12 @@
  +---------------------------------------------------------------------+
  */
 
-namespace Inventory\Batch\DAO\SQL;
+namespace Inventory\Compound\DAO;
 
 use Inventory\Core\DataBase\SQLDaO;
 
 /**
- * Batch entity DataObject
+ * Compound entity DataObject
  *
  * @category DataBase
  * @package  Inventory
@@ -35,77 +35,98 @@ use Inventory\Core\DataBase\SQLDaO;
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class Batch extends SQLDaO
+class Compound extends SQLDaO
 {
     /**
-     * Batch ID
+     * Compound ID
      *
      * @var int|null
      */
     public ?int $id;
 
     /**
-     * Compound ID
-     *
-     * @var int|null
-     */
-    public ?int $compID;
-
-    /**
-     * Manufacturer ID
-     *
-     * @var int|null
-     */
-    public ?int $manfacID;
-
-    /**
-     * Batch Name
+     * Compound name
      *
      * @var string|null
      */
     public ?string $name;
 
     /**
-     * LOT number
+     * Compound alternative name
      *
      * @var string|null
      */
-    public ?string $lot;
+    public ?string $nameAlt;
 
     /**
-     * Date arrived
+     * Abbreviation
      *
      * @var string|null
      */
-    public ?string $dateArr;
+    public ?string $abbrev;
 
     /**
-     * Date opened
+     * Chemical Name
      *
      * @var string|null
      */
-    public ?string $dateOpen;
+    public ?string $chemName;
 
     /**
-     * Date expired
+     * IUPAC Name
      *
      * @var string|null
      */
-    public ?string $dateExp;
+    public ?string $iupacName;
 
     /**
-     * Date archived
+     * Chemical Formula
      *
      * @var string|null
      */
-    public ?string $dateArch;
+    public ?string $chemFormula;
 
     /**
-     * Is Active
+     * CAS number
+     *
+     * @var string|null
+     */
+    public ?string $cas;
+
+    /**
+     * SMILES
+     *
+     * @var string|null
+     */
+    public ?string $smiles;
+
+    /**
+     * Subcategory ID
      *
      * @var int|null
      */
-    public ?int $isActive;
+    public ?int $subCategory;
+
+    /**
+     * OEB Level
+     *
+     * @var int|null
+     */
+    public ?int $oeb;
+
+    /**
+     * Molar Weight
+     *
+     * @var float|null
+     */
+    public ?float $molWeight;
+
+    /**
+     * Melting Point
+     *
+     * @var string|null
+     */
+    public ?string $meltPoint;
 
     /**
      * Note
@@ -133,10 +154,10 @@ class Batch extends SQLDaO
      *
      * @var string
      */
-    protected string $tableName = "leltar_batch";
+    protected string $tableName = "leltar_compound";
 
     /**
-     * Batch constructor.
+     * Compound constructor.
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
@@ -144,30 +165,35 @@ class Batch extends SQLDaO
     {
         // Init fields
         $this->id = null;
-        $this->compID = null;
-        $this->manfacID = null;
         $this->name = null;
-        $this->lot = null;
-        $this->dateArr = null;
-        $this->dateOpen = null;
-        $this->dateExp = null;
-        $this->dateArch = null;
-        $this->isActive = null;
-        $this->note = null;
+        $this->nameAlt = null;
+        $this->abbrev = null;
+        $this->chemName = null;
+        $this->iupacName = null;
+        $this->chemFormula = null;
+        $this->cas = null;
+        $this->smiles = null;
+        $this->subCategory = null;
+        $this->oeb = null;
+        $this->molWeight = null;
+        $this->meltPoint = null;
         $this->lastModBy = null;
         $this->lastModTime = null;
 
         // Add metadata
-        $this->addMetadata('id', 'i', 'batch_id', 'Batch ID', true);
-        $this->addMetadata('compID', 'i', 'compound_id', 'Compound ID', true);
-        $this->addMetadata('manfacID', 'i', 'manfac_id', 'Manufacturer ID', true);
-        $this->addMetadata('name', 's', 'name', 'Batch Name', true);
-        $this->addMetadata('lot', 's', 'lot', 'LOT number', true);
-        $this->addMetadata('dataArr', 's', 'date_arr', 'Date Arrive', true);
-        $this->addMetadata('dateOpen', 's', 'date_open', 'Date Opened');
-        $this->addMetadata('dateExp', 's', 'date_exp', 'Date Expired');
-        $this->addMetadata('dateArch', 's', 'date_arch', 'Date Archived');
-        $this->addMetadata('isActive', 'i', 'is_active', 'Is Active', true);
+        $this->addMetadata('id', 'i', 'compound_id', 'Compound ID', true);
+        $this->addMetadata('name', 's', 'name', 'Compound Name', true);
+        $this->addMetadata('nameAlt', 's', 'name_alt', 'Compound Alternative Name');
+        $this->addMetadata('abbrev', 's', 'abbrev', 'Abbreviation');
+        $this->addMetadata('chemName', 's', 'chemical_name', 'Chemical Name');
+        $this->addMetadata('iupacName', 's', 'iupac_name', 'IUPAC Name');
+        $this->addMetadata('chemFormula', 's', 'chem_formula', 'Chemical Formula');
+        $this->addMetadata('cas', 's', 'cas', 'CAS number');
+        $this->addMetadata('smiles', 's', 'smiles', 'SMILES');
+        $this->addMetadata('subCategory', 'i', 'sub_category_id', 'Sub Category ID', true);
+        $this->addMetadata('oeb', 'i', 'oeb', 'OEB level');
+        $this->addMetadata('molWeight', 'd', 'mol_weight', 'Molar Weight');
+        $this->addMetadata('meltPoint', 's', 'melting_point', 'Melting Point');
         $this->addMetadata('note', 's', 'note', 'Note');
         $this->addMetadata('lastModBy', 's', 'last_mod_by', 'Last Modification By');
         $this->addMetadata('lastModTime', 's', 'last_mod_time', 'Last Modification Time');

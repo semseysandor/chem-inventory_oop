@@ -22,12 +22,12 @@
  +---------------------------------------------------------------------+
  */
 
-namespace Inventory\Category\DAO\SQL;
+namespace Inventory\Category\DAO;
 
 use Inventory\Core\DataBase\SQLDaO;
 
 /**
- * Laboratory entity DataObject
+ * User entity DataObject
  *
  * @category DataBase
  * @package  Inventory
@@ -35,21 +35,28 @@ use Inventory\Core\DataBase\SQLDaO;
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class Laboratory extends SQLDaO
+class User extends SQLDaO
 {
     /**
-     * Laboratory ID
+     * User ID
      *
      * @var int|null
      */
     public ?int $id;
 
     /**
-     * Laboratory Name
+     * User name
      *
      * @var string|null
      */
     public ?string $name;
+
+    /**
+     * User right level
+     *
+     * @var int|null
+     */
+    public ?int $rightLevel;
 
     /**
      * Last Modification By
@@ -70,10 +77,10 @@ class Laboratory extends SQLDaO
      *
      * @var string
      */
-    protected string $tableName = "leltar_loc_lab";
+    protected string $tableName = "main_users";
 
     /**
-     * Laboratory constructor.
+     * User constructor.
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
@@ -82,12 +89,14 @@ class Laboratory extends SQLDaO
         // Init fields
         $this->id = null;
         $this->name = null;
+        $this->rightLevel = null;
         $this->lastModBy = null;
         $this->lastModTime = null;
 
         // Add metadata
-        $this->addMetadata('id', 'i', 'loc_lab_id', 'Laboratory ID', true);
-        $this->addMetadata('name', 's', 'name', 'Laboratory Name', true);
+        $this->addMetadata('id', 'i', 'user_id', 'User ID', true);
+        $this->addMetadata('name', 's', 'name', 'User Name', true);
+        $this->addMetadata('rightLevel', 'i', 'right_level_leltar', 'Right Level', true);
         $this->addMetadata('lastModBy', 's', 'last_mod_by', 'Last Modification By');
         $this->addMetadata('lastModTime', 's', 'last_mod_time', 'Last Modification Time');
 

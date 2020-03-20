@@ -22,71 +22,75 @@
  +---------------------------------------------------------------------+
  */
 
-namespace Inventory\Core;
+namespace Inventory\Category\DAO;
+
+use Inventory\Core\DataBase\SQLDaO;
 
 /**
- * Class Request
+ * Sub entity DataObject
  *
- * @category Routing
+ * @category DataBase
  * @package  Inventory
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class Request
+class Sub extends SQLDaO
 {
     /**
-     * Query string from URL
+     * Sub ID
+     *
+     * @var int|null
+     */
+    public ?int $id;
+
+    /**
+     * Sub Name
      *
      * @var string|null
      */
-    public ?string $query;
+    public ?string $name;
 
     /**
-     * GET request parameters
+     * Last Modification By
      *
-     * @var array|null
+     * @var string|null
      */
-    public ?array $get;
+    public ?string $lastModBy;
 
     /**
-     * POST request parameters
+     * Last Modification Time
      *
-     * @var array|null
+     * @var string|null
      */
-    public ?array $post;
+    public ?string $lastModTime;
 
     /**
-     * Route from URI
+     * Table name
      *
-     * @var array|null
+     * @var string
      */
-    public ?array $route = null;
+    protected string $tableName = "leltar_loc_sub";
 
     /**
-     * Parse route from URL
+     * Sub constructor.
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
      */
-    public function parse()
+    public function __construct()
     {
-        if (in_array('REQUEST_METHOD', $_SERVER)) {
-            switch ($_SERVER['REQUEST_METHOD']) {
-                case 'GET':
-                    $this->get = $_REQUEST;
-                    break;
-                case 'POST':
-                    $this->post = $_REQUEST;
-                    break;
-            }
-        }
+        // Init fields
+        $this->id = null;
+        $this->name = null;
+        $this->lastModBy = null;
+        $this->lastModTime = null;
 
-        if (in_array('QUERY_STRING', $_SERVER)) {
-            $this->query = $_SERVER['QUERY_STRING'];
-        }
-        if (in_array('SCRIPT_URL', $_SERVER)) {
-            $this->route = explode('/', $_SERVER['SCRIPT_URL']);
-        }
-        if ($this->route) {
-            array_shift($this->route);
-        }
+        // Add metadata
+        $this->addMetadata('id', 'i', 'loc_sub_id', 'Sub ID', true);
+        $this->addMetadata('name', 's', 'name', 'Sub Name', true);
+        $this->addMetadata('lastModBy', 's', 'last_mod_by', 'Last Modification By');
+        $this->addMetadata('lastModTime', 's', 'last_mod_time', 'Last Modification Time');
+
+        parent::__construct();
     }
 }

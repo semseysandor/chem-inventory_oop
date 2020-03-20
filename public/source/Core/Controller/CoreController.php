@@ -22,7 +22,7 @@
  +---------------------------------------------------------------------+
  */
 
-namespace Inventory\Core;
+namespace Inventory\Core\Controller;
 
 /**
  * Base Controller Class
@@ -33,7 +33,46 @@ namespace Inventory\Core;
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class Controller
+class CoreController
 {
 
+    protected array $template;
+
+    protected function setBaseTemplate($base_template)
+    {
+        $this->template['templates']['base'] = $base_template;
+    }
+
+    protected function assignTemplateVar($name, $value)
+    {
+        $this->template['vars'][$name] = $value;
+    }
+
+    protected function setTemplateRegion($region, $template_file)
+    {
+        $this->template['templates'][$region] = $template_file;
+    }
+
+    public function build()
+    {
+        $this->preProcess();
+
+        $this->process();
+
+        $this->assemble();
+
+        return $this->template;
+    }
+
+    protected function preProcess()
+    {
+    }
+
+    protected function process()
+    {
+    }
+
+    protected function assemble()
+    {
+    }
 }

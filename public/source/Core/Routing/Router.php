@@ -22,75 +22,49 @@
  +---------------------------------------------------------------------+
  */
 
-namespace Inventory\Category\DAO\SQL;
-
-use Inventory\Core\DataBase\SQLDaO;
+namespace Inventory\Core\Routing;
 
 /**
- * Category entity DataObject
+ * Router
  *
- * @category DataBase
+ * @category Routing
  * @package  Inventory
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class Category extends SQLDaO
+class Router
 {
     /**
-     * Category ID
+     * Route
      *
-     * @var int|null
+     * @return string
      */
-    public ?int $id;
-
-    /**
-     * Category Name
-     *
-     * @var string|null
-     */
-    public ?string $name;
-
-    /**
-     * Last Modification By
-     *
-     * @var string|null
-     */
-    public ?string $lastModBy;
-
-    /**
-     * Last Modification Time
-     *
-     * @var string|null
-     */
-    public ?string $lastModTime;
-
-    /**
-     * Table name
-     *
-     * @var string
-     */
-    protected string $tableName = "leltar_category";
-
-    /**
-     * Category constructor.
-     *
-     * @throws \Inventory\Core\Exception\BadArgument
-     */
-    public function __construct()
+    public function route()
     {
-        // Init fields
-        $this->id = null;
-        $this->name = null;
-        $this->lastModBy = null;
-        $this->lastModTime = null;
+        $request = new Request();
+        $request->parse();
 
-        // Add metadata
-        $this->addMetadata('id', 'i', 'category_id', 'Category ID', true);
-        $this->addMetadata('name', 's', 'name', 'Category Name', true);
-        $this->addMetadata('lastModBy', 's', 'last_mod_by', 'Last Modification By');
-        $this->addMetadata('lastModTime', 's', 'last_mod_time', 'Last Modification Time');
+        $route = $request->route;
 
-        parent::__construct();
+        // Security
+        if (Security::isAuthorized()) {
+            return '\Inventory\Page\Login';
+        }
+
+        if (!is_array($route)) {
+            return '\Inventory\Page\Index';
+        }
+
+        switch (array_shift($route)) {
+            case 'list':
+                array_shift($route);
+                $controller = 'majom';
+                break;
+            default:
+                $controller = '\Inventory\Page\Index';
+        }
+
+        return $controller;
     }
 }

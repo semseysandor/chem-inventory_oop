@@ -22,75 +22,12 @@
  +---------------------------------------------------------------------+
  */
 
-namespace Inventory\Category\DAO\SQL;
+namespace Inventory\Page;
 
-use Inventory\Core\DataBase\SQLDaO;
-
-/**
- * Place entity DataObject
- *
- * @category DataBase
- * @package  Inventory
- * @author   Sandor Semsey <semseysandor@gmail.com>
- * @license  MIT https://choosealicense.com/licenses/mit/
- * php version 7.4
- */
-class Place extends SQLDaO
+class Login
 {
-    /**
-     * Place ID
-     *
-     * @var int|null
-     */
-    public ?int $id;
-
-    /**
-     * Place Name
-     *
-     * @var string|null
-     */
-    public ?string $name;
-
-    /**
-     * Last Modification By
-     *
-     * @var string|null
-     */
-    public ?string $lastModBy;
-
-    /**
-     * Last Modification Time
-     *
-     * @var string|null
-     */
-    public ?string $lastModTime;
-
-    /**
-     * Table name
-     *
-     * @var string
-     */
-    protected string $tableName = "leltar_loc_place";
-
-    /**
-     * Place constructor.
-     *
-     * @throws \Inventory\Core\Exception\BadArgument
-     */
-    public function __construct()
+    public function build()
     {
-        // Init fields
-        $this->id = null;
-        $this->name = null;
-        $this->lastModBy = null;
-        $this->lastModTime = null;
-
-        // Add metadata
-        $this->addMetadata('id', 'i', 'loc_place_id', 'Place ID', true);
-        $this->addMetadata('name', 's', 'name', 'Place Name', true);
-        $this->addMetadata('lastModBy', 's', 'last_mod_by', 'Last Modification By');
-        $this->addMetadata('lastModTime', 's', 'last_mod_time', 'Last Modification Time');
-
-        parent::__construct();
+        echo "login";
     }
 }

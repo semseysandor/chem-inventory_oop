@@ -22,12 +22,12 @@
  +---------------------------------------------------------------------+
  */
 
-namespace Inventory\Manufacturer\DAO\SQL;
+namespace Inventory\Category\DAO;
 
 use Inventory\Core\DataBase\SQLDaO;
 
 /**
- * Manufacturer entity DataObject
+ * Laboratory entity DataObject
  *
  * @category DataBase
  * @package  Inventory
@@ -35,28 +35,21 @@ use Inventory\Core\DataBase\SQLDaO;
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class Manufacturer extends SQLDaO
+class Laboratory extends SQLDaO
 {
     /**
-     * Manufacturer ID
+     * Laboratory ID
      *
      * @var int|null
      */
     public ?int $id;
 
     /**
-     * Manufacturer Name
+     * Laboratory Name
      *
      * @var string|null
      */
     public ?string $name;
-
-    /**
-     * Is Frequent
-     *
-     * @var int|null
-     */
-    public ?int $isFrequent;
 
     /**
      * Last Modification By
@@ -77,10 +70,10 @@ class Manufacturer extends SQLDaO
      *
      * @var string
      */
-    protected string $tableName = "leltar_manfac";
+    protected string $tableName = "leltar_loc_lab";
 
     /**
-     * Manufacturer constructor.
+     * Laboratory constructor.
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
@@ -89,14 +82,12 @@ class Manufacturer extends SQLDaO
         // Init fields
         $this->id = null;
         $this->name = null;
-        $this->isFrequent = null;
         $this->lastModBy = null;
         $this->lastModTime = null;
 
         // Add metadata
-        $this->addMetadata('id', 'i', 'manfac_id', 'Manufacturer ID', true);
-        $this->addMetadata('name', 's', 'name', 'Manufacturer Name', true);
-        $this->addMetadata('isFrequent', 'i', 'is_frequent', 'Is Frequent', true);
+        $this->addMetadata('id', 'i', 'loc_lab_id', 'Laboratory ID', true);
+        $this->addMetadata('name', 's', 'name', 'Laboratory Name', true);
         $this->addMetadata('lastModBy', 's', 'last_mod_by', 'Last Modification By');
         $this->addMetadata('lastModTime', 's', 'last_mod_time', 'Last Modification Time');
 

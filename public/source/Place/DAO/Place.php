@@ -22,41 +22,75 @@
  +---------------------------------------------------------------------+
  */
 
-namespace Inventory\Compound\BAO;
+namespace Inventory\Category\DAO;
+
+use Inventory\Core\DataBase\SQLDaO;
 
 /**
- * Compound BaO
+ * Place entity DataObject
  *
- * @category Business Layer
+ * @category DataBase
  * @package  Inventory
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class Compound
+class Place extends SQLDaO
 {
     /**
-     * Gets all compounds from DataBase
+     * Place ID
      *
-     * @param array|null $fields Fields to return
+     * @var int|null
+     */
+    public ?int $id;
+
+    /**
+     * Place Name
      *
-     * @return array|null
+     * @var string|null
+     */
+    public ?string $name;
+
+    /**
+     * Last Modification By
+     *
+     * @var string|null
+     */
+    public ?string $lastModBy;
+
+    /**
+     * Last Modification Time
+     *
+     * @var string|null
+     */
+    public ?string $lastModTime;
+
+    /**
+     * Table name
+     *
+     * @var string
+     */
+    protected string $tableName = "leltar_loc_place";
+
+    /**
+     * Place constructor.
      *
      * @throws \Inventory\Core\Exception\BadArgument
-     * @throws \Inventory\Core\Exception\FileMissing
-     * @throws \Inventory\Core\Exception\SQLException
      */
-    public function getAll(array $fields = null)
+    public function __construct()
     {
-        $dao = new \Inventory\Compound\DAO\Compound();
+        // Init fields
+        $this->id = null;
+        $this->name = null;
+        $this->lastModBy = null;
+        $this->lastModTime = null;
 
-        $result = $dao->retrieve(
-          [
-            'fields' => $fields,
-            'order_by' => ['name'],
-          ]
-        );
+        // Add metadata
+        $this->addMetadata('id', 'i', 'loc_place_id', 'Place ID', true);
+        $this->addMetadata('name', 's', 'name', 'Place Name', true);
+        $this->addMetadata('lastModBy', 's', 'last_mod_by', 'Last Modification By');
+        $this->addMetadata('lastModTime', 's', 'last_mod_time', 'Last Modification Time');
 
-        return $dao->fetchResults($result);
+        parent::__construct();
     }
 }

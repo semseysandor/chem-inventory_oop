@@ -22,12 +22,12 @@
  +---------------------------------------------------------------------+
  */
 
-namespace Inventory\Category\DAO\SQL;
+namespace Inventory\Category\DAO;
 
 use Inventory\Core\DataBase\SQLDaO;
 
 /**
- * Location entity DataObject
+ * SubCategory entity DataObject
  *
  * @category DataBase
  * @package  Inventory
@@ -35,35 +35,28 @@ use Inventory\Core\DataBase\SQLDaO;
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class Location extends SQLDaO
+class SubCategory extends SQLDaO
 {
     /**
-     * Location ID
+     * SubCategory ID
      *
      * @var int|null
      */
     public ?int $id;
 
     /**
-     * Laboratory ID
+     * Category ID
      *
      * @var int|null
      */
-    public ?int $labID;
+    public ?int $categoryID;
 
     /**
-     * Place ID
+     * SubCategory Name
      *
-     * @var int|null
+     * @var string|null
      */
-    public ?int $placeID;
-
-    /**
-     * Sub ID
-     *
-     * @var int|null
-     */
-    public ?int $subID;
+    public ?string $name;
 
     /**
      * Last Modification By
@@ -84,10 +77,10 @@ class Location extends SQLDaO
      *
      * @var string
      */
-    protected string $tableName = "leltar_location";
+    protected string $tableName = "leltar_sub_category";
 
     /**
-     * Location constructor.
+     * SubCategory constructor.
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
@@ -95,17 +88,15 @@ class Location extends SQLDaO
     {
         // Init fields
         $this->id = null;
-        $this->labID = null;
-        $this->placeID = null;
-        $this->subID = null;
+        $this->categoryID = null;
+        $this->name = null;
         $this->lastModBy = null;
         $this->lastModTime = null;
 
         // Add metadata
-        $this->addMetadata('id', 'i', 'location_id', 'Location ID', true);
-        $this->addMetadata('labID', 'i', 'loc_lab_id', 'Laboratory ID', true);
-        $this->addMetadata('placeID', 'i', 'loc_place_id', 'Place ID', true);
-        $this->addMetadata('subID', 'i', 'loc_sub_id', 'Sub ID', true);
+        $this->addMetadata('id', 'i', 'sub_category_id', 'SubCategory ID', true);
+        $this->addMetadata('categoryID', 'i', 'category_id', 'Category ID', true);
+        $this->addMetadata('name', 's', 'name', 'SubCategory Name', true);
         $this->addMetadata('lastModBy', 's', 'last_mod_by', 'Last Modification By');
         $this->addMetadata('lastModTime', 's', 'last_mod_time', 'Last Modification Time');
 

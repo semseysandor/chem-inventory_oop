@@ -27,42 +27,16 @@ namespace Inventory\Page;
 use Error;
 use Exception;
 use Inventory\Compound\BAO\Compound;
+use Inventory\Core\Controller\CoreController;
 use Inventory\Core\Exception\InventoryException;
 
-class Index
+class Index extends CoreController
 {
-    private $template;
-
-    public function build()
-    {
-        $this->preProcess();
-
-        $this->process();
-
-        $this->assemble();
-
-        return $this->template;
-    }
-
-    public function preProcess()
-    {
-    }
-
-    public function process()
+    protected function process()
     {
         try {
             $bao = new Compound();
-            $this->assignVar('compounds', $bao->getAll());
-
-            echo "majom\n";
-            echo ts("maki\n");
-            echo ts('manki %s %s', 'veba', 'repa')."\n";
-
-            if (empty($majom)) {
-                echo "ures";
-            } else {
-                echo "teli";
-            }
+            $this->assignTemplateVar('compounds', $bao->getAll(['id', 'name']));
         } catch (InventoryException $ex) {
             echo $ex->getMessage().' '.$ex->getContext();
             exit;
@@ -70,21 +44,21 @@ class Index
             echo $ex->getMessage();
         } catch (Error $ex) {
             echo $ex->getMessage();
-        } finally {
-            exit;
         }
+        parent::process();
     }
 
-    public function assemble()
+    protected function assemble()
     {
-        $this->template['template'] = str_replace('\\', '/', __CLASS__).'.tpl';
+        $class_name = str_replace('\\', '/', __CLASS__);
+        $class_name = substr($class_name, 10);
 
-        $this->assignVar('majom', 'beco');
-        $this->assignVar('kutya', ['maki', 'lali', 'papi']);
-    }
+        $this->setBaseTemplate('page');
+        $this->setTemplateRegion('body', $class_name);
 
-    protected function assignVar($name, $value)
-    {
-        $this->template['vars'][$name] = $value;
+        $this->assignTemplateVar('majom', 'beco');
+        $this->assignTemplateVar('kutya', ['maki', 'lali', 'papi']);
+
+        parent::assemble();
     }
 }

@@ -24,8 +24,9 @@
 
 namespace Inventory;
 
+use Inventory\Core\Controller\CoreController;
 use Inventory\Core\Renderer;
-use Inventory\Core\Router;
+use Inventory\Core\Routing\Router;
 
 /**
  * Application
@@ -39,6 +40,32 @@ use Inventory\Core\Router;
 class Application
 {
     /**
+     * Router
+     *
+     * @var \Inventory\Core\Routing\Router
+     */
+    private Router $router;
+
+    /**
+     * Controller
+     *
+     * @var \Inventory\Core\Controller\CoreController
+     */
+    private CoreController $controller;
+
+    /**
+     * Renderer
+     *
+     * @var \Inventory\Core\Renderer
+     */
+    private Renderer $renderer;
+
+    public function __construct()
+    {
+        $this->initSession();
+    }
+
+    /**
      * Run application
      *
      * @throws \SmartyException
@@ -46,15 +73,35 @@ class Application
     public function run()
     {
         // Routing
-        $router = new Router();
-        $route = $router->route();
+        $this->router = new Router();
+        $route = $this->router->route();
 
         // Controller
-        $controller = new $route();
-        $template = $controller->build();
+        $this->controller = new $route();
+        $template = $this->controller->build();
+        if (empty($template)) {
+            exit;
+        }
 
         // Rendering
-        $renderer = new Renderer();
-        $renderer->render($template);
+        $this->renderer = new Renderer();
+        $this->renderer->render($template);
+    }
+
+    private function initSession()
+    {
+        // Start session
+        session_start();
+
+        // Abort script if session not loaded
+        if (session_status() != PHP_SESSION_ACTIVE) {
+            self::exit(ts('Session start failed.'));
+        }
+    }
+
+    public static function exit(string $reason)
+    {
+        echo $reason;
+        exit;
     }
 }

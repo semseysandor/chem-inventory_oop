@@ -59,10 +59,8 @@ return [
     'port' => '3306',
   ],
   'general' => [
-
       // HTML title
     'title' => 'Leltár',
-
       // Stylesheets
     'stylesheet' => [
       'style/general.css',

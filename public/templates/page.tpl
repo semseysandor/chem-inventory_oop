@@ -1,5 +1,4 @@
-<?php
-/**
+{*
  +---------------------------------------------------------------------+
  | This file is part of chem-inventory.                                |
  |                                                                     |
@@ -20,32 +19,15 @@
  | CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE    |
  | SOFTWARE.                                                           |
  +---------------------------------------------------------------------+
- */
-
-namespace Inventory\Core;
-
-class Router
-{
-    public function route()
-    {
-        $request = new Request();
-        $request->parse();
-
-        $route = $request->route;
-
-        if (!is_array($route)) {
-            return '\Inventory\Page\Index';
-        }
-
-        switch (array_shift($route)) {
-            case 'list':
-                array_shift($route);
-                $controller = 'majom';
-                break;
-            default:
-                $controller = '\Inventory\Page\Index';
-        }
-
-        return $controller;
-    }
-}
+*}
+<!DOCTYPE html>
+<html lang="en">
+{* HTML Head *}
+{include file='head.tpl'}
+<body>
+{* Body *}
+{include file=$_body}
+{* Footer *}
+{include file='footer.tpl'}
+</body>
+</html>

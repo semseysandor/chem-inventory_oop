@@ -22,12 +22,12 @@
  +---------------------------------------------------------------------+
  */
 
-namespace Inventory\Category\DAO\SQL;
+namespace Inventory\Manufacturer\DAO;
 
 use Inventory\Core\DataBase\SQLDaO;
 
 /**
- * SubCategory entity DataObject
+ * Manufacturer entity DataObject
  *
  * @category DataBase
  * @package  Inventory
@@ -35,28 +35,28 @@ use Inventory\Core\DataBase\SQLDaO;
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class SubCategory extends SQLDaO
+class Manufacturer extends SQLDaO
 {
     /**
-     * SubCategory ID
+     * Manufacturer ID
      *
      * @var int|null
      */
     public ?int $id;
 
     /**
-     * Category ID
-     *
-     * @var int|null
-     */
-    public ?int $categoryID;
-
-    /**
-     * SubCategory Name
+     * Manufacturer Name
      *
      * @var string|null
      */
     public ?string $name;
+
+    /**
+     * Is Frequent
+     *
+     * @var int|null
+     */
+    public ?int $isFrequent;
 
     /**
      * Last Modification By
@@ -77,10 +77,10 @@ class SubCategory extends SQLDaO
      *
      * @var string
      */
-    protected string $tableName = "leltar_sub_category";
+    protected string $tableName = "leltar_manfac";
 
     /**
-     * SubCategory constructor.
+     * Manufacturer constructor.
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
@@ -88,15 +88,15 @@ class SubCategory extends SQLDaO
     {
         // Init fields
         $this->id = null;
-        $this->categoryID = null;
         $this->name = null;
+        $this->isFrequent = null;
         $this->lastModBy = null;
         $this->lastModTime = null;
 
         // Add metadata
-        $this->addMetadata('id', 'i', 'sub_category_id', 'SubCategory ID', true);
-        $this->addMetadata('categoryID', 'i', 'category_id', 'Category ID', true);
-        $this->addMetadata('name', 's', 'name', 'SubCategory Name', true);
+        $this->addMetadata('id', 'i', 'manfac_id', 'Manufacturer ID', true);
+        $this->addMetadata('name', 's', 'name', 'Manufacturer Name', true);
+        $this->addMetadata('isFrequent', 'i', 'is_frequent', 'Is Frequent', true);
         $this->addMetadata('lastModBy', 's', 'last_mod_by', 'Last Modification By');
         $this->addMetadata('lastModTime', 's', 'last_mod_time', 'Last Modification Time');
 

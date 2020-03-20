@@ -27,6 +27,9 @@
  */
 define('ROOT', __DIR__);
 
+/**
+ * Autoloader
+ */
 include ROOT.'/vendor/autoload.php';
 
 // Set error reporting level

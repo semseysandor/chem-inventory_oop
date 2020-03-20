@@ -22,12 +22,12 @@
  +---------------------------------------------------------------------+
  */
 
-namespace Inventory\Category\DAO\SQL;
+namespace Inventory\Category\DAO;
 
 use Inventory\Core\DataBase\SQLDaO;
 
 /**
- * User entity DataObject
+ * Category entity DataObject
  *
  * @category DataBase
  * @package  Inventory
@@ -35,28 +35,21 @@ use Inventory\Core\DataBase\SQLDaO;
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class User extends SQLDaO
+class Category extends SQLDaO
 {
     /**
-     * User ID
+     * Category ID
      *
      * @var int|null
      */
     public ?int $id;
 
     /**
-     * User name
+     * Category Name
      *
      * @var string|null
      */
     public ?string $name;
-
-    /**
-     * User right level
-     *
-     * @var int|null
-     */
-    public ?int $rightLevel;
 
     /**
      * Last Modification By
@@ -77,10 +70,10 @@ class User extends SQLDaO
      *
      * @var string
      */
-    protected string $tableName = "main_users";
+    protected string $tableName = "leltar_category";
 
     /**
-     * User constructor.
+     * Category constructor.
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
@@ -89,14 +82,12 @@ class User extends SQLDaO
         // Init fields
         $this->id = null;
         $this->name = null;
-        $this->rightLevel = null;
         $this->lastModBy = null;
         $this->lastModTime = null;
 
         // Add metadata
-        $this->addMetadata('id', 'i', 'user_id', 'User ID', true);
-        $this->addMetadata('name', 's', 'name', 'User Name', true);
-        $this->addMetadata('rightLevel', 'i', 'right_level_leltar', 'Right Level', true);
+        $this->addMetadata('id', 'i', 'category_id', 'Category ID', true);
+        $this->addMetadata('name', 's', 'name', 'Category Name', true);
         $this->addMetadata('lastModBy', 's', 'last_mod_by', 'Last Modification By');
         $this->addMetadata('lastModTime', 's', 'last_mod_time', 'Last Modification Time');
 

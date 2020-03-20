@@ -1,4 +1,4 @@
-<!--
+{*
   +---------------------------------------------------------------------+
   | This file is part of chem-inventory.                                |
   |                                                                     |
@@ -19,27 +19,8 @@
   | CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE    |
   | SOFTWARE.                                                           |
   +---------------------------------------------------------------------+
-  -->
-<!DOCTYPE html>
-<html lang="en">
+*}
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <title>Fankimanki</title>
 </head>
-<body>
-<table>
-  <tr>
-      {foreach $compounds.fields as $field}
-        <th>{$field}</th>
-      {/foreach}
-  </tr>
-    {foreach $compounds['rows'] as $row}
-      <tr>
-          {foreach $row as $name=>$var}
-            <td>{$var}</td>
-          {/foreach}
-      </tr>
-    {/foreach}
-</table>
-</body>
-</html>
