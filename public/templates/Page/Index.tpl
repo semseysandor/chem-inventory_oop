@@ -1,5 +1,4 @@
-<?php
-/**
+{*
  +---------------------------------------------------------------------+
  | This file is part of chem-inventory.                                |
  |                                                                     |
@@ -20,43 +19,9 @@
  | CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE    |
  | SOFTWARE.                                                           |
  +---------------------------------------------------------------------+
- */
-
-namespace Inventory\Compound\BAO;
-
-/**
- * Compound BaO
- *
- * @category Business Layer
- * @package  chem-inventory_oop
- * @author   Sandor Semsey <semseysandor@gmail.com>
- * @license  MIT https://choosealicense.com/licenses/mit/
- * php version 7.4
- */
-class Compound
-{
-    /**
-     * Gets all compounds from DataBase
-     *
-     * @param array|null $fields Fields to return
-     *
-     * @return array|null
-     *
-     * @throws \Inventory\Core\Exception\BadArgument
-     * @throws \Inventory\Core\Exception\FileMissing
-     * @throws \Inventory\Core\Exception\SQLException
-     */
-    public function getAll(array $fields = null)
-    {
-        $dao = new \Inventory\Compound\DAO\Compound();
-
-        $result = $dao->retrieve(
-          [
-            'fields' => $fields,
-            'order_by' => ['name'],
-          ]
-        );
-
-        return $dao->fetchResults($result);
-    }
-}
+*}
+<h1>Inventory</h1>
+<h2>Welcome {$user}</h2>
+<a href="log-out">
+  <button>Logout</button>
+</a>

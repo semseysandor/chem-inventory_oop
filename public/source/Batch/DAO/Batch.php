@@ -30,7 +30,7 @@ use Inventory\Core\DataBase\SQLDaO;
  * Batch entity DataObject
  *
  * @category DataBase
- * @package  Inventory
+ * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
@@ -59,7 +59,7 @@ class Batch extends SQLDaO
     public ?int $manfacID;
 
     /**
-     * Batch Name
+     * Batch name
      *
      * @var string|null
      */
@@ -101,7 +101,7 @@ class Batch extends SQLDaO
     public ?string $dateArch;
 
     /**
-     * Is Active
+     * Is active
      *
      * @var int|null
      */
@@ -115,14 +115,14 @@ class Batch extends SQLDaO
     public ?string $note;
 
     /**
-     * Last Modification By
+     * Last modification by
      *
      * @var string|null
      */
     public ?string $lastModBy;
 
     /**
-     * Last Modification Time
+     * Last modification time
      *
      * @var string|null
      */
@@ -142,6 +142,8 @@ class Batch extends SQLDaO
      */
     public function __construct()
     {
+        parent::__construct();
+
         // Init fields
         $this->id = null;
         $this->compID = null;
@@ -171,7 +173,5 @@ class Batch extends SQLDaO
         $this->addMetadata('note', 's', 'note', 'Note');
         $this->addMetadata('lastModBy', 's', 'last_mod_by', 'Last Modification By');
         $this->addMetadata('lastModTime', 's', 'last_mod_time', 'Last Modification Time');
-
-        parent::__construct();
     }
 }

@@ -22,75 +22,35 @@
  +---------------------------------------------------------------------+
  */
 
-namespace Inventory\Category\DAO;
-
-use Inventory\Core\DataBase\SQLDaO;
+namespace Inventory\Core\Controller;
 
 /**
- * Category entity DataObject
+ * Base Form Class
  *
- * @category DataBase
+ * @category Controller
  * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class Category extends SQLDaO
+abstract class Form extends CoreController
 {
     /**
-     * Category ID
+     * Form data received after submit
      *
-     * @var int|null
+     * @var array|null
      */
-    public ?int $id;
+    protected ?array $formData;
 
     /**
-     * Category name
+     * Form constructor.
      *
-     * @var string|null
+     * @param array|null $form_data
      */
-    public ?string $name;
-
-    /**
-     * Last modification by
-     *
-     * @var string|null
-     */
-    public ?string $lastModBy;
-
-    /**
-     * Last modification time
-     *
-     * @var string|null
-     */
-    public ?string $lastModTime;
-
-    /**
-     * Table name
-     *
-     * @var string
-     */
-    protected string $tableName = "leltar_category";
-
-    /**
-     * Category constructor.
-     *
-     * @throws \Inventory\Core\Exception\BadArgument
-     */
-    public function __construct()
+    public function __construct(array $form_data = null)
     {
         parent::__construct();
-
-        // Init fields
-        $this->id = null;
-        $this->name = null;
-        $this->lastModBy = null;
-        $this->lastModTime = null;
-
-        // Add metadata
-        $this->addMetadata('id', 'i', 'category_id', 'Category ID', true);
-        $this->addMetadata('name', 's', 'name', 'Category Name', true);
-        $this->addMetadata('lastModBy', 's', 'last_mod_by', 'Last Modification By');
-        $this->addMetadata('lastModTime', 's', 'last_mod_time', 'Last Modification Time');
+        $this->formData = $form_data;
+        $this->setBaseTemplate('form');
     }
 }

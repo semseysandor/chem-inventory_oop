@@ -30,7 +30,7 @@ use Inventory\Core\DataBase\SQLDaO;
  * Compound entity DataObject
  *
  * @category DataBase
- * @package  Inventory
+ * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
@@ -66,21 +66,21 @@ class Compound extends SQLDaO
     public ?string $abbrev;
 
     /**
-     * Chemical Name
+     * Chemical name
      *
      * @var string|null
      */
     public ?string $chemName;
 
     /**
-     * IUPAC Name
+     * IUPAC name
      *
      * @var string|null
      */
     public ?string $iupacName;
 
     /**
-     * Chemical Formula
+     * Chemical formula
      *
      * @var string|null
      */
@@ -108,21 +108,21 @@ class Compound extends SQLDaO
     public ?int $subCategory;
 
     /**
-     * OEB Level
+     * OEB level
      *
      * @var int|null
      */
     public ?int $oeb;
 
     /**
-     * Molar Weight
+     * Molar weight
      *
      * @var float|null
      */
     public ?float $molWeight;
 
     /**
-     * Melting Point
+     * Melting point
      *
      * @var string|null
      */
@@ -136,14 +136,14 @@ class Compound extends SQLDaO
     public ?string $note;
 
     /**
-     * Last Modification By
+     * Last modification by
      *
      * @var string|null
      */
     public ?string $lastModBy;
 
     /**
-     * Last Modification Time
+     * Last modification time
      *
      * @var string|null
      */
@@ -163,6 +163,8 @@ class Compound extends SQLDaO
      */
     public function __construct()
     {
+        parent::__construct();
+
         // Init fields
         $this->id = null;
         $this->name = null;
@@ -197,7 +199,5 @@ class Compound extends SQLDaO
         $this->addMetadata('note', 's', 'note', 'Note');
         $this->addMetadata('lastModBy', 's', 'last_mod_by', 'Last Modification By');
         $this->addMetadata('lastModTime', 's', 'last_mod_time', 'Last Modification Time');
-
-        parent::__construct();
     }
 }

@@ -22,75 +22,47 @@
  +---------------------------------------------------------------------+
  */
 
-namespace Inventory\Category\DAO;
-
-use Inventory\Core\DataBase\SQLDaO;
+namespace Inventory\Core\Container;
 
 /**
- * Category entity DataObject
+ * Container Class for Template Data
  *
- * @category DataBase
+ * @category Container
  * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class Category extends SQLDaO
+class Template
 {
     /**
-     * Category ID
-     *
-     * @var int|null
-     */
-    public ?int $id;
-
-    /**
-     * Category name
+     * Base template
      *
      * @var string|null
      */
-    public ?string $name;
+    public ?string $base;
 
     /**
-     * Last modification by
+     * Template regions
      *
-     * @var string|null
+     * @var array|null
      */
-    public ?string $lastModBy;
+    public ?array $regions;
 
     /**
-     * Last modification time
+     * Template variables
      *
-     * @var string|null
+     * @var array|null
      */
-    public ?string $lastModTime;
+    public ?array $vars;
 
     /**
-     * Table name
-     *
-     * @var string
-     */
-    protected string $tableName = "leltar_category";
-
-    /**
-     * Category constructor.
-     *
-     * @throws \Inventory\Core\Exception\BadArgument
+     * Template Container constructor.
      */
     public function __construct()
     {
-        parent::__construct();
-
-        // Init fields
-        $this->id = null;
-        $this->name = null;
-        $this->lastModBy = null;
-        $this->lastModTime = null;
-
-        // Add metadata
-        $this->addMetadata('id', 'i', 'category_id', 'Category ID', true);
-        $this->addMetadata('name', 's', 'name', 'Category Name', true);
-        $this->addMetadata('lastModBy', 's', 'last_mod_by', 'Last Modification By');
-        $this->addMetadata('lastModTime', 's', 'last_mod_time', 'Last Modification Time');
+        $this->base = null;
+        $this->regions = null;
+        $this->vars = null;
     }
 }

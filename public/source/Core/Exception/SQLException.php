@@ -28,7 +28,7 @@ namespace Inventory\Core\Exception;
  * SQL Exception
  *
  * @category Exception
- * @package  Inventory
+ * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
@@ -42,7 +42,7 @@ class SQLException extends InventoryException
      */
     public function __construct(string $context = null)
     {
-        $this->message = ts("SQL error occurred");
         parent::__construct($context);
+        $this->message = ts("SQL error occurred");
     }
 }

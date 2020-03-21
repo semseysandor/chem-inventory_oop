@@ -24,10 +24,59 @@
 
 namespace Inventory\Page;
 
-class Login
+use Inventory\Core\Controller\Page;
+use Inventory\Utils;
+
+/**
+ * Login Class
+ *
+ * @category Controller
+ * @package  chem-inventory_oop
+ * @author   Sandor Semsey <semseysandor@gmail.com>
+ * @license  MIT https://choosealicense.com/licenses/mit/
+ * php version 7.4
+ */
+class Login extends Page
 {
-    public function build()
+    /**
+     * Login form
+     *
+     * @var \Inventory\Form\Login|null
+     */
+    private \Inventory\Form\Login $form;
+
+    public function __construct()
     {
-        echo "login";
+        parent::__construct();
+        $this->form = new \Inventory\Form\Login();
+    }
+
+    /**
+     * Validate input
+     *
+     * @return void
+     */
+    protected function validate(): void
+    {
+    }
+
+    /**
+     * Process input
+     *
+     * @return void
+     */
+    protected function process(): void
+    {
+    }
+
+    /**
+     * Assemble page
+     *
+     * @return void
+     */
+    protected function assemble(): void
+    {
+        $this->addTemplateRegion('body', Utils::getPathFromClass($this));
+        $this->addTemplateRegion('form', Utils::getPathFromClass($this->form));
     }
 }

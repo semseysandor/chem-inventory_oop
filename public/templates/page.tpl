@@ -26,7 +26,7 @@
 {include file='head.tpl'}
 <body>
 {* Body *}
-{include file=$_body}
+{include file=$_template_body}
 {* Footer *}
 {include file='footer.tpl'}
 </body>

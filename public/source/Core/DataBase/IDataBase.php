@@ -28,7 +28,7 @@ namespace Inventory\Core\DataBase;
  * DataBase Interface.
  *
  * @category Database
- * @package  Inventory
+ * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
@@ -36,7 +36,7 @@ namespace Inventory\Core\DataBase;
 interface IDataBase
 {
     /**
-     * Imports data to the database.
+     * Imports data to the DataBase.
      *
      * @param array $params Data and metadata for importing
      *
@@ -45,7 +45,7 @@ interface IDataBase
     public function import(array $params);
 
     /**
-     * Exports data from the database.
+     * Exports data from the DataBase.
      *
      * @param array $params Data and metadata for exporting
      *
@@ -54,7 +54,7 @@ interface IDataBase
     public function export(array $params);
 
     /**
-     * Executes a command on the database.
+     * Executes a command on the DataBase.
      *
      * @param array $params Command and metadata
      *

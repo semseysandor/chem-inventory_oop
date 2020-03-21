@@ -32,8 +32,8 @@ use Inventory\Core\Settings;
 /**
  * Facade for accessing major subsystems
  *
- * @category Facade
- * @package  Inventory
+ * @category Main
+ * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4

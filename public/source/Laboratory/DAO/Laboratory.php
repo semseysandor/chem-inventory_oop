@@ -30,7 +30,7 @@ use Inventory\Core\DataBase\SQLDaO;
  * Laboratory entity DataObject
  *
  * @category DataBase
- * @package  Inventory
+ * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
@@ -45,21 +45,21 @@ class Laboratory extends SQLDaO
     public ?int $id;
 
     /**
-     * Laboratory Name
+     * Laboratory name
      *
      * @var string|null
      */
     public ?string $name;
 
     /**
-     * Last Modification By
+     * Last modification by
      *
      * @var string|null
      */
     public ?string $lastModBy;
 
     /**
-     * Last Modification Time
+     * Last modification time
      *
      * @var string|null
      */
@@ -79,6 +79,8 @@ class Laboratory extends SQLDaO
      */
     public function __construct()
     {
+        parent::__construct();
+
         // Init fields
         $this->id = null;
         $this->name = null;
@@ -90,7 +92,5 @@ class Laboratory extends SQLDaO
         $this->addMetadata('name', 's', 'name', 'Laboratory Name', true);
         $this->addMetadata('lastModBy', 's', 'last_mod_by', 'Last Modification By');
         $this->addMetadata('lastModTime', 's', 'last_mod_time', 'Last Modification Time');
-
-        parent::__construct();
     }
 }

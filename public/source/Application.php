@@ -24,15 +24,13 @@
 
 namespace Inventory;
 
-use Inventory\Core\Controller\CoreController;
-use Inventory\Core\Renderer;
 use Inventory\Core\Routing\Router;
 
 /**
  * Application
  *
  * @category Main
- * @package  Inventory
+ * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
@@ -40,68 +38,37 @@ use Inventory\Core\Routing\Router;
 class Application
 {
     /**
-     * Router
-     *
-     * @var \Inventory\Core\Routing\Router
+     * Application constructor.
      */
-    private Router $router;
-
-    /**
-     * Controller
-     *
-     * @var \Inventory\Core\Controller\CoreController
-     */
-    private CoreController $controller;
-
-    /**
-     * Renderer
-     *
-     * @var \Inventory\Core\Renderer
-     */
-    private Renderer $renderer;
-
     public function __construct()
     {
         $this->initSession();
     }
 
     /**
-     * Run application
+     * Initialize session
      *
-     * @throws \SmartyException
+     * @return void
      */
-    public function run()
-    {
-        // Routing
-        $this->router = new Router();
-        $route = $this->router->route();
-
-        // Controller
-        $this->controller = new $route();
-        $template = $this->controller->build();
-        if (empty($template)) {
-            exit;
-        }
-
-        // Rendering
-        $this->renderer = new Renderer();
-        $this->renderer->render($template);
-    }
-
-    private function initSession()
+    private function initSession(): void
     {
         // Start session
         session_start();
 
         // Abort script if session not loaded
         if (session_status() != PHP_SESSION_ACTIVE) {
-            self::exit(ts('Session start failed.'));
+            exit(ts('Session start failed.'));
         }
     }
 
-    public static function exit(string $reason)
+    /**
+     * Run application
+     *
+     * @return void
+     */
+    public function run(): void
     {
-        echo $reason;
-        exit;
+        $router = new Router();
+        $router->run();
     }
 }

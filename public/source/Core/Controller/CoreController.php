@@ -24,55 +24,129 @@
 
 namespace Inventory\Core\Controller;
 
+use Inventory\Core\Container\Template;
+use Inventory\Core\Renderer;
+
 /**
  * Base Controller Class
  *
  * @category Controller
- * @package  Inventory
+ * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class CoreController
+abstract class CoreController
 {
+    /**
+     * Container for template data
+     *
+     * @var \Inventory\Core\Container\Template
+     */
+    protected Template $templateContainer;
 
-    protected array $template;
-
-    protected function setBaseTemplate($base_template)
+    /**
+     * Core Controller constructor.
+     */
+    public function __construct()
     {
-        $this->template['templates']['base'] = $base_template;
+        $this->templateContainer = new Template();
     }
 
-    protected function assignTemplateVar($name, $value)
+    /**
+     * Set base template file
+     *
+     * @param string $base_template Base template file
+     *
+     * @return void
+     */
+    protected function setBaseTemplate(string $base_template): void
     {
-        $this->template['vars'][$name] = $value;
+        $this->templateContainer->base = $base_template;
     }
 
-    protected function setTemplateRegion($region, $template_file)
+    /**
+     * Set template variable
+     *
+     * @param string $name Variable name
+     * @param mixed $value Variable value
+     *
+     * @return void
+     */
+    protected function setTemplateVar($name, $value): void
     {
-        $this->template['templates'][$region] = $template_file;
+        if (!empty($name)) {
+            $this->templateContainer->vars[$name] = $value;
+        }
     }
 
-    public function build()
+    /**
+     * Add template region
+     *
+     * @param string $region Region name
+     * @param string $template Template File
+     *
+     * @return void
+     */
+    protected function addTemplateRegion(string $region, string $template): void
     {
-        $this->preProcess();
+        if (!empty($region) && !empty($template)) {
+            $this->templateContainer->regions[$region] = $template;
+        }
+    }
 
+    /**
+     * Runs controller
+     *
+     * @return void
+     */
+    public function run(): void
+    {
+        $this->build();
+        $this->render();
+    }
+
+    /**
+     * Build page
+     *
+     * @return void
+     */
+    protected function build(): void
+    {
+        $this->validate();
         $this->process();
-
         $this->assemble();
-
-        return $this->template;
     }
 
-    protected function preProcess()
-    {
-    }
+    /**
+     * Validate input
+     *
+     * @return void
+     */
+    abstract protected function validate();
 
-    protected function process()
-    {
-    }
+    /**
+     * Process input
+     *
+     * @return void
+     */
+    abstract protected function process();
 
-    protected function assemble()
+    /**
+     * Assemble page
+     *
+     * @return void
+     */
+    abstract protected function assemble();
+
+    /**
+     * Render page
+     *
+     * @return void
+     */
+    protected function render()
     {
+        $renderer = new Renderer($this->templateContainer);
+        $renderer->run();
     }
 }

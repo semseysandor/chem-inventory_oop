@@ -24,11 +24,16 @@
 
 namespace Inventory\Core\Routing;
 
+use Inventory\Core\Exception\ExceptionHandler;
+use Inventory\Core\Exception\InvalidRequest;
+use Inventory\Page\Index;
+use Inventory\Page\Login;
+
 /**
  * Router
  *
  * @category Routing
- * @package  Inventory
+ * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
@@ -36,35 +41,106 @@ namespace Inventory\Core\Routing;
 class Router
 {
     /**
+     * Request
+     *
+     * @var \Inventory\Core\Routing\Request
+     */
+    private Request $request;
+
+    /**
      * Route
      *
-     * @return string
+     * @var array
      */
-    public function route()
+    private array $route;
+
+    /**
+     * Router constructor.
+     */
+    public function __construct()
     {
-        $request = new Request();
-        $request->parse();
+        $this->getRouteFromURL();
+    }
 
-        $route = $request->route;
+    /**
+     * Route
+     *
+     * @return void
+     */
+    private function route(): void
+    {
+        $this->isLoggedIn();
 
-        // Security
-        if (Security::isAuthorized()) {
-            return '\Inventory\Page\Login';
+        // Default route
+        if (empty($this->route[0])) {
+            $controller = new Index();
+            $controller->run();
+            exit;
         }
 
-        if (!is_array($route)) {
-            return '\Inventory\Page\Index';
-        }
-
-        switch (array_shift($route)) {
-            case 'list':
-                array_shift($route);
-                $controller = 'majom';
+        // Route
+        switch (array_shift($this->route)) {
+            case 'log-in':
+                $controller = new \Inventory\Form\Login($this->request->requestData);
+                break;
+            case 'log-out':
+                Security::logOut();
+                header('Location: /');
+                exit;
+            case 'login':
+                $controller = new Login();
                 break;
             default:
-                $controller = '\Inventory\Page\Index';
+                $controller = new Index();
         }
 
-        return $controller;
+        $controller->run();
+        exit;
+    }
+
+    /**
+     * Get route info from URL
+     *
+     * @return void
+     */
+    private function getRouteFromURL(): void
+    {
+        try {
+            $this->request = new Request();
+            $this->request->parse();
+            $this->route = $this->request->route;
+        } catch (InvalidRequest $ex) {
+            ExceptionHandler::handleInvalidRequest($ex);
+        }
+    }
+
+    /**
+     * Check if user is logged in
+     *
+     * @return void
+     */
+    private function isLoggedIn(): void
+    {
+        // Security
+        if (!Security::isAuthorized()) {
+            if ($this->route[0] == 'log-in') {
+                // Not logged in, but logging in right now
+                $controller = new \Inventory\Form\Login($this->request->requestData);
+                $controller->run();
+            } else {
+                // Not logging in, show login page
+                $controller = new Login();
+                $controller->run();
+            }
+            exit;
+        }
+    }
+
+    /**
+     * Runs router
+     */
+    public function run()
+    {
+        $this->route();
     }
 }

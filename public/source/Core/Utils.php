@@ -28,12 +28,31 @@ namespace Inventory;
  * Utilities
  *
  * @category Utility
- * @package  Inventory
+ * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
 class Utils
 {
+    /**
+     * Gets Path from Class name (Namespace -> Path)
+     *
+     * @param $class
+     *
+     * @return string
+     */
+    public static function getPathFromClass($class)
+    {
+        // Get FQN Class Name
+        $path = get_class($class);
 
+        // Change '\' to '/'
+        $path = str_replace('\\', '/', $path);
+
+        // Remove leading namespace (Inventory)
+        $path = substr($path, 10);
+
+        return $path;
+    }
 }

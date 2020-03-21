@@ -24,11 +24,13 @@
 
 namespace Inventory\Core\Routing;
 
+use Inventory\Core\Exception\InvalidRequest;
+
 /**
  * Request Class
  *
  * @category Routing
- * @package  Inventory
+ * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
@@ -36,57 +38,95 @@ namespace Inventory\Core\Routing;
 class Request
 {
     /**
-     * Query string from URL
+     * Request data
+     *
+     * @var array|null
+     */
+    public ?array $requestData;
+
+    /**
+     * Request method
      *
      * @var string|null
      */
-    public ?string $query;
-
-    /**
-     * GET request parameters
-     *
-     * @var array|null
-     */
-    public ?array $get;
-
-    /**
-     * POST request parameters
-     *
-     * @var array|null
-     */
-    public ?array $post;
+    public ?string $requestMethod;
 
     /**
      * Route from URI
      *
      * @var array|null
      */
-    public ?array $route = null;
+    public ?array $route;
 
     /**
-     * Parse route from URL
+     * Request constructor.
      */
-    public function parse()
+    public function __construct()
     {
-        if (array_key_exists('REQUEST_METHOD', $_SERVER)) {
-            switch ($_SERVER['REQUEST_METHOD']) {
-                case 'GET':
-                    $this->get = $_REQUEST;
-                    break;
-                case 'POST':
-                    $this->post = $_REQUEST;
-                    break;
-            }
+        $this->requestData = null;
+        $this->requestMethod = null;
+        $this->route = null;
+    }
+
+    /**
+     * Parse GET & POST data
+     *
+     * @return void
+     *
+     * @throws \Inventory\Core\Exception\InvalidRequest
+     */
+    private function parseData(): void
+    {
+        if (!array_key_exists('REQUEST_METHOD', $_SERVER)) {
+            throw new InvalidRequest(ts('Missing Request Method'));
+        }
+        switch ($_SERVER['REQUEST_METHOD']) {
+            case 'GET':
+                $this->requestMethod = 'GET';
+                break;
+            case 'POST':
+                $this->requestMethod = 'POST';
+                break;
+            default:
+                throw new InvalidRequest(ts('Not supported request method "%s"', $_SERVER['REQUEST_METHOD']));
+        }
+        $this->requestData = $_REQUEST;
+    }
+
+    /**
+     * Parse route
+     *
+     * @return void
+     *
+     * @throws \Inventory\Core\Exception\InvalidRequest
+     */
+    private function parseRoute(): void
+    {
+        if (!array_key_exists('REQUEST_URI', $_SERVER)) {
+            throw new InvalidRequest(ts('Missing Request URI'));
         }
 
-        if (array_key_exists('QUERY_STRING', $_SERVER)) {
-            $this->query = $_SERVER['QUERY_STRING'];
-        }
-        if (array_key_exists('SCRIPT_URL', $_SERVER)) {
-            $this->route = explode('/', $_SERVER['SCRIPT_URL']);
-        }
+        $this->route = explode('/', $_SERVER['REQUEST_URI']);
+
         if ($this->route) {
             array_shift($this->route);
+        } else {
+            throw new InvalidRequest(ts('Invalid Request URI'));
         }
+    }
+
+    /**
+     * Parse URL
+     *
+     * @return \Inventory\Core\Routing\Request
+     *
+     * @throws \Inventory\Core\Exception\InvalidRequest
+     */
+    public function parse(): Request
+    {
+        $this->parseData();
+        $this->parseRoute();
+
+        return $this;
     }
 }

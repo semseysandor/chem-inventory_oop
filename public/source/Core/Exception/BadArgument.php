@@ -28,7 +28,7 @@ namespace Inventory\Core\Exception;
  * Bad Argument Exception
  *
  * @category Exception
- * @package  Inventory
+ * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
@@ -36,13 +36,13 @@ namespace Inventory\Core\Exception;
 class BadArgument extends InventoryException
 {
     /**
-     * BadArgument constructor.
+     * Bad Argument constructor.
      *
      * @param string|null $context Context in which exception appeared
      */
     public function __construct(string $context = null)
     {
-        $this->message = ts("Bad argument received");
         parent::__construct($context);
+        $this->message = ts("Bad argument received");
     }
 }

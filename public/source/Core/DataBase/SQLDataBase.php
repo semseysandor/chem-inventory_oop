@@ -35,7 +35,7 @@ use mysqli_stmt;
  * Basic SQLDataBase operations.
  *
  * @category DataBase
- * @package  Inventory
+ * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
@@ -104,7 +104,7 @@ class SQLDataBase implements IDataBase
     }
 
     /**
-     * Make a connection to the DB.
+     * Make a connection to the DataBase.
      *
      * @return void
      *

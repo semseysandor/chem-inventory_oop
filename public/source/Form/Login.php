@@ -22,75 +22,62 @@
  +---------------------------------------------------------------------+
  */
 
-namespace Inventory\Category\DAO;
+namespace Inventory\Form;
 
-use Inventory\Core\DataBase\SQLDaO;
+use Inventory\Core\Controller\Form;
 
 /**
- * Category entity DataObject
+ * Login Form
  *
- * @category DataBase
+ * @category Controller
  * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class Category extends SQLDaO
+class Login extends Form
 {
     /**
-     * Category ID
+     * Form constructor.
      *
-     * @var int|null
+     * @param array|null $form_data
      */
-    public ?int $id;
-
-    /**
-     * Category name
-     *
-     * @var string|null
-     */
-    public ?string $name;
-
-    /**
-     * Last modification by
-     *
-     * @var string|null
-     */
-    public ?string $lastModBy;
-
-    /**
-     * Last modification time
-     *
-     * @var string|null
-     */
-    public ?string $lastModTime;
-
-    /**
-     * Table name
-     *
-     * @var string
-     */
-    protected string $tableName = "leltar_category";
-
-    /**
-     * Category constructor.
-     *
-     * @throws \Inventory\Core\Exception\BadArgument
-     */
-    public function __construct()
+    public function __construct(array $form_data = null)
     {
-        parent::__construct();
+        parent::__construct($form_data);
+    }
 
-        // Init fields
-        $this->id = null;
-        $this->name = null;
-        $this->lastModBy = null;
-        $this->lastModTime = null;
+    /**
+     * Validate input
+     *
+     * @return void
+     */
+    protected function validate(): void
+    {
+    }
 
-        // Add metadata
-        $this->addMetadata('id', 'i', 'category_id', 'Category ID', true);
-        $this->addMetadata('name', 's', 'name', 'Category Name', true);
-        $this->addMetadata('lastModBy', 's', 'last_mod_by', 'Last Modification By');
-        $this->addMetadata('lastModTime', 's', 'last_mod_time', 'Last Modification Time');
+    /**
+     * Process input
+     *
+     * @return void
+     */
+    protected function process(): void
+    {
+        if (empty($this->formData)) {
+            return;
+        }
+
+        $_SESSION['USER_NAME'] = $this->formData['user'];
+        header('Location: /');
+        exit;
+    }
+
+    /**
+     * Assemble page
+     *
+     * @return void
+     */
+    protected function assemble(): void
+    {
     }
 }

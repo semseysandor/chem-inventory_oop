@@ -30,7 +30,7 @@ use Inventory\Core\DataBase\SQLDaO;
  * Manufacturer entity DataObject
  *
  * @category DataBase
- * @package  Inventory
+ * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
@@ -45,28 +45,28 @@ class Manufacturer extends SQLDaO
     public ?int $id;
 
     /**
-     * Manufacturer Name
+     * Manufacturer name
      *
      * @var string|null
      */
     public ?string $name;
 
     /**
-     * Is Frequent
+     * Is frequent
      *
      * @var int|null
      */
     public ?int $isFrequent;
 
     /**
-     * Last Modification By
+     * Last modification by
      *
      * @var string|null
      */
     public ?string $lastModBy;
 
     /**
-     * Last Modification Time
+     * Last modification time
      *
      * @var string|null
      */
@@ -86,6 +86,8 @@ class Manufacturer extends SQLDaO
      */
     public function __construct()
     {
+        parent::__construct();
+
         // Init fields
         $this->id = null;
         $this->name = null;
@@ -99,7 +101,5 @@ class Manufacturer extends SQLDaO
         $this->addMetadata('isFrequent', 'i', 'is_frequent', 'Is Frequent', true);
         $this->addMetadata('lastModBy', 's', 'last_mod_by', 'Last Modification By');
         $this->addMetadata('lastModTime', 's', 'last_mod_time', 'Last Modification Time');
-
-        parent::__construct();
     }
 }

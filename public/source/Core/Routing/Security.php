@@ -28,7 +28,7 @@ namespace Inventory\Core\Routing;
  * Security Class
  *
  * @category Routing
- * @package  Inventory
+ * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
@@ -43,10 +43,32 @@ class Security
     public static function isAuthorized()
     {
         // If no USER_ID -> user not logged in
-        if (!isset($_SESSION['USER_ID']) or (int)($_SESSION['USER_ID']) < 1) {
+        if (!isset($_SESSION['USER_NAME']) || ($_SESSION['USER_NAME']) == '') {
             return false;
         }
 
         return true;
+    }
+
+    /**
+     * Authenticate user
+     */
+    public static function authenticate()
+    {
+        // TODO: implement method
+    }
+
+    /**
+     * Log out user
+     *
+     * @return void
+     */
+    public static function logOut(): void
+    {
+        // Unset session variables
+        session_unset();
+
+        // Destroy session
+        session_destroy();
     }
 }

@@ -40,16 +40,17 @@ error_reporting(E_ALL);
  * Translate function
  *
  * @param string $string String to translate
- *
  * @param array $params
  *
  * @return string
  */
 function ts(string $string, ...$params)
 {
+    // If simple string
     if (empty($params)) {
         return $string;
     }
 
+    // There are other params -> formatted
     return sprintf($string, ...$params);
 }

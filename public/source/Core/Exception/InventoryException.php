@@ -30,7 +30,7 @@ use Exception;
  * Base class for Exceptions
  *
  * @category Exception
- * @package  Inventory
+ * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
@@ -45,14 +45,14 @@ class InventoryException extends Exception
     protected string $context;
 
     /**
-     * InventoryException constructor.
+     * Inventory Exception constructor.
      *
      * @param string|null $context Context of the exception
      */
     public function __construct(string $context = null)
     {
-        $this->context = $context;
         parent::__construct();
+        $this->context = $context;
     }
 
     /**

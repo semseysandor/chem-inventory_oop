@@ -29,8 +29,8 @@ use Inventory\Core\Exception\FileMissing;
 /**
  * Settings Manager
  *
- * @category Config
- * @package  Inventory
+ * @category Settings
+ * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
@@ -38,7 +38,7 @@ use Inventory\Core\Exception\FileMissing;
 class Settings
 {
     /**
-     * Array to hold configs
+     * Array to hold settings
      *
      * @var array
      */
@@ -120,15 +120,15 @@ class Settings
     /**
      * Adds a config
      *
+     * @param string $domain Config domain
      * @param array $cfgToAdd Config to add
-     *                        format: ['name' => 'value']
      *
      * @return void
      */
-    public function addSetting(array $cfgToAdd): void
+    public function addSetting(string $domain, array $cfgToAdd): void
     {
         foreach ($cfgToAdd as $key => $value) {
-            $this->settings[$key] = $value;
+            $this->settings[$domain][$key] = $value;
         }
     }
 }

@@ -24,13 +24,17 @@
 
 namespace Inventory\Core;
 
+use Inventory\Core\Container\Template;
+use Inventory\Core\Exception\BadArgument;
+use Inventory\Core\Exception\ExceptionHandler;
 use Smarty;
+use SmartyException;
 
 /**
  * Renderer
  *
  * @category Render
- * @package  Inventory
+ * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
@@ -53,58 +57,106 @@ class Renderer
     private const TEMPLATE_CACHE_DIR = ROOT.'/cache/templates_cache/';
 
     /**
-     * Renders a template in HTML
+     * Template data container
      *
-     * @param array $template Template
-     *   Format:
-     *   [ file => template_file,   # Template file
-     *     vars => [                # Template variables
-     *              var1 => value1,
-     *              var2 => value2
-     *             ]
-     *   ]
-     *
-     * @throws \SmartyException
+     * @var \Inventory\Core\Container\Template
      */
-    public function render(array $template)
+    private Template $templateContainer;
+
+    /**
+     * Template engine
+     *
+     * @var \Smarty
+     */
+    private Smarty $engine;
+
+    /**
+     * Renderer constructor.
+     *
+     * @param \Inventory\Core\Container\Template $container
+     *
+     */
+    public function __construct(Template $container)
     {
-        $smarty = new Smarty();
-
-        $smarty->setTemplateDir(self::TEMPLATE_DIR);
-        $smarty->setCompileDir(self::TEMPLATE_COMPILE_DIR);
-        $smarty->setCacheDir(self::TEMPLATE_CACHE_DIR);
-        $smarty->clearAllCache();
-
-        foreach ($template['vars'] as $name => $value) {
-            $smarty->assign($name, $value);
+        try {
+            if (empty($container)) {
+                throw new BadArgument(ts('Template data missing for rendering'));
+            }
+            $this->templateContainer = $container;
+            $this->initTemplateEngine();
+        } catch (BadArgument $ex) {
+            ExceptionHandler::handleRendererErrors($ex);
         }
-
-        foreach ($template['templates'] as $name => $value) {
-            $smarty->assign('_'.$name, $value.'.tpl');
-        }
-
-        $base_template = $template['templates']['base'].'.tpl';
-        $smarty->display($base_template);
     }
 
     /**
-     * Renders a template for the console
+     * Initialize template engine
      *
-     * @param array $template
+     * @return void
      */
-    public function renderConsole(array $template)
+    private function initTemplateEngine(): void
     {
-        foreach ($template['vars'] as $name => $value) {
-            echo "Name : ".var_export($name, true)."\n";
-            if (is_array($value)) {
-                foreach ($value as $key => $item) {
-                    echo "Array key: ".var_export($key, true)."\n";
-                    echo "Array val: ".var_export($item, true)."\n";
-                }
-            } else {
-                echo "Value: ".var_export($value, true)."\n";
-            }
-            echo "\n";
+        $this->engine = new Smarty();
+
+        $this->engine->setTemplateDir(self::TEMPLATE_DIR);
+        $this->engine->setCompileDir(self::TEMPLATE_COMPILE_DIR);
+        $this->engine->setCacheDir(self::TEMPLATE_CACHE_DIR);
+        $this->engine->clearAllCache();
+    }
+
+    /**
+     * Assign variables to template
+     *
+     * @return void
+     */
+    private function assignTemplateVars(): void
+    {
+        if (empty($this->templateContainer->vars)) {
+            return;
+        }
+        foreach ($this->templateContainer->vars as $name => $value) {
+            $this->engine->assign($name, $value);
+        }
+    }
+
+    /**
+     * Set template files
+     *
+     * @return void
+     */
+    private function setTemplateFiles(): void
+    {
+        foreach ($this->templateContainer->regions as $name => $value) {
+            $this->engine->assign('_template_'.$name, $value.'.tpl');
+        }
+    }
+
+    /**
+     * Render page
+     *
+     * @return void
+     *
+     * @throws \SmartyException
+     */
+    private function render(): void
+    {
+        $base_template = $this->templateContainer->base.'.tpl';
+        $this->engine->display($base_template);
+    }
+
+    /**
+     * Renders a template in HTML
+     *
+     * @return void
+     */
+    public function run(): void
+    {
+        try {
+            $this->assignTemplateVars();
+            $this->setTemplateFiles();
+            $this->render();
+        } catch (SmartyException $ex) {
+            ExceptionHandler::handleSmarty($ex);
         }
     }
 }

@@ -27,16 +27,39 @@ namespace Inventory\Page;
 use Error;
 use Exception;
 use Inventory\Compound\BAO\Compound;
-use Inventory\Core\Controller\CoreController;
+use Inventory\Core\Controller\Page;
 use Inventory\Core\Exception\InventoryException;
+use Inventory\Utils;
 
-class Index extends CoreController
+/**
+ * Index Class
+ *
+ * @category Controller
+ * @package  chem-inventory_oop
+ * @author   Sandor Semsey <semseysandor@gmail.com>
+ * @license  MIT https://choosealicense.com/licenses/mit/
+ * php version 7.4
+ */
+class Index extends Page
 {
-    protected function process()
+    /**
+     * Index constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    /**
+     * Process input
+     *
+     * @return void
+     */
+    protected function process(): void
     {
         try {
             $bao = new Compound();
-            $this->assignTemplateVar('compounds', $bao->getAll(['id', 'name']));
+            $this->setTemplateVar('compounds', $bao->getAll(['id', 'name']));
         } catch (InventoryException $ex) {
             echo $ex->getMessage().' '.$ex->getContext();
             exit;
@@ -45,20 +68,26 @@ class Index extends CoreController
         } catch (Error $ex) {
             echo $ex->getMessage();
         }
-        parent::process();
     }
 
-    protected function assemble()
+    /**
+     * Validate input
+     *
+     * @return void
+     */
+    protected function validate(): void
     {
-        $class_name = str_replace('\\', '/', __CLASS__);
-        $class_name = substr($class_name, 10);
+    }
 
-        $this->setBaseTemplate('page');
-        $this->setTemplateRegion('body', $class_name);
+    /**
+     * Assemble page
+     *
+     * @return void
+     */
+    protected function assemble(): void
+    {
+        $this->addTemplateRegion('body', Utils::getPathFromClass($this));
 
-        $this->assignTemplateVar('majom', 'beco');
-        $this->assignTemplateVar('kutya', ['maki', 'lali', 'papi']);
-
-        parent::assemble();
+        $this->setTemplateVar('user', $_SESSION['USER_NAME']);
     }
 }
