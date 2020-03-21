@@ -69,8 +69,6 @@ class Router
      */
     private function route(): void
     {
-        $this->isLoggedIn();
-
         // Default route
         if (empty($this->route[0])) {
             $controller = new Index();
@@ -78,7 +76,7 @@ class Router
             exit;
         }
 
-        // Route
+        // Routing
         switch (array_shift($this->route)) {
             case 'log-in':
                 $controller = new \Inventory\Form\Login($this->request->requestData);
@@ -141,6 +139,7 @@ class Router
      */
     public function run()
     {
+        $this->isLoggedIn();
         $this->route();
     }
 }
