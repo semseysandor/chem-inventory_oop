@@ -22,7 +22,7 @@
  +---------------------------------------------------------------------+
  */
 
-namespace Inventory\Entity\Category\DAO;
+namespace Inventory\Entity\Laboratory\DAO;
 
 use Inventory\Core\DataBase\SQLDaO;
 

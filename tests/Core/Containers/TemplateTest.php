@@ -87,7 +87,6 @@ class TemplateTest extends BaseTestCase
           ['base', self::TEST_STRING],
           ['regions', self::TEST_ARRAY],
           ['vars', self::TEST_ARRAY],
-
         ];
     }
 }

@@ -51,10 +51,10 @@ class Compound
         $dao = new \Inventory\Entity\Compound\DAO\Compound();
 
         $result = $dao->retrieve(
-          [
+            [
             'fields' => $fields,
             'order_by' => ['name'],
-          ]
+            ]
         );
 
         return $dao->fetchResults($result);

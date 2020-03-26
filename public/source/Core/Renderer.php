@@ -59,7 +59,7 @@ class Renderer
     /**
      * Template data container
      *
-     * @var \Inventory\Core\Container\Template
+     * @var \Inventory\Core\Containers\Template
      */
     private Template $templateContainer;
 
@@ -73,7 +73,7 @@ class Renderer
     /**
      * Renderer constructor.
      *
-     * @param \Inventory\Core\Container\Template $container
+     * @param \Inventory\Core\Containers\Template $container
      *
      */
     public function __construct(Template $container)

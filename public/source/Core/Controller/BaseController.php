@@ -41,7 +41,7 @@ abstract class BaseController
     /**
      * Container for template data
      *
-     * @var \Inventory\Core\Container\Template
+     * @var \Inventory\Core\Containers\Template
      */
     protected Template $templateContainer;
 
