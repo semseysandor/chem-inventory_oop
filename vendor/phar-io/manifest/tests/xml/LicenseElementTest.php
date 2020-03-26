@@ -1,0 +1,47 @@
+<?php
+/**
+ +---------------------------------------------------------------------+
+ | This file is part of chem-inventory.                                |
+ |                                                                     |
+ | Copyright (c) 2020 Sandor Semsey                                    |
+ | All rights reserved.                                                |
+ |                                                                     |
+ | This work is published under the MIT License.                       |
+ | https://choosealicense.com/licenses/mit/                            |
+ |                                                                     |
+ | It's a free software;)                                              |
+ |                                                                     |
+ | THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,     |
+ | EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES     |
+ | OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND            |
+ | NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS |
+ | BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN  |
+ | ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN   |
+ | CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE    |
+ | SOFTWARE.                                                           |
+ +---------------------------------------------------------------------+
+ */
+
+namespace PharIo\Manifest;
+
+class LicenseElementTest extends \PHPUnit\Framework\TestCase {
+    /**
+     * @var LicenseElement
+     */
+    private $license;
+
+    protected function setUp() {
+        $dom = new \DOMDocument();
+        $dom->loadXML('<?xml version="1.0" ?><license xmlns="https://phar.io/xml/manifest/1.0" type="BSD-3" url="https://some.tld/LICENSE" />');
+        $this->license = new LicenseElement($dom->documentElement);
+    }
+
+    public function testTypeCanBeRetrieved() {
+        $this->assertEquals('BSD-3', $this->license->getType());
+    }
+
+    public function testUrlCanBeRetrieved() {
+        $this->assertEquals('https://some.tld/LICENSE', $this->license->getUrl());
+    }
+
+}

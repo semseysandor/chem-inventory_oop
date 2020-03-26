@@ -4,3 +4,4 @@
 /public/cache/templates_cache/*
 !/public/cache/templates_compile/.gitkeep
 !/public/cache/templates_cache/.gitkeep
+/.phpunit.result.cache

@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<!--
+  ~ +---------------------------------------------------------------------+
+  ~ | This file is part of chem-inventory.                                |
+  ~ |                                                                     |
+  ~ | Copyright (c) 2020 Sandor Semsey                                    |
+  ~ | All rights reserved.                                                |
+  ~ |                                                                     |
+  ~ | This work is published under the MIT License.                       |
+  ~ | https://choosealicense.com/licenses/mit/                            |
+  ~ |                                                                     |
+  ~ | It's a free software;)                                              |
+  ~ |                                                                     |
+  ~ | THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,     |
+  ~ | EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES     |
+  ~ | OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND            |
+  ~ | NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS |
+  ~ | BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN  |
+  ~ | ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN   |
+  ~ | CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE    |
+  ~ | SOFTWARE.                                                           |
+  ~ +---------------------------------------------------------------------+
+  -->
+
+<psalm
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+    totallyTyped="true"
+>
+    <projectFiles>
+        <directory name="tests/static-analysis" />
+        <ignoreFiles>
+            <directory name="vendor" />
+        </ignoreFiles>
+    </projectFiles>
+
+    <issueHandlers>
+        <LessSpecificReturnType errorLevel="error" />
+
+        <DeprecatedMethod errorLevel="error" />
+        <DeprecatedProperty errorLevel="error" />
+        <DeprecatedClass errorLevel="error" />
+        <DeprecatedConstant errorLevel="error" />
+        <DeprecatedInterface errorLevel="error" />
+        <DeprecatedTrait errorLevel="error" />
+
+        <InternalMethod errorLevel="error" />
+        <InternalProperty errorLevel="error" />
+        <InternalClass errorLevel="error" />
+
+        <MissingClosureReturnType errorLevel="error" />
+        <MissingReturnType errorLevel="error" />
+        <MissingPropertyType errorLevel="error" />
+        <InvalidDocblock errorLevel="error" />
+        <MisplacedRequiredParam errorLevel="error" />
+
+        <PropertyNotSetInConstructor errorLevel="info" />
+        <MissingConstructor errorLevel="error" />
+        <MissingClosureParamType errorLevel="error" />
+        <MissingParamType errorLevel="error" />
+
+        <RedundantCondition errorLevel="error" />
+
+        <DocblockTypeContradiction errorLevel="error" />
+        <RedundantConditionGivenDocblockType errorLevel="error" />
+
+        <UnresolvableInclude errorLevel="error" />
+
+        <RawObjectIteration errorLevel="error" />
+
+        <InvalidStringClass errorLevel="error" />
+    </issueHandlers>
+</psalm>
