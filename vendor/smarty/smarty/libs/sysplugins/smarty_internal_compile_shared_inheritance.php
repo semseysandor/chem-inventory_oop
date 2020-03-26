@@ -1,0 +1,72 @@
+<?php
+/**
+ +---------------------------------------------------------------------+
+ | This file is part of chem-inventory.                                |
+ |                                                                     |
+ | Copyright (c) 2020 Sandor Semsey                                    |
+ | All rights reserved.                                                |
+ |                                                                     |
+ | This work is published under the MIT License.                       |
+ | https://choosealicense.com/licenses/mit/                            |
+ |                                                                     |
+ | It's a free software;)                                              |
+ |                                                                     |
+ | THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,     |
+ | EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES     |
+ | OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND            |
+ | NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS |
+ | BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN  |
+ | ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN   |
+ | CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE    |
+ | SOFTWARE.                                                           |
+ +---------------------------------------------------------------------+
+ */
+
+/**
+ * Smarty Internal Plugin Compile Shared Inheritance
+ * Shared methods for {extends} and {block} tags
+ *
+ * @package    Smarty
+ * @subpackage Compiler
+ * @author     Uwe Tews
+ */
+
+/**
+ * Smarty Internal Plugin Compile Shared Inheritance Class
+ *
+ * @package    Smarty
+ * @subpackage Compiler
+ */
+class Smarty_Internal_Compile_Shared_Inheritance extends Smarty_Internal_CompileBase
+{
+    /**
+     * Compile inheritance initialization code as prefix
+     *
+     * @param \Smarty_Internal_TemplateCompilerBase $compiler
+     * @param bool|false                            $initChildSequence if true force child template
+     */
+    public static function postCompile(Smarty_Internal_TemplateCompilerBase $compiler, $initChildSequence = false)
+    {
+        $compiler->prefixCompiledCode .= "<?php \$_smarty_tpl->_loadInheritance();\n\$_smarty_tpl->inheritance->init(\$_smarty_tpl, " .
+                                         var_export($initChildSequence, true) . ");\n?>\n";
+    }
+
+    /**
+     * Register post compile callback to compile inheritance initialization code
+     *
+     * @param \Smarty_Internal_TemplateCompilerBase $compiler
+     * @param bool|false                            $initChildSequence if true force child template
+     */
+    public function registerInit(Smarty_Internal_TemplateCompilerBase $compiler, $initChildSequence = false)
+    {
+        if ($initChildSequence || !isset($compiler->_cache[ 'inheritanceInit' ])) {
+            $compiler->registerPostCompileCallback(
+                array('Smarty_Internal_Compile_Shared_Inheritance', 'postCompile'),
+                array($initChildSequence),
+                'inheritanceInit',
+                $initChildSequence
+            );
+            $compiler->_cache[ 'inheritanceInit' ] = true;
+        }
+    }
+}

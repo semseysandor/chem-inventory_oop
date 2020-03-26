@@ -22,7 +22,7 @@
  +---------------------------------------------------------------------+
  */
 
-namespace Inventory\Core\Container;
+namespace Inventory\Core\Containers;
 
 /**
  * Container Class for Template Data

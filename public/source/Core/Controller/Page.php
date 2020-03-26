@@ -33,7 +33,7 @@ namespace Inventory\Core\Controller;
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-abstract class Page extends CoreController
+abstract class Page extends BaseController
 {
     /**
      * Page constructor.

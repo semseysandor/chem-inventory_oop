@@ -48,7 +48,7 @@ class Compound
      */
     public function getAll(array $fields = null)
     {
-        $dao = new \Inventory\Compound\DAO\Compound();
+        $dao = new \Inventory\Entity\Compound\DAO\Compound();
 
         $result = $dao->retrieve(
           [

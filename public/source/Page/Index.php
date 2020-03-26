@@ -26,10 +26,10 @@ namespace Inventory\Page;
 
 use Error;
 use Exception;
-use Inventory\Compound\BAO\Compound;
 use Inventory\Core\Controller\Page;
-use Inventory\Core\Exception\InventoryException;
-use Inventory\Utils;
+use Inventory\Core\Exception\BaseException;
+use Inventory\Core\Utils;
+use Inventory\Entity\Compound\BAO\Compound;
 
 /**
  * Index Class
@@ -60,7 +60,7 @@ class Index extends Page
         try {
             $bao = new Compound();
             $this->setTemplateVar('compounds', $bao->getAll(['id', 'name']));
-        } catch (InventoryException $ex) {
+        } catch (BaseException $ex) {
             echo $ex->getMessage().' '.$ex->getContext();
             exit;
         } catch (Exception $ex) {

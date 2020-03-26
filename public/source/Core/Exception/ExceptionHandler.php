@@ -68,11 +68,11 @@ class ExceptionHandler
     /**
      * Handles Renderer Errors
      *
-     * @param \Inventory\Core\Exception\InventoryException $ex
+     * @param \Inventory\Core\Exception\BaseException $ex
      *
      * @return void
      */
-    public static function handleRendererErrors(InventoryException $ex): void
+    public static function handleRendererErrors(BaseException $ex): void
     {
         echo "renderer problem";
         $ex->print();

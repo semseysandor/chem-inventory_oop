@@ -22,7 +22,7 @@
  +---------------------------------------------------------------------+
  */
 
-namespace Inventory;
+namespace Inventory\Core;
 
 /**
  * Utilities

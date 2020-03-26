@@ -24,7 +24,7 @@
 
 namespace Inventory\Core;
 
-use Inventory\Core\Container\Template;
+use Inventory\Core\Containers\Template;
 use Inventory\Core\Exception\BadArgument;
 use Inventory\Core\Exception\ExceptionHandler;
 use Smarty;

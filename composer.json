@@ -1,0 +1,35 @@
+{
+  "name": "es-progress/inventory",
+  "type": "application",
+  "description": "Chemical Inventory",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "keywords": [
+    "chemical",
+    "inventory",
+    "chemistry",
+    "lab",
+    "laboratory"
+  ],
+  "readme": "README.md",
+  "authors": [
+    {
+      "name": "Sandor Semsey",
+      "email": "sandorsemsey@gmail.com",
+      "role": "Developer"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Inventory\\": "public/source/",
+      "Inventory\\Testing\\": "tests/"
+    }
+  },
+  "require": {
+    "ext-mysqli": "*",
+    "smarty/smarty": "v3.1.34"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "8.5.2"
+  }
+}

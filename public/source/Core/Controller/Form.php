@@ -33,7 +33,7 @@ namespace Inventory\Core\Controller;
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-abstract class Form extends CoreController
+abstract class Form extends BaseController
 {
     /**
      * Form data received after submit

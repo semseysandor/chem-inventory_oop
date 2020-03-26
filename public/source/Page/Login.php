@@ -25,7 +25,7 @@
 namespace Inventory\Page;
 
 use Inventory\Core\Controller\Page;
-use Inventory\Utils;
+use Inventory\Core\Utils;
 
 /**
  * Login Class

@@ -33,7 +33,7 @@ namespace Inventory\Core\Exception;
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class BadArgument extends InventoryException
+class BadArgument extends BaseException
 {
     /**
      * Bad Argument constructor.

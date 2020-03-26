@@ -30,7 +30,7 @@ define('ROOT', __DIR__);
 /**
  * Autoloader
  */
-include ROOT.'/vendor/autoload.php';
+include ROOT.'/../vendor/autoload.php';
 
 // Set error reporting level
 error_reporting(E_ALL);
