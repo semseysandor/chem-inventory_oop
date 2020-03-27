@@ -28,7 +28,7 @@ use Inventory\Core\Containers\Template;
 use Inventory\Testing\Cases\BaseTestCase;
 
 /**
- * Template Test Class
+ * Template Container Test Class
  *
  * @covers \Inventory\Core\Containers\Template
  *

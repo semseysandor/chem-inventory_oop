@@ -1,30 +1,34 @@
 <?php
 /**
- +---------------------------------------------------------------------+
- | This file is part of chem-inventory.                                |
- |                                                                     |
- | Copyright (c) 2020 Sandor Semsey                                    |
- | All rights reserved.                                                |
- |                                                                     |
- | This work is published under the MIT License.                       |
- | https://choosealicense.com/licenses/mit/                            |
- |                                                                     |
- | It's a free software;)                                              |
- |                                                                     |
- | THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,     |
- | EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES     |
- | OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND            |
- | NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS |
- | BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN  |
- | ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN   |
- | CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE    |
- | SOFTWARE.                                                           |
- +---------------------------------------------------------------------+
+ * Project:     Smarty: the PHP compiling template engine
+ * File:        SmartyBC.class.php
+ * SVN:         $Id: $
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * For questions, help, comments, discussion, etc., please join the
+ * Smarty mailing list. Send a blank e-mail to
+ * smarty-discussion-subscribe@googlegroups.com
+ *
+ * @link      http://www.smarty.net/
+ * @copyright 2008 New Digital Group, Inc.
+ * @author    Monte Ohrt <monte at ohrt dot com>
+ * @author    Uwe Tews
+ * @author    Rodney Rehm
+ * @package   Smarty
  */
 /**
  * @ignore
  */
-require_once dirname(__FILE__).'/Smarty.class.php';
+require_once dirname(__FILE__) . '/Smarty.class.php';
 
 /**
  * Smarty Backward Compatibility Wrapper Class

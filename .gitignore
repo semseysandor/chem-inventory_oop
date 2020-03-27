@@ -1,7 +1,15 @@
-/.idea/
-/.php_cs.cache
+## Compiled and cached templates files
+# Exclude files
 /public/cache/templates_compile/*
 /public/cache/templates_cache/*
+# Keep the directories though
 !/public/cache/templates_compile/.gitkeep
 !/public/cache/templates_cache/.gitkeep
-/.phpunit.result.cache
+
+## Vendor files (3rd party code)
+# Exclude Vendor dir
+/vendor/
+# Keep production dependencies however
+!/vendor/composer/
+!/vendor/smarty/
+!/vendor/autoload.php

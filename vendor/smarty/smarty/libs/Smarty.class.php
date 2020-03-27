@@ -1,25 +1,33 @@
 <?php
 /**
- +---------------------------------------------------------------------+
- | This file is part of chem-inventory.                                |
- |                                                                     |
- | Copyright (c) 2020 Sandor Semsey                                    |
- | All rights reserved.                                                |
- |                                                                     |
- | This work is published under the MIT License.                       |
- | https://choosealicense.com/licenses/mit/                            |
- |                                                                     |
- | It's a free software;)                                              |
- |                                                                     |
- | THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,     |
- | EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES     |
- | OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND            |
- | NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS |
- | BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN  |
- | ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN   |
- | CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE    |
- | SOFTWARE.                                                           |
- +---------------------------------------------------------------------+
+ * Project:     Smarty: the PHP compiling template engine
+ * File:        Smarty.class.php
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * For questions, help, comments, discussion, etc., please join the
+ * Smarty mailing list. Send a blank e-mail to
+ * smarty-discussion-subscribe@googlegroups.com
+ *
+ * @link      http://www.smarty.net/
+ * @copyright 2018 New Digital Group, Inc.
+ * @copyright 2018 Uwe Tews
+ * @author    Monte Ohrt <monte at ohrt dot com>
+ * @author    Uwe Tews   <uwe dot tews at gmail dot com>
+ * @author    Rodney Rehm
+ * @package   Smarty
+ * @version   3.1.34-dev
  */
 /**
  * set SMARTY_DIR to absolute path to Smarty library files.
@@ -70,20 +78,20 @@ if (!defined('SMARTY_RESOURCE_DATE_FORMAT')) {
  * Load Smarty_Autoloader
  */
 if (!class_exists('Smarty_Autoloader')) {
-    include dirname(__FILE__).'/bootstrap.php';
+    include dirname(__FILE__) . '/bootstrap.php';
 }
 /**
  * Load always needed external class files
  */
-require_once SMARTY_SYSPLUGINS_DIR.'smarty_internal_data.php';
-require_once SMARTY_SYSPLUGINS_DIR.'smarty_internal_extension_handler.php';
-require_once SMARTY_SYSPLUGINS_DIR.'smarty_internal_templatebase.php';
-require_once SMARTY_SYSPLUGINS_DIR.'smarty_internal_template.php';
-require_once SMARTY_SYSPLUGINS_DIR.'smarty_resource.php';
-require_once SMARTY_SYSPLUGINS_DIR.'smarty_variable.php';
-require_once SMARTY_SYSPLUGINS_DIR.'smarty_template_source.php';
-require_once SMARTY_SYSPLUGINS_DIR.'smarty_template_resource_base.php';
-require_once SMARTY_SYSPLUGINS_DIR.'smarty_internal_resource_file.php';
+require_once SMARTY_SYSPLUGINS_DIR . 'smarty_internal_data.php';
+require_once SMARTY_SYSPLUGINS_DIR . 'smarty_internal_extension_handler.php';
+require_once SMARTY_SYSPLUGINS_DIR . 'smarty_internal_templatebase.php';
+require_once SMARTY_SYSPLUGINS_DIR . 'smarty_internal_template.php';
+require_once SMARTY_SYSPLUGINS_DIR . 'smarty_resource.php';
+require_once SMARTY_SYSPLUGINS_DIR . 'smarty_variable.php';
+require_once SMARTY_SYSPLUGINS_DIR . 'smarty_template_source.php';
+require_once SMARTY_SYSPLUGINS_DIR . 'smarty_template_resource_base.php';
+require_once SMARTY_SYSPLUGINS_DIR . 'smarty_internal_resource_file.php';
 
 /**
  * This is the main Smarty class

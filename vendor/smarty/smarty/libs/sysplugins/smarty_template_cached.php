@@ -1,28 +1,5 @@
 <?php
 /**
- +---------------------------------------------------------------------+
- | This file is part of chem-inventory.                                |
- |                                                                     |
- | Copyright (c) 2020 Sandor Semsey                                    |
- | All rights reserved.                                                |
- |                                                                     |
- | This work is published under the MIT License.                       |
- | https://choosealicense.com/licenses/mit/                            |
- |                                                                     |
- | It's a free software;)                                              |
- |                                                                     |
- | THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,     |
- | EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES     |
- | OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND            |
- | NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS |
- | BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN  |
- | ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN   |
- | CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE    |
- | SOFTWARE.                                                           |
- +---------------------------------------------------------------------+
- */
-
-/**
  * Created by PhpStorm.
  * User: Uwe Tews
  * Date: 04.12.2014
@@ -115,7 +92,7 @@ class Smarty_Template_Cached extends Smarty_Template_Resource_Base
         $this->cache_id = $_template->cache_id;
         $this->source = $_template->source;
         if (!class_exists('Smarty_CacheResource', false)) {
-            include SMARTY_SYSPLUGINS_DIR.'smarty_cacheresource.php';
+            include SMARTY_SYSPLUGINS_DIR . 'smarty_cacheresource.php';
         }
         $this->handler = Smarty_CacheResource::load($_template->smarty);
     }
