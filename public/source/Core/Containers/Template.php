@@ -79,12 +79,15 @@ class Template
     /**
      * Sets base template
      *
-     * @param string|null $base Name of base template file
+     * @param string $base Name of base template file
      *
      * @return void
      */
-    public function setBase(?string $base): void
+    public function setBase(string $base): void
     {
+        if (empty($base)) {
+            return;
+        }
         $this->base = $base;
     }
 

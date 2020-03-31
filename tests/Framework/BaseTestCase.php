@@ -22,9 +22,10 @@
  +---------------------------------------------------------------------+
  */
 
-namespace Inventory\Testing\Framework;
+namespace Inventory\Test\Framework;
 
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 
 /**
  * Base Test Case
@@ -42,23 +43,43 @@ class BaseTestCase extends TestCase
     /**
      * Test string
      */
-    protected const TEST_STRING = 'monkey';
+    protected const STRING = 'monkey';
+
+    /**
+     * Test string with special characters
+     */
+    protected const STRING_SPEC = ' captain *&^%@ monkey #\\';
+
+    /**
+     * Test empty string
+     */
+    protected const STRING_EMPTY = '';
 
     /**
      * Test array
      */
-    protected const TEST_ARRAY = [
-      1,
+    protected const ARRAY = [
+      self::INT,
       'monkeys' => ['orangutan', 'gorilla', 'chimpanzee'],
       'cat',
       'colonel',
       true,
       [
         'funky' => 'monkey',
-        'terrace' => 4,
+        self::STRING_SPEC => self::DOUBLE,
         'dog' => false,
       ],
     ];
+
+    /**
+     * Test Integer
+     */
+    protected const INT = 52985;
+
+    /**
+     * Test double
+     */
+    protected const DOUBLE = 978.515;
 
     /**
      * FQN of class under test
@@ -68,37 +89,77 @@ class BaseTestCase extends TestCase
     protected string $testClass;
 
     /**
-     * Instance of class under test
+     * Provides test values
      *
-     * @var mixed
+     * @return array
      */
-    protected $testObject;
-
-    /**
-     * Assert object is created
-     *
-     * @return void
-     */
-    protected function assertObjectCreated(): void
+    public function provideVariableValues()
     {
-        self::assertInstanceOf($this->testClass, $this->testObject, sprintf('"%s" not created.', $this->testClass));
+        return [
+          'normal string' => [self::STRING],
+          'special string' => [self::STRING_SPEC],
+          'empty string' => [self::STRING_EMPTY],
+          'integer' => [self::INT],
+          'double' => [self::DOUBLE],
+          'bool' => [true],
+          'array' => [self::ARRAY],
+        ];
     }
 
     /**
-     * Assert property is initialized
+     * Invokes private/protected method
      *
-     * @param string $name Name of property
-     * @param null $default Default value
+     * @param mixed &$object Object with restricted method
+     * @param string $method Name of method
+     * @param array|null $params Parameters to method
      *
-     * @return void
+     * @return mixed
+     *
+     * @throws \ReflectionException
      */
-    protected function assertPropertyInitialized(string $name, $default = null): void
+    protected function getProtectedMethod(&$object, string $method, array $params = null)
     {
-        self::assertClassHasAttribute($name, $this->testClass, sprintf('Property "%s" is missing.', $name));
-        self::assertSame(
-          $default,
-          $this->testObject->$name,
-          sprintf('Default value of "%s" is not as expected.', $name)
-        );
+        $reflection = new ReflectionClass(get_class($object));
+        $method = $reflection->getMethod($method);
+        $method->setAccessible(true);
+
+        return $method->invokeArgs($object, $params);
+    }
+
+    /**
+     * Gets a restricted property
+     *
+     * @param mixed $object Object with restricted property
+     * @param string $property Name of property
+     *
+     * @return mixed
+     *
+     * @throws \ReflectionException
+     */
+    protected function getProtectedProperty(&$object, string $property)
+    {
+        $reflection = new ReflectionClass(get_class($object));
+        $property = $reflection->getProperty($property);
+        $property->setAccessible(true);
+
+        return $property->getValue($object);
+    }
+
+    /**
+     * Sets a restricted property
+     *
+     * @param mixed $object Object with restricted property
+     * @param string $property Name of property
+     * @param mixed $value Value to set
+     *
+     * @throws \ReflectionException
+     */
+    protected function setProtectedProperty(&$object, string $property, $value)
+    {
+        $reflection = new ReflectionClass(get_class($object));
+        $property = $reflection->getProperty($property);
+        $property->setAccessible(true);
+
+        $property->setValue($object, $value);
     }
 }

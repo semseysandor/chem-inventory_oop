@@ -30,7 +30,9 @@ class ComposerStaticInitbbcc4348706e4a0400f67869a4c24d1e
         ),
         'I' => 
         array (
-            'Inventory\\Testing\\' => 18,
+            'Inventory\\Test\\Unit\\' => 20,
+            'Inventory\\Test\\Integration\\' => 27,
+            'Inventory\\Test\\' => 15,
             'Inventory\\' => 10,
         ),
         'D' => 
@@ -59,7 +61,15 @@ class ComposerStaticInitbbcc4348706e4a0400f67869a4c24d1e
         array (
             0 => __DIR__ . '/..' . '/phpspec/prophecy/src/Prophecy',
         ),
-        'Inventory\\Testing\\' => 
+        'Inventory\\Test\\Unit\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/tests/unit',
+        ),
+        'Inventory\\Test\\Integration\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/tests/integration',
+        ),
+        'Inventory\\Test\\' => 
         array (
             0 => __DIR__ . '/../..' . '/tests',
         ),
@@ -108,6 +118,7 @@ class ComposerStaticInitbbcc4348706e4a0400f67869a4c24d1e
         'Doctrine\\Instantiator\\Instantiator' => __DIR__ . '/..' . '/doctrine/instantiator/src/Doctrine/Instantiator/Instantiator.php',
         'Doctrine\\Instantiator\\InstantiatorInterface' => __DIR__ . '/..' . '/doctrine/instantiator/src/Doctrine/Instantiator/InstantiatorInterface.php',
         'Inventory\\Application' => __DIR__ . '/../..' . '/public/source/Application.php',
+        'Inventory\\Core\\Containers\\Service' => __DIR__ . '/../..' . '/public/source/Core/Containers/Service.php',
         'Inventory\\Core\\Containers\\Template' => __DIR__ . '/../..' . '/public/source/Core/Containers/Template.php',
         'Inventory\\Core\\Controller\\BaseController' => __DIR__ . '/../..' . '/public/source/Core/Controller/BaseController.php',
         'Inventory\\Core\\Controller\\Form' => __DIR__ . '/../..' . '/public/source/Core/Controller/Form.php',
@@ -122,6 +133,8 @@ class ComposerStaticInitbbcc4348706e4a0400f67869a4c24d1e
         'Inventory\\Core\\Exception\\FileMissing' => __DIR__ . '/../..' . '/public/source/Core/Exception/FileMissing.php',
         'Inventory\\Core\\Exception\\InvalidRequest' => __DIR__ . '/../..' . '/public/source/Core/Exception/InvalidRequest.php',
         'Inventory\\Core\\Exception\\SQLException' => __DIR__ . '/../..' . '/public/source/Core/Exception/SQLException.php',
+        'Inventory\\Core\\Factory' => __DIR__ . '/../..' . '/public/source/Core/Factory.php',
+        'Inventory\\Core\\IComponent' => __DIR__ . '/../..' . '/public/source/Core/IComponent.php',
         'Inventory\\Core\\Renderer' => __DIR__ . '/../..' . '/public/source/Core/Renderer.php',
         'Inventory\\Core\\Routing\\Request' => __DIR__ . '/../..' . '/public/source/Core/Routing/Request.php',
         'Inventory\\Core\\Routing\\Router' => __DIR__ . '/../..' . '/public/source/Core/Routing/Router.php',
@@ -141,11 +154,14 @@ class ComposerStaticInitbbcc4348706e4a0400f67869a4c24d1e
         'Inventory\\Entity\\Sub\\DAO\\Sub' => __DIR__ . '/../..' . '/public/source/Entity/Sub/DAO/Sub.php',
         'Inventory\\Entity\\User\\DAO\\User' => __DIR__ . '/../..' . '/public/source/Entity/User/DAO/User.php',
         'Inventory\\Form\\Login' => __DIR__ . '/../..' . '/public/source/Form/Login.php',
-        'Inventory\\Inv' => __DIR__ . '/../..' . '/public/source/Inv.php',
         'Inventory\\Page\\Index' => __DIR__ . '/../..' . '/public/source/Page/Index.php',
         'Inventory\\Page\\Login' => __DIR__ . '/../..' . '/public/source/Page/Login.php',
-        'Inventory\\Testing\\Cases\\BaseTestCase' => __DIR__ . '/../..' . '/tests/Cases/BaseTestCase.php',
-        'Inventory\\Testing\\Core\\Containers\\TemplateTest' => __DIR__ . '/../..' . '/tests/Core/Containers/TemplateTest.php',
+        'Inventory\\Page\\Logout' => __DIR__ . '/../..' . '/public/source/Page/Logout.php',
+        'Inventory\\Test\\Framework\\BaseTestCase' => __DIR__ . '/../..' . '/tests/Framework/BaseTestCase.php',
+        'Inventory\\Test\\Integration\\ServiceTest' => __DIR__ . '/../..' . '/tests/integration/ServiceTest.php',
+        'Inventory\\Test\\Unit\\Core\\Containers\\ServiceTest' => __DIR__ . '/../..' . '/tests/unit/Core/Containers/ServiceTest.php',
+        'Inventory\\Test\\Unit\\Core\\Containers\\TemplateTest' => __DIR__ . '/../..' . '/tests/unit/Core/Containers/TemplateTest.php',
+        'Inventory\\Test\\Unit\\Core\\Controller\\BaseControllerTest' => __DIR__ . '/../..' . '/tests/unit/Core/Controller/BaseControllerTest.php',
         'PHPUnit\\Exception' => __DIR__ . '/..' . '/phpunit/phpunit/src/Exception.php',
         'PHPUnit\\Framework\\Assert' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert.php',
         'PHPUnit\\Framework\\AssertionFailedError' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Exception/AssertionFailedError.php',
