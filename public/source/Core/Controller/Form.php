@@ -24,6 +24,10 @@
 
 namespace Inventory\Core\Controller;
 
+use Inventory\Core\Containers\Template;
+use Inventory\Core\Renderer;
+use Inventory\Core\Routing\Request;
+
 /**
  * Base Form Class
  *
@@ -36,21 +40,19 @@ namespace Inventory\Core\Controller;
 abstract class Form extends BaseController
 {
     /**
-     * Form data received after submit
-     *
-     * @var array|null
-     */
-    protected ?array $formData;
-
-    /**
      * Form constructor.
      *
-     * @param array|null $form_data
+     * @param \Inventory\Core\Routing\Request $request HTTP request
+     * @param \Inventory\Core\Containers\Template $temp_cont Template container
+     * @param \Inventory\Core\Renderer $renderer Renderer
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
      */
-    public function __construct(array $form_data = null)
+    public function __construct(Request $request, Template $temp_cont, Renderer $renderer)
     {
-        parent::__construct();
-        $this->formData = $form_data;
+        parent::__construct($request, $temp_cont, $renderer);
+
+        // Set base template for form
         $this->setBaseTemplate('form');
     }
 }

@@ -25,12 +25,13 @@
 namespace Inventory\Testing\Core\Containers;
 
 use Inventory\Core\Containers\Template;
-use Inventory\Testing\Cases\BaseTestCase;
+use Inventory\Testing\Framework\BaseTestCase;
 
 /**
  * Template Container Test Class
  *
  * @covers \Inventory\Core\Containers\Template
+ * @group minimal
  *
  * @category Test
  * @package  chem-inventory_oop
@@ -46,8 +47,8 @@ class TemplateTest extends BaseTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->testClass = 'Inventory\Core\Containers\Template';
-        $this->testObject = new Template();
+        $this->testClass = Template::class;
+        $this->testObject = new $this->testClass();
     }
 
     /**
@@ -84,9 +85,9 @@ class TemplateTest extends BaseTestCase
     public function attributeValues(): array
     {
         return [
-          ['base', self::TEST_STRING],
-          ['regions', self::TEST_ARRAY],
-          ['vars', self::TEST_ARRAY],
+          'base' => ['base', self::TEST_STRING],
+          'regions' => ['regions', self::TEST_ARRAY],
+          'vars' => ['vars', self::TEST_ARRAY],
         ];
     }
 }

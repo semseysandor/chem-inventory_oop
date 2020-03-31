@@ -22,83 +22,46 @@
  +---------------------------------------------------------------------+
  */
 
-namespace Inventory\Testing\Cases;
+namespace Inventory\Page;
 
-use PHPUnit\Framework\TestCase;
+use Inventory\Core\Controller\Page;
+use Inventory\Core\Routing\Security;
 
 /**
- * Base Test Case
+ * Logout Class
  *
- * @coversNothing
- *
- * @category Test
+ * @category Controller
  * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class BaseTestCase extends TestCase
+class Logout extends Page
 {
-    /**
-     * Test string
-     */
-    protected const TEST_STRING = 'monkey';
 
     /**
-     * Test array
+     * @inheritDoc
      */
-    protected const TEST_ARRAY = [
-      1,
-      'monkeys' => ['orangutan', 'gorilla', 'chimpanzee'],
-      'cat',
-      'colonel',
-      true,
-      [
-        'funky' => 'monkey',
-        'terrace' => 4,
-        'dog' => false,
-      ],
-    ];
-
-    /**
-     * FQN of class under test
-     *
-     * @var string
-     */
-    protected string $testClass;
-
-    /**
-     * Instance of class under test
-     *
-     * @var mixed
-     */
-    protected $testObject;
-
-    /**
-     * Assert object is created
-     *
-     * @return void
-     */
-    protected function assertObjectCreated(): void
+    protected function validate(): void
     {
-        self::assertInstanceOf($this->testClass, $this->testObject, 'Object not created.');
+        // TODO: Implement validate() method.
     }
 
     /**
-     * Assert attribute is initialized
-     *
-     * @param string $name Name of attribute
-     * @param null $default Default value
-     *
-     * @return void
+     * @inheritDoc
      */
-    protected function assertPropertyInitialized(string $name, $default = null): void
+    protected function process(): void
     {
-        self::assertClassHasAttribute($name, $this->testClass, sprintf('Attribute "%s" is missing.', $name));
-        self::assertSame(
-          $default,
-          $this->testObject->$name,
-          sprintf('Default value of "%s" is not as expected.', $name)
-        );
+        Security::logOut();
+        header('Location: /');
+        // TODO: Implement process() method.
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function assemble(): void
+    {
+        // TODO: Implement assemble() method.
     }
 }

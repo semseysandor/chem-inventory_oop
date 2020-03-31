@@ -22,9 +22,7 @@
  +---------------------------------------------------------------------+
  */
 
-use Inventory\Application;
-
 require 'bootstrap.php';
 
-$app = new Application();
+$app = new \Inventory\Application();
 $app->run();

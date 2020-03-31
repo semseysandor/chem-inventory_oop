@@ -42,21 +42,21 @@ class Request
      *
      * @var array|null
      */
-    public ?array $requestData;
+    private ?array $requestData;
 
     /**
      * Request method
      *
      * @var string|null
      */
-    public ?string $requestMethod;
+    private ?string $requestMethod;
 
     /**
      * Route from URI
      *
      * @var array|null
      */
-    public ?array $route;
+    private ?array $route;
 
     /**
      * Request constructor.
@@ -77,9 +77,11 @@ class Request
      */
     private function parseData(): void
     {
+        // Check for request method
         if (!array_key_exists('REQUEST_METHOD', $_SERVER)) {
-            throw new InvalidRequest(ts('Missing Request Method'));
+            throw new InvalidRequest(ts('Missing request method.'));
         }
+        // GET or POST
         switch ($_SERVER['REQUEST_METHOD']) {
             case 'GET':
                 $this->requestMethod = 'GET';
@@ -88,7 +90,7 @@ class Request
                 $this->requestMethod = 'POST';
                 break;
             default:
-                throw new InvalidRequest(ts('Not supported request method "%s"', $_SERVER['REQUEST_METHOD']));
+                throw new InvalidRequest(ts('Not supported request method "%s".', $_SERVER['REQUEST_METHOD']));
         }
         $this->requestData = $_REQUEST;
     }
@@ -102,31 +104,65 @@ class Request
      */
     private function parseRoute(): void
     {
+        // Check for request URI
         if (!array_key_exists('REQUEST_URI', $_SERVER)) {
-            throw new InvalidRequest(ts('Missing Request URI'));
+            throw new InvalidRequest(ts('Missing request URI.'));
         }
 
+        // Extract route from request URL
         $this->route = explode('/', $_SERVER['REQUEST_URI']);
 
+        // Push delimiter out of array '/'
         if ($this->route) {
             array_shift($this->route);
         } else {
-            throw new InvalidRequest(ts('Invalid Request URI'));
+            throw new InvalidRequest(ts('Invalid request URI.'));
         }
+    }
+
+    /**
+     * Get request data
+     *
+     * @return array|null
+     */
+    public function getRequestData(): ?array
+    {
+        return $this->requestData;
+    }
+
+    /**
+     * Get request method
+     *
+     * @return string|null
+     */
+    public function getRequestMethod(): ?string
+    {
+        return $this->requestMethod;
+    }
+
+    /**
+     * Get request route
+     *
+     * @return array|null
+     */
+    public function getRoute(): ?array
+    {
+        return $this->route;
     }
 
     /**
      * Parse URL
      *
-     * @return \Inventory\Core\Routing\Request
+     * @return void
      *
      * @throws \Inventory\Core\Exception\InvalidRequest
      */
-    public function parse(): Request
+    public function parse(): void
     {
+        // Parse request data
         $this->parseData();
-        $this->parseRoute();
 
-        return $this;
+        // Parse route from request
+        $this->parseRoute();
     }
 }

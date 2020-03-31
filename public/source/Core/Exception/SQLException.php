@@ -43,6 +43,6 @@ class SQLException extends BaseException
     public function __construct(string $context = null)
     {
         parent::__construct($context);
-        $this->message = ts("SQL error occurred");
+        $this->message = ts("SQL error occurred.");
     }
 }

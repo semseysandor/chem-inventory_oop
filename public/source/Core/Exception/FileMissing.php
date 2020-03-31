@@ -43,6 +43,6 @@ class FileMissing extends BaseException
     public function __construct(string $context = null)
     {
         parent::__construct($context);
-        $this->message = ts("A file is missing");
+        $this->message = ts("A file is missing.");
     }
 }

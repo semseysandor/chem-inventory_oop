@@ -22,30 +22,36 @@
  +---------------------------------------------------------------------+
  */
 
-namespace Inventory;
+namespace Inventory\Core\Containers;
 
 use Inventory\Core\DataBase\SQLDataBase;
-use Inventory\Core\Exception\FileMissing;
-use Inventory\Core\Exception\SQLException;
+use Inventory\Core\Factory;
 use Inventory\Core\Settings;
 
 /**
- * Facade for accessing major subsystems
+ * Service container for accessing major subsystems
  *
- * @category Main
+ * @category Container
  * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class Inv
+class Service
 {
+    /**
+     * Factory
+     *
+     * @var \Inventory\Core\Factory|null
+     */
+    private static ?Factory $factory = null;
+
     /**
      * Gets the settings subsystem
      *
      * @return \Inventory\Core\Settings
      *
-     * @throws FileMissing
+     * @throws \Inventory\Core\Exception\FileMissing
      */
     public static function settings()
     {
@@ -57,11 +63,25 @@ class Inv
      *
      * @return \Inventory\Core\DataBase\SQLDataBase
      *
-     * @throws SQLException
-     * @throws FileMissing
+     * @throws \Inventory\Core\Exception\SQLException
+     * @throws \Inventory\Core\Exception\FileMissing
      */
     public static function database()
     {
-        return SQLDataBase::singleton();
+        return SQLDataBase::singleton(self::settings());
+    }
+
+    /**
+     * Gets the factory
+     *
+     * @return \Inventory\Core\Factory|null
+     */
+    public static function factory()
+    {
+        if (self::$factory == null) {
+            self::$factory = new Factory();
+        }
+
+        return self::$factory;
     }
 }

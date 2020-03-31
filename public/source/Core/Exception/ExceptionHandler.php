@@ -46,7 +46,6 @@ class ExceptionHandler
      */
     public static function handleInvalidRequest(InvalidRequest $ex): void
     {
-        echo "invalid request";
         $ex->print();
         exit;
     }

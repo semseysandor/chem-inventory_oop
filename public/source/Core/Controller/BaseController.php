@@ -25,7 +25,9 @@
 namespace Inventory\Core\Controller;
 
 use Inventory\Core\Containers\Template;
+use Inventory\Core\Exception\BadArgument;
 use Inventory\Core\Renderer;
+use Inventory\Core\Routing\Request;
 
 /**
  * Base Controller Class
@@ -39,6 +41,13 @@ use Inventory\Core\Renderer;
 abstract class BaseController
 {
     /**
+     * HTTP request
+     *
+     * @var \Inventory\Core\Routing\Request
+     */
+    protected Request $request;
+
+    /**
      * Container for template data
      *
      * @var \Inventory\Core\Containers\Template
@@ -46,11 +55,24 @@ abstract class BaseController
     protected Template $templateContainer;
 
     /**
-     * Core Controller constructor.
+     * Renderer
+     *
+     * @var \Inventory\Core\Renderer
      */
-    public function __construct()
+    protected Renderer $renderer;
+
+    /**
+     * Core Controller constructor.
+     *
+     * @param \Inventory\Core\Routing\Request $request HTTP request
+     * @param \Inventory\Core\Containers\Template $temp_cont Template container
+     * @param \Inventory\Core\Renderer $renderer Renderer
+     */
+    public function __construct(Request $request, Template $temp_cont, Renderer $renderer)
     {
-        $this->templateContainer = new Template();
+        $this->request = $request;
+        $this->templateContainer = $temp_cont;
+        $this->renderer = $renderer;
     }
 
     /**
@@ -59,10 +81,15 @@ abstract class BaseController
      * @param string $base_template Base template file
      *
      * @return void
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
      */
     protected function setBaseTemplate(string $base_template): void
     {
-        $this->templateContainer->base = $base_template;
+        if (empty($base_template)) {
+            throw new BadArgument(ts(sprintf('Base template missing at "%s".', self::class)));
+        }
+        $this->templateContainer->setBase($base_template);
     }
 
     /**
@@ -72,12 +99,15 @@ abstract class BaseController
      * @param mixed $value Variable value
      *
      * @return void
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
      */
-    protected function setTemplateVar($name, $value): void
+    protected function setTemplateVar(string $name, $value): void
     {
-        if (!empty($name)) {
-            $this->templateContainer->vars[$name] = $value;
+        if (empty($name)) {
+            throw new BadArgument(ts(sprintf('Template variable name missing at "%s".', self::class)));
         }
+        $this->templateContainer->setVars($name, $value);
     }
 
     /**
@@ -87,22 +117,30 @@ abstract class BaseController
      * @param string $template Template File
      *
      * @return void
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
      */
-    protected function addTemplateRegion(string $region, string $template): void
+    protected function setTemplateRegion(string $region, string $template): void
     {
-        if (!empty($region) && !empty($template)) {
-            $this->templateContainer->regions[$region] = $template;
+        if (empty($region)) {
+            throw new BadArgument(ts(sprintf('Template region name missing at "%s".', self::class)));
         }
+        $this->templateContainer->setRegions($region, $template);
     }
 
     /**
      * Runs controller
      *
      * @return void
+     *
+     * @throws \SmartyException
      */
     public function run(): void
     {
+        // First build page
         $this->build();
+
+        // Then render page
         $this->render();
     }
 
@@ -113,8 +151,13 @@ abstract class BaseController
      */
     protected function build(): void
     {
+        // Validate inputs
         $this->validate();
+
+        // Process inputs
         $this->process();
+
+        // Assemble page
         $this->assemble();
     }
 
@@ -123,30 +166,32 @@ abstract class BaseController
      *
      * @return void
      */
-    abstract protected function validate();
+    abstract protected function validate(): void;
 
     /**
      * Process input
      *
      * @return void
      */
-    abstract protected function process();
+    abstract protected function process(): void;
 
     /**
      * Assemble page
      *
      * @return void
      */
-    abstract protected function assemble();
+    abstract protected function assemble(): void;
 
     /**
      * Render page
      *
      * @return void
+     *
+     * @throws \SmartyException
      */
-    protected function render()
+    protected function render(): void
     {
-        $renderer = new Renderer($this->templateContainer);
-        $renderer->run();
+        // Run renderer
+        $this->renderer->run();
     }
 }

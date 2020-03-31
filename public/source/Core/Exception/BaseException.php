@@ -73,6 +73,6 @@ class BaseException extends Exception
     public function print(): void
     {
         // todo: Exception string
-        echo "\nException\n".$this->getMessage()." at: ".$this->getContext()."\n";
+        echo $this->getMessage()."\n".$this->getContext()."\n";
     }
 }

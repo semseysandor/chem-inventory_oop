@@ -22,27 +22,50 @@
  +---------------------------------------------------------------------+
  */
 
-namespace Inventory\Core\Exception;
+namespace Inventory\Testing\Core\Controller;
+
+use Inventory\Core\Controller\BaseController;
+use Inventory\Testing\Framework\BaseTestCase;
 
 /**
- * Bad Argument Exception
+ * BaseControllerTest Class
  *
- * @category Exception
+ * @covers \Inventory\Core\Controller\BaseController
+ * @group minimal
+ *
+ * @category Test
  * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class BadArgument extends BaseException
+class BaseControllerTest extends BaseTestCase
 {
     /**
-     * Bad Argument constructor.
-     *
-     * @param string|null $context Context in which exception appeared
+     * Set up method
      */
-    public function __construct(string $context = null)
+    public function setUp(): void
     {
-        parent::__construct($context);
-        $this->message = ts("Bad argument received.");
+        parent::setUp();
+        $this->testClass = BaseController::class;
+        $this->testObject = $this->getMockForAbstractClass(BaseController::class);
+    }
+
+    /**
+     *
+     */
+    public function testBaseControllerIsInitialized()
+    {
+        parent::assertObjectCreated();
+        // parent::assertPropertyInitialized('templateContainer');
+    }
+
+    /**
+     *
+     */
+    public function testControllerHasAttributes()
+    {
+        self::assertTrue(true);
+        self::assertSame('jocobeco', BaseController::makilali());
     }
 }

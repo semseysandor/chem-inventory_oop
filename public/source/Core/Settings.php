@@ -38,11 +38,16 @@ use Inventory\Core\Exception\FileMissing;
 class Settings
 {
     /**
+     * Config file
+     */
+    private const CONFIG_FILE = ROOT.'/config.php';
+
+    /**
      * Array to hold settings
      *
      * @var array
      */
-    private array $settings;
+    private ?array $settings;
 
     /**
      * Singleton instance
@@ -54,34 +59,32 @@ class Settings
     /**
      * Settings constructor.
      *
-     * @throws FileMissing
      */
     private function __construct()
     {
-        $this->settings = self::getDefaults();
+        $this->settings = [];
     }
 
     /**
      * Loads defaults settings from file
      *
-     * @return array
+     * @return void
      *
      * @throws FileMissing
      */
-    private static function getDefaults(): array
+    private function getDefaults(): void
     {
-        $config_file = ROOT.'/config.php';
-        if (!file_exists($config_file)) {
-            throw new FileMissing(ts('Settings file could not be loaded'));
+        if (!file_exists(self::CONFIG_FILE)) {
+            throw new FileMissing(ts('Settings file could not be loaded.'));
         }
 
-        return include $config_file;
+        $this->settings = include self::CONFIG_FILE;
     }
 
     /**
      * Singleton
      *
-     * @return $this
+     * @return \Inventory\Core\Settings
      *
      * @throws FileMissing
      */
@@ -89,6 +92,7 @@ class Settings
     {
         if (self::$instance == null) {
             self::$instance = new Settings();
+            self::$instance->getDefaults();
         }
 
         return self::$instance;
@@ -97,7 +101,7 @@ class Settings
     /**
      * Gets a particular setting
      *
-     * @param string $domain
+     * @param string $domain Domain of setting
      * @param string $key Name of setting to fetch
      *
      * @return mixed|null
@@ -114,6 +118,7 @@ class Settings
             return null;
         }
 
+        // Return setting
         return ($this->settings)[$domain][$key];
     }
 
@@ -121,14 +126,18 @@ class Settings
      * Adds a config
      *
      * @param string $domain Config domain
-     * @param array $cfgToAdd Config to add
+     * @param string $key Name of setting
+     * @param mixed $value Value for setting
      *
      * @return void
      */
-    public function addSetting(string $domain, array $cfgToAdd): void
+    public function addSetting(string $domain, string $key, $value): void
     {
-        foreach ($cfgToAdd as $key => $value) {
-            $this->settings[$domain][$key] = $value;
+        // Check for argument
+        if (empty($domain) || empty($key)) {
+            return;
         }
+
+        $this->settings[$domain][$key] = $value;
     }
 }

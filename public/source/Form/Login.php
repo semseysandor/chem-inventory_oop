@@ -38,16 +38,6 @@ use Inventory\Core\Controller\Form;
 class Login extends Form
 {
     /**
-     * Form constructor.
-     *
-     * @param array|null $form_data
-     */
-    public function __construct(array $form_data = null)
-    {
-        parent::__construct($form_data);
-    }
-
-    /**
      * Validate input
      *
      * @return void
@@ -63,11 +53,13 @@ class Login extends Form
      */
     protected function process(): void
     {
-        if (empty($this->formData)) {
+        // TODO: implement
+        $data = $this->request->getRequestData();
+        if (empty($data)) {
             return;
         }
 
-        $_SESSION['USER_NAME'] = $this->formData['user'];
+        $_SESSION['USER_NAME'] = $data['user'];
         header('Location: /');
         exit;
     }

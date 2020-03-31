@@ -24,11 +24,9 @@
 
 namespace Inventory\Core\DataBase;
 
+use Inventory\Core\Containers\Service;
 use Inventory\Core\Exception\BadArgument;
 use Inventory\Core\Exception\FieldMissing;
-use Inventory\Core\Exception\FileMissing;
-use Inventory\Core\Exception\SQLException;
-use Inventory\Inv;
 use mysqli_result;
 
 /**
@@ -171,6 +169,7 @@ class SQLDaO
 
         // Loops through fields from metadata
         foreach ($this->metadata as $field => $meta) {
+            // If field is set --> add to selected fields
             if (isset($this->$field)) {
                 $fields_set[] = $field;
             }
@@ -183,7 +182,7 @@ class SQLDaO
      * Parse parameter array
      *
      * @param array $params Parameter array
-     *   $params =
+     * $params =
      *   [
      *    fields   => [field_1, field_2],
      *    where    => [
@@ -198,22 +197,23 @@ class SQLDaO
      *
      * @return $this
      *
-     * @throws BadArgument
+     * @throws \Inventory\Core\Exception\BadArgument
      */
     protected function parseParams(array $params = null): SQLDaO
     {
         // Check argument
-        if ($params == null) {
+        if (empty($params)) {
             return $this;
         }
 
         // Fields
-        if (array_key_exists('fields', $params)) {
+        if (array_key_exists('fields', $params) && is_array($params['fields'])) {
             $this->fields = $params['fields'];
         }
 
         // Where clause
-        if (array_key_exists('where', $params)) {
+        if (array_key_exists('where', $params) && is_array($params['where'])) {
+            // Loop through where clauses
             foreach ($params['where'] as $where_array) {
                 // Check argument
                 if (!is_array($where_array) || count($where_array) < 3) {
@@ -266,8 +266,6 @@ class SQLDaO
      * @param string $type Field type
      *
      * @return string
-     *
-     * @throws BadArgument
      */
     protected static function typeToBind(string $type): string
     {
@@ -279,7 +277,7 @@ class SQLDaO
             case 'double':
                 return 'd';
             default:
-                throw new BadArgument(ts('Invalid field type "%s"', $type));
+                return '';
         }
     }
 
@@ -290,8 +288,11 @@ class SQLDaO
      */
     protected function checkReqFields(): bool
     {
+        // Loop through fields
         foreach ($this->metadata as $field => $meta) {
+            // Check if field is required
             if (isset($meta['required']) && $meta['required'] == true) {
+                // If required and not set --> FAIL
                 if (!isset($this->$field)) {
                     return false;
                 }
@@ -318,17 +319,17 @@ class SQLDaO
     {
         // Check for field
         if (empty($field)) {
-            throw new BadArgument(ts('Field missing in "%s"', $this->tableName));
+            throw new BadArgument(ts('Field missing in "%s".', $this->tableName));
         }
 
         // Check for metadata
         if (empty($type) || empty($uniq) || empty($desc)) {
-            throw new BadArgument(ts('Metadata missing for "%s"', $field));
+            throw new BadArgument(ts('Metadata missing for "%s".', $field));
         }
 
         // Check if field already defined
         if (array_key_exists($field, $this->metadata)) {
-            throw new BadArgument(ts('Metadata already defined for "%s"', $field));
+            throw new BadArgument(ts('Metadata already defined for "%s".', $field));
         }
 
         // Check type
@@ -343,7 +344,7 @@ class SQLDaO
                 $type = 'double';
                 break;
             default:
-                throw new BadArgument(ts('Invalid field type for "%s". Available options: i|s|d', $field));
+                throw new BadArgument(ts('Invalid field type for "%s". Available options: i|s|d.', $field));
         }
 
         // Add metadata
@@ -359,21 +360,40 @@ class SQLDaO
      * Retrieves records from table
      *
      * @param array $params Query parameters
+     * $params =
+     *   [
+     *    fields   => [field_1, field_2],
+     *    where    => [
+     *                 [field_1, operator1, value1],
+     *                 [field_2, operator2, value2]
+     *                ]
+     *    limit    => 1,
+     *    offset   => 25,
+     *    order_by => [first_order (heh), second_order]
+     *    values   => [value_1, value_2]
+     *   ]
      *
      * @return mixed
      *
-     * @throws BadArgument
-     * @throws SQLException
-     * @throws FileMissing
+     * @throws \Inventory\Core\Exception\BadArgument
+     * @throws \Inventory\Core\Exception\SQLException
+     * @throws \Inventory\Core\Exception\FileMissing
      */
     public function retrieve(array $params = null)
     {
+        // Init select query
         $this->initSelect();
+
+        // Parse query parameters
         $this->parseParams($params);
 
+        // Set fields to return
         $this->setSelect($this->fields);
+
+        // Add from clause
         $this->addFrom($this->tableName);
 
+        // Execute query
         return $this->execute();
     }
 
@@ -385,21 +405,30 @@ class SQLDaO
      *
      * @return mixed
      *
-     * @throws BadArgument
-     * @throws SQLException
-     * @throws FileMissing
+     * @throws \Inventory\Core\Exception\BadArgument
+     * @throws \Inventory\Core\Exception\SQLException
+     * @throws \Inventory\Core\Exception\FileMissing
      */
     public function retrieveRecord(int $id, array $fields = null)
     {
+        // Check ID
         if ($id <= 0) {
-            throw new BadArgument(ts('Not valid record ID in "%s"', $this->tableName));
+            throw new BadArgument(ts('Not valid record ID in "%s".', $this->tableName));
         }
 
+        // Init select query
         $this->initSelect();
+
+        // Select fields to return
         $this->setSelect($fields);
+
+        // Add from clause
         $this->addFrom($this->tableName);
+
+        // Add where
         $this->addWhere('id', '=', $id);
 
+        // Execute query
         return $this->execute();
     }
 
@@ -408,21 +437,25 @@ class SQLDaO
      *
      * @return mixed
      *
-     * @throws BadArgument
-     * @throws FieldMissing
-     * @throws FileMissing
-     * @throws SQLException
+     * @throws \Inventory\Core\Exception\BadArgument
+     * @throws \Inventory\Core\Exception\FileMissing
+     * @throws \Inventory\Core\Exception\SQLException
+     * @throws \Inventory\Core\Exception\FieldMissing
      */
     public function create()
     {
         // Checks if required fields are set
         if (!$this->checkReqFields()) {
-            throw new FieldMissing(ts('Creating new record in "%s"', $this->tableName));
+            throw new FieldMissing(ts('Creating new record in "%s".', $this->tableName));
         }
 
+        // Init insert query
         $this->initInsert();
+
+        // Select fields to insert
         $this->setInsert($this->getFields());
 
+        // Execute query
         return $this->execute();
     }
 
@@ -430,25 +463,38 @@ class SQLDaO
      * Updates record
      *
      * @param array $params Parameters to query
+     * $params =
+     *   [
+     *    where => [
+     *              [field_1, operator1, value1],
+     *              [field_2, operator2, value2]
+     *             ]
+     *   ]
      *
      * @return mixed
      *
-     * @throws BadArgument
-     * @throws FieldMissing
-     * @throws SQLException
-     * @throws FileMissing
+     * @throws \Inventory\Core\Exception\BadArgument
+     * @throws \Inventory\Core\Exception\FieldMissing
+     * @throws \Inventory\Core\Exception\SQLException
+     * @throws \Inventory\Core\Exception\FileMissing
      */
     public function update(array $params = null)
     {
+        // Init update query
         $this->initUpdate();
+
+        // Select fields to update
         $this->setUpdate($this->getFields());
 
+        // If ID is set --> add where clause
         if (!empty($this->id) && $this->id > 0) {
             $this->addWhere('id', '=', $this->id);
         }
 
+        // Parse additional parameters
         $this->parseParams($params);
 
+        // Execute query
         return $this->execute();
     }
 
@@ -456,33 +502,45 @@ class SQLDaO
      * Deletes records
      *
      * @param array $params Parameters to query
+     * $params =
+     *   [
+     *    where => [
+     *              [field_1, operator1, value1],
+     *              [field_2, operator2, value2]
+     *             ]
+     *   ]
      *
      * @return mixed
      *
-     * @throws BadArgument
-     * @throws SQLException
-     * @throws FileMissing
+     * @throws \Inventory\Core\Exception\BadArgument
+     * @throws \Inventory\Core\Exception\SQLException
+     * @throws \Inventory\Core\Exception\FileMissing
      */
     public function delete(array $params = null)
     {
+        // Init delete query
         $this->initDelete();
 
+        // If ID is set --> add where clause
         if (!empty($this->id) && $this->id > 0) {
             $this->addWhere('id', '=', $this->id);
         }
 
+        // Parse additional parameters
         $this->parseParams($params);
 
+        // Execute query
         return $this->execute();
     }
 
     /**
      * Initialize a select query
      *
-     * @return $this fluent method
+     * @return $this fluent interface
      */
     public function initSelect(): SQLDaO
     {
+        // Init query
         $this->initQuery();
         $this->queryType = 'select';
         $this->query = 'SELECT ';
@@ -493,10 +551,11 @@ class SQLDaO
     /**
      * Initialize an insert query
      *
-     * @return $this fluent method
+     * @return $this fluent interface
      */
     public function initInsert(): SQLDaO
     {
+        // Init query
         $this->initQuery();
         $this->queryType = 'insert';
         $this->query = 'INSERT INTO '.$this->tableName.' ';
@@ -507,10 +566,11 @@ class SQLDaO
     /**
      * Initialize an update query
      *
-     * @return $this fluent method
+     * @return $this fluent interface
      */
     public function initUpdate(): SQLDaO
     {
+        // Init query
         $this->initQuery();
         $this->queryType = 'update';
         $this->query = 'UPDATE '.$this->tableName.' ';
@@ -521,10 +581,11 @@ class SQLDaO
     /**
      * Initialize a delete query
      *
-     * @return $this fluent method
+     * @return $this fluent interface
      */
     public function initDelete(): SQLDaO
     {
+        // Init query
         $this->initQuery();
         $this->queryType = 'delete';
         $this->query = 'DELETE FROM '.$this->tableName.' ';
@@ -537,7 +598,7 @@ class SQLDaO
      *
      * @param array $fields Fields to return
      *
-     * @return $this fluent method
+     * @return $this fluent interface
      */
     public function setSelect(array $fields = null)
     {
@@ -567,10 +628,10 @@ class SQLDaO
      *
      * @param array $fields Fields to insert
      *
-     * @return $this
+     * @return $this Fluent interface
      *
-     * @throws BadArgument
-     * @throws FieldMissing
+     * @throws \Inventory\Core\Exception\BadArgument
+     * @throws \Inventory\Core\Exception\FieldMissing
      */
     public function setInsert(array $fields)
     {
@@ -578,7 +639,7 @@ class SQLDaO
         $values_string = 'VALUES(';
 
         if (empty($fields)) {
-            throw new BadArgument(ts('No fields to insert into "%s"', $this->tableName));
+            throw new BadArgument(ts('No fields to insert into "%s".', $this->tableName));
         }
 
         // Parse fields
@@ -594,12 +655,12 @@ class SQLDaO
             if (!empty($this->$field)) {
                 $this->values[] = $this->$field;
             } else {
-                throw new FieldMissing(ts('Inserting into "%s"', $this->tableName));
+                throw new FieldMissing(ts('Inserting into "%s".', $this->tableName));
             }
         }
 
         if (empty($this->values)) {
-            throw new BadArgument(ts('No values to insert into "%s"', $this->tableName));
+            throw new BadArgument(ts('No values to insert into "%s".', $this->tableName));
         }
 
         // Remove last comma
@@ -616,17 +677,17 @@ class SQLDaO
      *
      * @param array $fields Fields to update
      *
-     * @return $this fluent method
+     * @return $this fluent interface
      *
-     * @throws BadArgument
-     * @throws FieldMissing
+     * @throws \Inventory\Core\Exception\BadArgument
+     * @throws \Inventory\Core\Exception\FieldMissing
      */
     public function setUpdate(array $fields): SQLDaO
     {
         $column_string = '';
 
         if (empty($fields)) {
-            throw new BadArgument(ts('No fields to update "%s"', $this->tableName));
+            throw new BadArgument(ts('No fields to update "%s".', $this->tableName));
         }
 
         // Parse fields
@@ -641,12 +702,12 @@ class SQLDaO
             if (!empty($this->$field)) {
                 $this->values[] = $this->$field;
             } else {
-                throw new FieldMissing(ts('Updating "%s"', $this->tableName));
+                throw new FieldMissing(ts('Updating "%s".', $this->tableName));
             }
         }
 
         if (empty($this->values)) {
-            throw new BadArgument(ts('No values to update "%s"', $this->tableName));
+            throw new BadArgument(ts('No values to update "%s".', $this->tableName));
         }
 
         // Remove last comma
@@ -664,9 +725,9 @@ class SQLDaO
      * @param string $operator Operator
      * @param mixed $value Value for field
      *
-     * @return $this fluent method
+     * @return $this fluent interface
      *
-     * @throws BadArgument
+     * @throws \Inventory\Core\Exception\BadArgument
      */
     public function addWhere(string $field, string $operator, $value): SQLDaO
     {
@@ -680,7 +741,7 @@ class SQLDaO
 
         // Add field
         if (!array_key_exists($field, $this->metadata)) {
-            throw new BadArgument(ts('No such field "%s"', $field));
+            throw new BadArgument(ts('No such field "%s".', $field));
         }
         $where_string .= ($this->metadata[$field])['uniq_name'];
 
@@ -708,7 +769,7 @@ class SQLDaO
                 $where_string .= ' LIKE ';
                 break;
             default:
-                throw new BadArgument(ts('Invalid operator "%s"', $this->tableName));
+                throw new BadArgument(ts('Invalid operator "%s".', $this->tableName));
                 break;
         }
 
@@ -726,7 +787,7 @@ class SQLDaO
      *
      * @param string $from From value
      *
-     * @return $this fluent method
+     * @return $this fluent interface
      */
     public function addFrom(string $from): SQLDaO
     {
@@ -744,9 +805,9 @@ class SQLDaO
     /**
      * Adds order by clause.
      *
-     * @param array $params
+     * @param array $params Fields to include in order by
      *
-     * @return $this fluent method
+     * @return $this fluent interface
      */
     public function addOrderBy(array $params): SQLDaO
     {
@@ -777,7 +838,7 @@ class SQLDaO
      *
      * @param string $limit Limit value
      *
-     * @return $this fluent method
+     * @return $this fluent interface
      */
     public function addLimit(string $limit): SQLDaO
     {
@@ -797,7 +858,7 @@ class SQLDaO
      *
      * @param string $offset Offset value
      *
-     * @return $this fluent method
+     * @return $this fluent interface
      */
     public function addOffset(string $offset): SQLDaO
     {
@@ -817,7 +878,7 @@ class SQLDaO
      *
      * @param string $bind Bind string (int: i, string: s)
      *
-     * @return $this fluent method
+     * @return $this fluent interface
      */
     protected function bind(string $bind): SQLDaO
     {
@@ -831,8 +892,8 @@ class SQLDaO
      *
      * @return mixed
      *
-     * @throws SQLException
-     * @throws FileMissing
+     * @throws \Inventory\Core\Exception\FileMissing
+     * @throws \Inventory\Core\Exception\SQLException
      */
     public function execute()
     {
@@ -856,7 +917,7 @@ class SQLDaO
         ];
 
         // DataBase
-        $db = Inv::database();
+        $db = Service::database();
         if ($this->queryType == 'select') {
             return $db->export($params);
         } else {
@@ -920,6 +981,6 @@ class SQLDaO
      */
     public function getInsertID(): int
     {
-        return Inv::database()->getLastID();
+        return Service::database()->getLastID();
     }
 }

@@ -39,19 +39,6 @@ use Inventory\Core\Utils;
 class Login extends Page
 {
     /**
-     * Login form
-     *
-     * @var \Inventory\Form\Login|null
-     */
-    private \Inventory\Form\Login $form;
-
-    public function __construct()
-    {
-        parent::__construct();
-        $this->form = new \Inventory\Form\Login();
-    }
-
-    /**
      * Validate input
      *
      * @return void
@@ -73,10 +60,12 @@ class Login extends Page
      * Assemble page
      *
      * @return void
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
      */
     protected function assemble(): void
     {
-        $this->addTemplateRegion('body', Utils::getPathFromClass($this));
-        $this->addTemplateRegion('form', Utils::getPathFromClass($this->form));
+        $this->setTemplateRegion('body', Utils::getPathFromClass(self::class));
+        $this->setTemplateRegion('form', Utils::getPathFromClass(\Inventory\Form\Login::class));
     }
 }

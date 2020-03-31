@@ -2,14 +2,14 @@
 # Exclude files
 /public/cache/templates_compile/*
 /public/cache/templates_cache/*
-# Keep the directories though
+# Keep the directories itself
 !/public/cache/templates_compile/.gitkeep
 !/public/cache/templates_cache/.gitkeep
 
 ## Vendor files (3rd party code)
-# Exclude Vendor dir
+# Exclude vendor dir
 /vendor/
-# Keep production dependencies however
+# Keep production dependencies
 !/vendor/composer/
 !/vendor/smarty/
 !/vendor/autoload.php

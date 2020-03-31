@@ -24,10 +24,9 @@
 
 namespace Inventory\Core\Routing;
 
-use Inventory\Core\Exception\ExceptionHandler;
-use Inventory\Core\Exception\InvalidRequest;
 use Inventory\Page\Index;
 use Inventory\Page\Login;
+use Inventory\Page\Logout;
 
 /**
  * Router
@@ -52,94 +51,123 @@ class Router
      *
      * @var array
      */
-    private array $route;
+    private ?array $route;
+
+    /**
+     * Controller class name to handle request
+     *
+     * @var string|null
+     */
+    private ?string $controllerClass;
 
     /**
      * Router constructor.
-     */
-    public function __construct()
-    {
-        $this->getRouteFromURL();
-    }
-
-    /**
-     * Route
      *
-     * @return void
+     * @param \Inventory\Core\Routing\Request $request HTTP request
      */
-    private function route(): void
+    public function __construct(Request $request)
     {
-        // Default route
-        if (empty($this->route[0])) {
-            $controller = new Index();
-            $controller->run();
-            exit;
-        }
-
-        // Routing
-        switch (array_shift($this->route)) {
-            case 'log-in':
-                $controller = new \Inventory\Form\Login($this->request->requestData);
-                break;
-            case 'log-out':
-                Security::logOut();
-                header('Location: /');
-                exit;
-            case 'login':
-                $controller = new Login();
-                break;
-            default:
-                $controller = new Index();
-        }
-
-        $controller->run();
-        exit;
+        $this->request = $request;
+        $this->route = null;
+        $this->controllerClass = null;
     }
 
     /**
      * Get route info from URL
      *
      * @return void
+     *
+     * @throws \Inventory\Core\Exception\InvalidRequest
      */
-    private function getRouteFromURL(): void
+    private function getRouteInfo(): void
     {
-        try {
-            $this->request = new Request();
-            $this->request->parse();
-            $this->route = $this->request->route;
-        } catch (InvalidRequest $ex) {
-            ExceptionHandler::handleInvalidRequest($ex);
+        // Parse URL
+        $this->request->parse();
+
+        // Get route
+        $this->route = $this->request->getRoute();
+    }
+
+    /**
+     * Login
+     *
+     * @return string
+     */
+    private function routeLogin(): string
+    {
+        // User logged in, proceed
+        if (Security::isAuthorized()) {
+            return '';
+        }
+
+        // Not logged in, but logging in right now
+        if ($this->route[0] == 'log-in') {
+            return \Inventory\Form\Login::class;
+        }
+
+        // Not logged in AND not logging in now --> show login page
+        return Login::class;
+    }
+
+    /**
+     * Routing
+     *
+     * @return string
+     */
+    private function route(): string
+    {
+        // Routing
+        switch (array_shift($this->route)) {
+            case 'log-in':
+                return \Inventory\Form\Login::class;
+            case 'log-out':
+                return Logout::class;
+            case 'login':
+                return Login::class;
+            default:
+                return Index::class;
         }
     }
 
     /**
-     * Check if user is logged in
+     * Get request
      *
-     * @return void
+     * @return \Inventory\Core\Routing\Request
      */
-    private function isLoggedIn(): void
+    public function getRequest(): Request
     {
-        // Security
-        if (!Security::isAuthorized()) {
-            if ($this->route[0] == 'log-in') {
-                // Not logged in, but logging in right now
-                $controller = new \Inventory\Form\Login($this->request->requestData);
-                $controller->run();
-            } else {
-                // Not logging in, show login page
-                $controller = new Login();
-                $controller->run();
-            }
-            exit;
-        }
+        return $this->request;
+    }
+
+    /**
+     * Get controller class
+     *
+     * @return string|null
+     */
+    public function getControllerClass(): ?string
+    {
+        return $this->controllerClass;
     }
 
     /**
      * Runs router
+     *
+     * @throws \Inventory\Core\Exception\InvalidRequest
      */
-    public function run()
+    public function run(): void
     {
-        $this->isLoggedIn();
-        $this->route();
+        // Parse request
+        $this->getRouteInfo();
+
+        // Check if user logged in or logging in now
+        $class = $this->routeLogin();
+        if ($class) {
+            $this->controllerClass = $class;
+
+            return;
+        }
+
+        // User logged in --> Standard routing
+        $this->controllerClass = $this->route();
     }
 }

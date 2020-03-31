@@ -36,6 +36,22 @@ namespace Inventory\Core\Routing;
 class Security
 {
     /**
+     * Initialize session
+     *
+     * @return void
+     */
+    public static function initSession(): void
+    {
+        // Start session
+        session_start();
+
+        // Abort script if session not loaded
+        if (session_status() != PHP_SESSION_ACTIVE) {
+            exit(ts('Session start failed.'));
+        }
+    }
+
+    /**
      * Is user logged in
      *
      * @return bool

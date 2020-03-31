@@ -38,17 +38,17 @@ class Utils
     /**
      * Gets Path from Class name (Namespace -> Path)
      *
-     * @param $class
+     * @param mixed $class Object to query
      *
      * @return string
      */
     public static function getPathFromClass($class)
     {
         // Get FQN Class Name
-        $path = get_class($class);
+        // $path = get_class($class);
 
         // Change '\' to '/'
-        $path = str_replace('\\', '/', $path);
+        $path = str_replace('\\', '/', $class);
 
         // Remove leading namespace (Inventory)
         $path = substr($path, 10);

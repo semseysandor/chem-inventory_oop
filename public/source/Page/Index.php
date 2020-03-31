@@ -43,20 +43,13 @@ use Inventory\Entity\Compound\BAO\Compound;
 class Index extends Page
 {
     /**
-     * Index constructor.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
      * Process input
      *
      * @return void
      */
     protected function process(): void
     {
+        // TODO: implement more
         try {
             $bao = new Compound();
             $this->setTemplateVar('compounds', $bao->getAll(['id', 'name']));
@@ -83,10 +76,12 @@ class Index extends Page
      * Assemble page
      *
      * @return void
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
      */
     protected function assemble(): void
     {
-        $this->addTemplateRegion('body', Utils::getPathFromClass($this));
+        $this->setTemplateRegion('body', Utils::getPathFromClass(self::class));
 
         $this->setTemplateVar('user', $_SESSION['USER_NAME']);
     }

@@ -22,27 +22,83 @@
  +---------------------------------------------------------------------+
  */
 
-namespace Inventory\Core\Exception;
+namespace Inventory\Testing\Framework;
+
+use PHPUnit\Framework\TestCase;
 
 /**
- * Bad Argument Exception
+ * Base Test Case
  *
- * @category Exception
+ * @coversNothing
+ *
+ * @category Test
  * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class BadArgument extends BaseException
+class BaseTestCase extends TestCase
 {
     /**
-     * Bad Argument constructor.
-     *
-     * @param string|null $context Context in which exception appeared
+     * Test string
      */
-    public function __construct(string $context = null)
+    protected const TEST_STRING = 'monkey';
+
+    /**
+     * Test array
+     */
+    protected const TEST_ARRAY = [
+      1,
+      'monkeys' => ['orangutan', 'gorilla', 'chimpanzee'],
+      'cat',
+      'colonel',
+      true,
+      [
+        'funky' => 'monkey',
+        'terrace' => 4,
+        'dog' => false,
+      ],
+    ];
+
+    /**
+     * FQN of class under test
+     *
+     * @var string
+     */
+    protected string $testClass;
+
+    /**
+     * Instance of class under test
+     *
+     * @var mixed
+     */
+    protected $testObject;
+
+    /**
+     * Assert object is created
+     *
+     * @return void
+     */
+    protected function assertObjectCreated(): void
     {
-        parent::__construct($context);
-        $this->message = ts("Bad argument received.");
+        self::assertInstanceOf($this->testClass, $this->testObject, sprintf('"%s" not created.', $this->testClass));
+    }
+
+    /**
+     * Assert property is initialized
+     *
+     * @param string $name Name of property
+     * @param null $default Default value
+     *
+     * @return void
+     */
+    protected function assertPropertyInitialized(string $name, $default = null): void
+    {
+        self::assertClassHasAttribute($name, $this->testClass, sprintf('Property "%s" is missing.', $name));
+        self::assertSame(
+          $default,
+          $this->testObject->$name,
+          sprintf('Default value of "%s" is not as expected.', $name)
+        );
     }
 }

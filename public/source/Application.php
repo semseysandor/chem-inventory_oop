@@ -24,10 +24,14 @@
 
 namespace Inventory;
 
+use Inventory\Core\Containers\Service;
+use Inventory\Core\Controller\BaseController;
+use Inventory\Core\Renderer;
 use Inventory\Core\Routing\Router;
+use Inventory\Core\Routing\Security;
 
 /**
- * Application
+ * Application Class
  *
  * @category Main
  * @package  chem-inventory_oop
@@ -38,37 +42,83 @@ use Inventory\Core\Routing\Router;
 class Application
 {
     /**
+     * Router
+     *
+     * @var \Inventory\Core\Routing\Router|null
+     */
+    private ?Router $router;
+
+    /**
+     * Controller
+     *
+     * @var \Inventory\Core\Controller\BaseController|null
+     */
+    private ?BaseController $controller;
+
+    /**
+     * Renderer
+     *
+     * @var \Inventory\Core\Renderer|null
+     */
+    private ?Renderer $renderer;
+
+    /**
      * Application constructor.
      */
     public function __construct()
     {
-        $this->initSession();
+        $this->router = null;
+        $this->controller = null;
+        $this->renderer = null;
     }
 
     /**
-     * Initialize session
+     * Routing
      *
-     * @return void
+     * @throws \Inventory\Core\Exception\InvalidRequest
      */
-    private function initSession(): void
+    private function routing()
     {
-        // Start session
-        session_start();
-
-        // Abort script if session not loaded
-        if (session_status() != PHP_SESSION_ACTIVE) {
-            exit(ts('Session start failed.'));
-        }
+        // Create & run router
+        $this->router = Service::factory()->createRouter();
+        $this->router->run();
     }
 
     /**
-     * Run application
+     * Controlling
      *
-     * @return void
+     * @throws \Inventory\Core\Exception\BadArgument
+     * @throws \SmartyException
      */
-    public function run(): void
+    private function controlling()
     {
-        $router = new Router();
-        $router->run();
+        // Get request
+        $request = $this->router->getRequest();
+
+        // Get selected controller
+        $controller_class = $this->router->getControllerClass();
+
+        // Create & run controller
+        $this->controller = Service::factory()->createController($controller_class, $request);
+        $this->controller->run();
+    }
+
+    /**
+     * Run Application
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
+     * @throws \Inventory\Core\Exception\InvalidRequest
+     * @throws \SmartyException
+     */
+    public function run()
+    {
+        // Init session
+        Security::initSession();
+
+        // Routing
+        $this->routing();
+
+        // Controlling
+        $this->controlling();
     }
 }

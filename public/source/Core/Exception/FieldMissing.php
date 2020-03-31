@@ -43,6 +43,6 @@ class FieldMissing extends BaseException
     public function __construct(string $context = null)
     {
         parent::__construct($context);
-        $this->message = ts("A field is missing");
+        $this->message = ts("A field is missing.");
     }
 }

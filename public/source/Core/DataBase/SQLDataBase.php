@@ -24,9 +24,8 @@
 
 namespace Inventory\Core\DataBase;
 
-use Inventory\Core\Exception\FileMissing;
 use Inventory\Core\Exception\SQLException;
-use Inventory\Inv;
+use Inventory\Core\Settings;
 use mysqli;
 use mysqli_driver;
 use mysqli_stmt;
@@ -62,14 +61,14 @@ class SQLDataBase implements IDataBase
      *
      * @var mysqli
      */
-    private mysqli $link;
+    private ?mysqli $link;
 
     /**
      * MySql driver.
      *
      * @var mysqli_driver
      */
-    private mysqli_driver $driver;
+    private ?mysqli_driver $driver;
 
     /**
      * Query string.
@@ -94,31 +93,33 @@ class SQLDataBase implements IDataBase
 
     /**
      * SQLDataBase constructor.
-     *
-     * @throws SQLException
-     * @throws FileMissing
      */
     private function __construct()
     {
-        $this->initialize();
+        $this->link = null;
+        $this->driver = null;
+        $this->query = null;
+        $this->bind = null;
+        $this->values = null;
     }
 
     /**
      * Make a connection to the DataBase.
      *
+     * @param \Inventory\Core\Settings $settings
+     *
      * @return void
      *
-     * @throws SQLException
-     * @throws FileMissing
+     * @throws \Inventory\Core\Exception\SQLException
      */
-    private function initialize(): void
+    private function initialize(Settings $settings): void
     {
         // Get configs
-        $db_host = Inv::settings()->getSetting('db', 'host');
-        $db_user = Inv::settings()->getSetting('db', 'user');
-        $db_pass = Inv::settings()->getSetting('db', 'pass');
-        $db_name = Inv::settings()->getSetting('db', 'name');
-        $db_port = Inv::settings()->getSetting('db', 'port');
+        $db_host = $settings->getSetting('db', 'host');
+        $db_user = $settings->getSetting('db', 'user');
+        $db_pass = $settings->getSetting('db', 'pass');
+        $db_name = $settings->getSetting('db', 'name');
+        $db_port = $settings->getSetting('db', 'port');
 
         // Open a connection
         $this->link = new mysqli($db_host, $db_user, $db_pass, $db_name, $db_port);
@@ -140,6 +141,12 @@ class SQLDataBase implements IDataBase
      * Initialize a query.
      *
      * @param array $params Query parameters
+     * $params =
+     *   [
+     *    query  => 'query string'
+     *    bind   => 'sii'
+     *    values => [value_1, value_2, value_3]
+     *   ]
      *
      * @return void
      */
@@ -153,15 +160,17 @@ class SQLDataBase implements IDataBase
     /**
      * Singleton.
      *
+     * @param \Inventory\Core\Settings $settings
+     *
      * @return $this
      *
-     * @throws SQLException
-     * @throws FileMissing
+     * @throws \Inventory\Core\Exception\SQLException
      */
-    public static function singleton(): SQLDataBase
+    public static function singleton(Settings $settings): SQLDataBase
     {
         if (self::$instance === null) {
             self::$instance = new SQLDataBase();
+            self::$instance->initialize($settings);
         }
 
         return self::$instance;
@@ -171,12 +180,18 @@ class SQLDataBase implements IDataBase
      * Imports data to the DataBase.
      *
      * @param array $params Data and metadata
+     * $params =
+     *   [
+     *    query  => 'query string'
+     *    bind   => 'sii'
+     *    values => [value_1, value_2, value_3]
+     *   ]
      *
-     * @return mixed
+     * @return int
      *
      * @throws SQLException
      */
-    public function import(array $params)
+    public function import(array $params): int
     {
         // Init query
         $this->initQuery($params);
@@ -186,23 +201,30 @@ class SQLDataBase implements IDataBase
             return null;
         }
 
+        // No bind or values supplied -> simple query
         if (empty($this->bind) || empty($this->values)) {
-            // No bind or values supplied -> simple query
+            // Execute query
             $result = $this->link->query($this->query);
 
+            // Check results
             if (!$result) {
                 throw new SQLException($this->query);
             }
-        } else {
-            // Otherwise prepared statement
-            $stmt = new mysqli_stmt($this->link, $this->query);
-            $stmt->bind_param($this->bind, ...$this->values);
 
-            if (!($stmt->execute())) {
-                throw new SQLException($this->query);
-            }
+            // Return number of affected rows
+            return $this->link->affected_rows;
         }
 
+        // Otherwise prepared statement
+        $stmt = new mysqli_stmt($this->link, $this->query);
+        $stmt->bind_param($this->bind, ...$this->values);
+
+        // Execute query and check for results
+        if (!($stmt->execute())) {
+            throw new SQLException($this->query);
+        }
+
+        // Return number of affected rows
         return $this->link->affected_rows;
     }
 
@@ -210,6 +232,12 @@ class SQLDataBase implements IDataBase
      * Exports data from the DataBase.
      *
      * @param array $params Data and metadata
+     * $params =
+     *   [
+     *    query  => 'query string'
+     *    bind   => 'sii'
+     *    values => [value_1, value_2, value_3]
+     *   ]
      *
      * @return mixed
      *

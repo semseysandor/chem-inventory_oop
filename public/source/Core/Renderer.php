@@ -25,10 +25,7 @@
 namespace Inventory\Core;
 
 use Inventory\Core\Containers\Template;
-use Inventory\Core\Exception\BadArgument;
-use Inventory\Core\Exception\ExceptionHandler;
 use Smarty;
-use SmartyException;
 
 /**
  * Renderer
@@ -57,6 +54,11 @@ class Renderer
     private const TEMPLATE_CACHE_DIR = ROOT.'/cache/templates_cache/';
 
     /**
+     * Template file extension
+     */
+    private const FILE_EXT = '.tpl';
+
+    /**
      * Template data container
      *
      * @var \Inventory\Core\Containers\Template
@@ -73,20 +75,13 @@ class Renderer
     /**
      * Renderer constructor.
      *
-     * @param \Inventory\Core\Containers\Template $container
-     *
+     * @param \Smarty $engine Template engine
+     * @param \Inventory\Core\Containers\Template $temp_cont Template container
      */
-    public function __construct(Template $container)
+    public function __construct(Smarty $engine, Template $temp_cont)
     {
-        try {
-            if (empty($container)) {
-                throw new BadArgument(ts('Template data missing for rendering'));
-            }
-            $this->templateContainer = $container;
-            $this->initTemplateEngine();
-        } catch (BadArgument $ex) {
-            ExceptionHandler::handleRendererErrors($ex);
-        }
+        $this->templateContainer = $temp_cont;
+        $this->engine = $engine;
     }
 
     /**
@@ -96,38 +91,58 @@ class Renderer
      */
     private function initTemplateEngine(): void
     {
-        $this->engine = new Smarty();
-
+        // Set default template directory
         $this->engine->setTemplateDir(self::TEMPLATE_DIR);
+
+        // Set compiled templates directory
         $this->engine->setCompileDir(self::TEMPLATE_COMPILE_DIR);
+
+        // Set cache directory
         $this->engine->setCacheDir(self::TEMPLATE_CACHE_DIR);
+
+        // TODO: development setting
         $this->engine->clearAllCache();
     }
 
     /**
-     * Assign variables to template
+     * Load variables to template
      *
      * @return void
      */
-    private function assignTemplateVars(): void
+    public function loadTemplateVars(): void
     {
-        if (empty($this->templateContainer->vars)) {
+        // Get variables from template container
+        $vars = $this->templateContainer->getVars();
+
+        // Check if they are set
+        if (empty($vars)) {
             return;
         }
-        foreach ($this->templateContainer->vars as $name => $value) {
+
+        // Load variables to template
+        foreach ($vars as $name => $value) {
             $this->engine->assign($name, $value);
         }
     }
 
     /**
-     * Set template files
+     * Load template files
      *
      * @return void
      */
-    private function setTemplateFiles(): void
+    private function loadTemplateFiles(): void
     {
-        foreach ($this->templateContainer->regions as $name => $value) {
-            $this->engine->assign('_template_'.$name, $value.'.tpl');
+        // Get template files from container
+        $regions = $this->templateContainer->getRegions();
+
+        // Check if they are set
+        if (empty($regions)) {
+            return;
+        }
+
+        // Load template files to engine
+        foreach ($regions as $name => $value) {
+            $this->engine->assign('_template_'.$name, $value.self::FILE_EXT);
         }
     }
 
@@ -140,7 +155,10 @@ class Renderer
      */
     private function render(): void
     {
-        $base_template = $this->templateContainer->base.'.tpl';
+        // Set base template file
+        $base_template = ($this->templateContainer->getBase()).self::FILE_EXT;
+
+        // Display template
         $this->engine->display($base_template);
     }
 
@@ -148,15 +166,21 @@ class Renderer
      * Renders a template in HTML
      *
      * @return void
+     *
+     * @throws \SmartyException
      */
     public function run(): void
     {
-        try {
-            $this->assignTemplateVars();
-            $this->setTemplateFiles();
-            $this->render();
-        } catch (SmartyException $ex) {
-            ExceptionHandler::handleSmarty($ex);
-        }
+        // Init template engine
+        $this->initTemplateEngine();
+
+        // Load template variables to engine
+        $this->loadTemplateVars();
+
+        // Load templates to engine
+        $this->loadTemplateFiles();
+
+        // Render page
+        $this->render();
     }
 }

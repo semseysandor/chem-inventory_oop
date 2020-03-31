@@ -22,27 +22,12 @@
  +---------------------------------------------------------------------+
  */
 
-namespace Inventory\Core\Exception;
+namespace Inventory\Testing\Framework;
 
-/**
- * Bad Argument Exception
- *
- * @category Exception
- * @package  chem-inventory_oop
- * @author   Sandor Semsey <semseysandor@gmail.com>
- * @license  MIT https://choosealicense.com/licenses/mit/
- * php version 7.4
- */
-class BadArgument extends BaseException
+trait Headless
 {
-    /**
-     * Bad Argument constructor.
-     *
-     * @param string|null $context Context in which exception appeared
-     */
-    public function __construct(string $context = null)
+    protected function initDataBase()
     {
-        parent::__construct($context);
-        $this->message = ts("Bad argument received.");
     }
+
 }

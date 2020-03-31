@@ -40,21 +40,21 @@ class Template
      *
      * @var string|null
      */
-    public ?string $base;
+    private ?string $base;
 
     /**
      * Template regions
      *
      * @var array|null
      */
-    public ?array $regions;
+    private ?array $regions;
 
     /**
      * Template variables
      *
      * @var array|null
      */
-    public ?array $vars;
+    private ?array $vars;
 
     /**
      * Template Container constructor.
@@ -64,5 +64,79 @@ class Template
         $this->base = null;
         $this->regions = null;
         $this->vars = null;
+    }
+
+    /**
+     * Gets base template
+     *
+     * @return string|null
+     */
+    public function getBase(): ?string
+    {
+        return $this->base;
+    }
+
+    /**
+     * Sets base template
+     *
+     * @param string|null $base Name of base template file
+     *
+     * @return void
+     */
+    public function setBase(?string $base): void
+    {
+        $this->base = $base;
+    }
+
+    /**
+     * Get template regions
+     *
+     * @return array|null
+     */
+    public function getRegions(): ?array
+    {
+        return $this->regions;
+    }
+
+    /**
+     * Set template region
+     *
+     * @param string $region Name of region (header, body, form, etc...)
+     * @param string $template Template file name
+     *
+     * @return void
+     */
+    public function setRegions(string $region, string $template): void
+    {
+        if (empty($region)) {
+            return;
+        }
+        $this->regions[$region] = $template;
+    }
+
+    /**
+     * Gets template variables
+     *
+     * @return array|null
+     */
+    public function getVars(): ?array
+    {
+        return $this->vars;
+    }
+
+    /**
+     * Set template variables
+     *
+     * @param string $name Variable name
+     * @param mixed $value Variable value
+     *
+     * @return void
+     */
+    public function setVars(string $name, $value): void
+    {
+        if (empty($name)) {
+            return;
+        }
+        $this->vars[$name] = $value;
     }
 }

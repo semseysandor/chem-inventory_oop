@@ -43,6 +43,6 @@ class InvalidRequest extends BaseException
     public function __construct(string $context = null)
     {
         parent::__construct($context);
-        $this->message = ts("Invalid Request");
+        $this->message = ts("Invalid request received.");
     }
 }
