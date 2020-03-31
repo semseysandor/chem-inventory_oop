@@ -26,6 +26,7 @@ namespace Inventory;
 
 use Inventory\Core\Containers\Service;
 use Inventory\Core\Controller\BaseController;
+use Inventory\Core\IComponent;
 use Inventory\Core\Renderer;
 use Inventory\Core\Routing\Router;
 use Inventory\Core\Routing\Security;
@@ -39,7 +40,7 @@ use Inventory\Core\Routing\Security;
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class Application
+class Application implements IComponent
 {
     /**
      * Router

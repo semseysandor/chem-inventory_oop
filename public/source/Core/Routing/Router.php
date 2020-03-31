@@ -24,6 +24,7 @@
 
 namespace Inventory\Core\Routing;
 
+use Inventory\Core\IComponent;
 use Inventory\Page\Index;
 use Inventory\Page\Login;
 use Inventory\Page\Logout;
@@ -37,7 +38,7 @@ use Inventory\Page\Logout;
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class Router
+class Router implements IComponent
 {
     /**
      * Request

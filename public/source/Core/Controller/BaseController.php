@@ -26,6 +26,7 @@ namespace Inventory\Core\Controller;
 
 use Inventory\Core\Containers\Template;
 use Inventory\Core\Exception\BadArgument;
+use Inventory\Core\IComponent;
 use Inventory\Core\Renderer;
 use Inventory\Core\Routing\Request;
 
@@ -38,7 +39,7 @@ use Inventory\Core\Routing\Request;
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-abstract class BaseController
+abstract class BaseController implements IComponent
 {
     /**
      * HTTP request

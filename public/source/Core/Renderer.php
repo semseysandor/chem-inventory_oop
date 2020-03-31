@@ -36,7 +36,7 @@ use Smarty;
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class Renderer
+class Renderer implements IComponent
 {
     /**
      * Templates directory
