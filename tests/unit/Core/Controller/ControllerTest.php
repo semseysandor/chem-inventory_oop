@@ -26,17 +26,23 @@ namespace Inventory\Test\Unit\Core\Controller;
 
 use Inventory\Core\Containers\Template;
 use Inventory\Core\Controller\BaseController;
+use Inventory\Core\Controller\Form;
+use Inventory\Core\Controller\Page;
 use Inventory\Core\Exception\BadArgument;
 use Inventory\Core\Renderer;
 use Inventory\Core\Routing\Request;
 use Inventory\Test\Framework\BaseTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Smarty;
 
 /**
  * BaseControllerTest Class
  *
  * @covers \Inventory\Core\Controller\BaseController
+ * @covers \Inventory\Core\Controller\Form
+ * @covers \Inventory\Core\Controller\Page
+ * @uses   \Inventory\Core\Containers\Template
  * @group minimal
  *
  * @category Test
@@ -45,7 +51,7 @@ use Smarty;
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class BaseControllerTest extends BaseTestCase
+class ControllerTest extends BaseTestCase
 {
     /**
      * Test object
@@ -53,6 +59,27 @@ class BaseControllerTest extends BaseTestCase
      * @var \PHPUnit\Framework\MockObject\MockObject
      */
     protected MockObject $testObject;
+
+    /**
+     * Test Template
+     *
+     * @var \Inventory\Core\Containers\Template
+     */
+    protected Template $template;
+
+    /**
+     * Mock request
+     *
+     * @var \PHPUnit\Framework\MockObject\Stub
+     */
+    protected Stub $request;
+
+    /**
+     * Mock engine
+     *
+     * @var \PHPUnit\Framework\MockObject\Stub
+     */
+    protected Stub $engine;
 
     /**
      * Mock renderer
@@ -69,21 +96,28 @@ class BaseControllerTest extends BaseTestCase
         parent::setUp();
 
         // Create stubs
-        $request = $this->createStub(Request::class);
-        $template = $this->createStub(Template::class);
-        $engine = $this->createStub(Smarty::class);
+        $this->request = $this->createStub(Request::class);
+        $this->template = new Template();
+        $this->engine = $this->createStub(Smarty::class);
 
         // Mock renderer
         $this->renderer = $this
           ->getMockBuilder(Renderer::class)
-          ->setConstructorArgs([$engine, $template])
+          ->setConstructorArgs([$this->engine, $this->template])
           ->getMock();
+    }
 
-        // Mock test class
-        $this->testClass = BaseController::class;
+    /**
+     * Mocks test object
+     *
+     * @param string $class
+     */
+    protected function mockTestObject(string $class)
+    {
+        $this->testClass = $class;
         $this->testObject = $this
-          ->getMockBuilder(BaseController::class)
-          ->setConstructorArgs([$request, $template, $this->renderer])
+          ->getMockBuilder($class)
+          ->setConstructorArgs([$this->request, $this->template, $this->renderer])
           ->getMockForAbstractClass();
     }
 
@@ -92,6 +126,9 @@ class BaseControllerTest extends BaseTestCase
      */
     public function testRunStartsRenderer()
     {
+        // Mock test class
+        $this->mockTestObject(BaseController::class);
+
         self::assertInstanceOf($this->testClass, $this->testObject);
 
         $this->renderer->expects(self::once())->method('run');
@@ -105,6 +142,9 @@ class BaseControllerTest extends BaseTestCase
      */
     public function testEmptyStringThrowsExceptionAtBaseTemplate()
     {
+        // Mock test class
+        $this->mockTestObject(BaseController::class);
+
         $this->expectException(BadArgument::class);
         $this->getProtectedMethod($this->testObject, 'setBaseTemplate', [self::STRING_EMPTY]);
     }
@@ -116,6 +156,9 @@ class BaseControllerTest extends BaseTestCase
      */
     public function testEmptyStringThrowsExceptionAtTemplateRegion()
     {
+        // Mock test class
+        $this->mockTestObject(BaseController::class);
+
         $this->expectException(BadArgument::class);
         $this->getProtectedMethod($this->testObject, 'setTemplateVar', [self::STRING_EMPTY, self::STRING]);
     }
@@ -127,7 +170,44 @@ class BaseControllerTest extends BaseTestCase
      */
     public function testEmptyStringThrowsExceptionAtTemplateVariable()
     {
+        // Mock test class
+        $this->mockTestObject(BaseController::class);
+
         $this->expectException(BadArgument::class);
         $this->getProtectedMethod($this->testObject, 'setTemplateRegion', [self::STRING_EMPTY, self::STRING]);
+    }
+
+    /**
+     * Test controller is initialized
+     *
+     * @dataProvider provideClass
+     *
+     * @param string $class
+     * @param mixed $base_template
+     *
+     * @throws \ReflectionException
+     */
+    public function testControllerIsInitialized(string $class, $base_template)
+    {
+        // Mock test class
+        $this->mockTestObject($class);
+
+        self::assertInstanceOf($this->testClass, $this->testObject);
+        $template = $this->getProtectedProperty($this->testObject, 'templateContainer');
+
+        self::assertSame($base_template, $template->getBase());
+    }
+
+    /**
+     * @return array
+     */
+    public function provideClass(): array
+    {
+        return [
+          'base' => [BaseController::class, null],
+          'form' => [Form::class, 'form'],
+          'page' => [Page::class, 'page'],
+
+        ];
     }
 }
