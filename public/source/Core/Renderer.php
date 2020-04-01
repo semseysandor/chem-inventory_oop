@@ -63,7 +63,7 @@ class Renderer implements IComponent
      *
      * @var \Inventory\Core\Containers\Template
      */
-    private Template $templateContainer;
+    private ?Template $templateContainer;
 
     /**
      * Template engine

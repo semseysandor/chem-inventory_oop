@@ -93,7 +93,7 @@ class ExceptionHandlerTest extends BaseTestCase
      */
     public function testFatalErrorCallsExit()
     {
-        $this->app->expects(self::exactly(2))->method('exit')->willReturn(true);
+        $this->app->expects(self::exactly(2))->method('exit');#->willReturn(true);
         $this->suppressOutput();
 
         $this->exHandler->handleFatalError();

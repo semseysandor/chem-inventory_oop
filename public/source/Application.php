@@ -100,9 +100,17 @@ class Application implements IComponent
      */
     private function boot()
     {
+        // First the exception handler
+        $this->exHandler=new ExceptionHandler($this);
+
+        // Second the factory
         $this->factory=new Factory();
+
+        // Third the renderer
         $this->renderer=$this->factory->createRenderer();
-        $this->exHandler=new ExceptionHandler($this, $this->renderer);
+
+        // Now renderer is ready --> give to exception handler
+        $this->exHandler->setRenderer($this->renderer);
     }
 
     /**
@@ -159,6 +167,11 @@ class Application implements IComponent
         } catch (BadArgument | InvalidRequest $ex) {
             $this->exHandler->handleFatalError();
         } catch (SmartyException $ex) {
+            $this->exHandler->handleRendererError();
+        } catch (\Exception $ex) {
+            echo "kakker";
+        } catch (\Error $ex) {
+            echo "gebasz";
             $this->exHandler->handleRendererError();
         }
     }

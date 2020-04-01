@@ -65,11 +65,21 @@ class ExceptionHandler
     }
 
     /**
+     * Set renderer
+     *
+     * @param \Inventory\Core\Renderer $renderer
+     */
+    public function setRenderer(Renderer $renderer)
+    {
+        $this->renderer=$renderer;
+    }
+
+    /**
      * Handles renderer error
      */
     public function handleRendererError(): void
     {
-        echo "renderer error";
+        $this->displayStaticError();
         $this->app->exit();
     }
 
@@ -90,5 +100,6 @@ class ExceptionHandler
      */
     protected function displayStaticError()
     {
+        echo "renderer error";
     }
 }
