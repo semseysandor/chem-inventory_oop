@@ -34,7 +34,6 @@ use Inventory\Core\IComponent;
 use Inventory\Core\Renderer;
 use Inventory\Core\Routing\Router;
 use Inventory\Core\Routing\Security;
-use SmartyException;
 
 /**
  * Application Class
@@ -164,15 +163,8 @@ class Application implements IComponent
 
             // Finish
             $this->exit();
-        } catch (BadArgument | InvalidRequest $ex) {
+        } catch (BadArgument | InvalidRequest | \Exception | \Error $ex) {
             $this->exHandler->handleFatalError();
-        } catch (SmartyException $ex) {
-            $this->exHandler->handleRendererError();
-        } catch (\Exception $ex) {
-            echo "kakker";
-        } catch (\Error $ex) {
-            echo "gebasz";
-            $this->exHandler->handleRendererError();
         }
     }
 

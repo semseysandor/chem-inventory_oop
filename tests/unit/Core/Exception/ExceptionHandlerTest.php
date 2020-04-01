@@ -103,7 +103,7 @@ class ExceptionHandlerTest extends BaseTestCase
     /**
      * Fatal error invokes display
      */
-    public function testFatalErrorInvokesDisplayError()
+    public function testFatalErrorInvokesDynamicDisplayError()
     {
         $this->renderer->expects(self::once())->method('displayError');
         $this->exHandler->handleFatalError();
@@ -114,9 +114,20 @@ class ExceptionHandlerTest extends BaseTestCase
      */
     public function testFatalRendererErrorInvokesStaticErrorDisplay()
     {
-
         $this->expectOutputString('renderer error');
         $this->exHandler->handleRendererError();
+    }
+
+    /**
+     * Exception handler decides which display mode
+     */
+    public function testExceptionHandlerDecideDynamicOrStaticDisplay()
+    {
+        // Expect static
+        $this->exHandler=new ExceptionHandler($this->app);
+        $this->expectOutputString('renderer error');
+        $this->exHandler->handleFatalError();
+
     }
 
     /**

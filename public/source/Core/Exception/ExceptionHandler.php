@@ -88,8 +88,14 @@ class ExceptionHandler
      */
     public function handleFatalError():void
     {
-        // Display error
-        $this->renderer->displayError();
+        // There is a renderer --> use it
+        if ($this->renderer) {
+            // Display error
+            $this->renderer->displayError();
+        } else {
+            // No renderer --> fallback to static error page
+            $this->displayStaticError();
+        }
 
         // Exit application
         $this->app->exit();
@@ -100,6 +106,10 @@ class ExceptionHandler
      */
     protected function displayStaticError()
     {
-        echo "renderer error";
+        // include ROOT.'/templates/static/error.html';
+
+        header('Content-Type: text; charset=UTF-8');
+        var_export($_SERVER);
+        echo "gebasz\n";
     }
 }
