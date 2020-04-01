@@ -36,13 +36,16 @@ namespace Inventory\Core\Exception;
 class InvalidRequest extends BaseException
 {
     /**
+     * Exception message
+     */
+    public const MESSAGE='Invalid request received.';
+    /**
      * Invalid Request constructor.
      *
      * @param string|null $context Context in which exception appeared
      */
     public function __construct(string $context = null)
     {
-        parent::__construct($context);
-        $this->message = ts("Invalid request received.");
+        parent::__construct($context, ts(self::MESSAGE));
     }
 }

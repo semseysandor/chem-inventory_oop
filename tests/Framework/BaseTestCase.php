@@ -119,10 +119,14 @@ class BaseTestCase extends TestCase
      */
     protected function getProtectedMethod(&$object, string $method, array $params = null)
     {
+        // Gets reflection
         $reflection = new ReflectionClass(get_class($object));
         $method = $reflection->getMethod($method);
+
+        // Set method accessible
         $method->setAccessible(true);
 
+        // Invoke method & return results
         return $method->invokeArgs($object, $params);
     }
 
@@ -138,10 +142,14 @@ class BaseTestCase extends TestCase
      */
     protected function getProtectedProperty(&$object, string $property)
     {
+        // Get reflection
         $reflection = new ReflectionClass(get_class($object));
         $property = $reflection->getProperty($property);
+
+        // Set property accessible
         $property->setAccessible(true);
 
+        // Return value
         return $property->getValue($object);
     }
 
@@ -154,12 +162,25 @@ class BaseTestCase extends TestCase
      *
      * @throws \ReflectionException
      */
-    protected function setProtectedProperty(&$object, string $property, $value)
+    protected function setProtectedProperty(&$object, string $property, $value):void
     {
+        // Get reflection
         $reflection = new ReflectionClass(get_class($object));
         $property = $reflection->getProperty($property);
+
+        // Set property accessible
         $property->setAccessible(true);
 
+        // Set value
         $property->setValue($object, $value);
+    }
+
+    /**
+     * Suppress output from test
+     */
+    protected function suppressOutput():void
+    {
+        $this->setOutputCallback(function () {
+        });
     }
 }

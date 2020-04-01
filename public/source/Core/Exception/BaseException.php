@@ -25,6 +25,7 @@
 namespace Inventory\Core\Exception;
 
 use Exception;
+use Throwable;
 
 /**
  * Base class for Exceptions
@@ -48,10 +49,13 @@ class BaseException extends Exception
      * Inventory Exception constructor.
      *
      * @param string|null $context Context of the exception
+     * @param string $message Exception message
+     * @param int $code Exception code
+     * @param Throwable $previous Previous exception
      */
-    public function __construct(string $context = null)
+    public function __construct(string $context = null, string $message = "", int $code = 0, Throwable $previous = null)
     {
-        parent::__construct();
+        parent::__construct($message, $code, $previous);
         $this->context = $context;
     }
 
@@ -67,12 +71,10 @@ class BaseException extends Exception
 
     /**
      * Prints debug information
-     *
-     * @return void
      */
     public function print(): void
     {
-        // todo: Exception string
+        // TODO: Exception string
         echo $this->getMessage()."\n".$this->getContext()."\n";
     }
 }

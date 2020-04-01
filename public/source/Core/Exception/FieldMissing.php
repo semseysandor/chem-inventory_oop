@@ -36,13 +36,16 @@ namespace Inventory\Core\Exception;
 class FieldMissing extends BaseException
 {
     /**
+     * Exception message
+     */
+    public const MESSAGE='A field is missing.';
+    /**
      * Field Missing constructor.
      *
      * @param string|null $context Context in which exception appeared
      */
     public function __construct(string $context = null)
     {
-        parent::__construct($context);
-        $this->message = ts("A field is missing.");
+        parent::__construct($context, ts(self::MESSAGE));
     }
 }

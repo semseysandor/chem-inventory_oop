@@ -36,13 +36,16 @@ namespace Inventory\Core\Exception;
 class FileMissing extends BaseException
 {
     /**
+     * Exception message
+     */
+    public const MESSAGE='A file is missing.';
+    /**
      * File Missing constructor.
      *
      * @param string|null $context Context in which exception appeared
      */
     public function __construct(string $context = null)
     {
-        parent::__construct($context);
-        $this->message = ts("A file is missing.");
+        parent::__construct($context, ts(self::MESSAGE));
     }
 }

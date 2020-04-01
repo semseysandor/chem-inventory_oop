@@ -78,7 +78,7 @@ class Renderer implements IComponent
      * @param \Smarty $engine Template engine
      * @param \Inventory\Core\Containers\Template $temp_cont Template container
      */
-    public function __construct(Smarty $engine, Template $temp_cont)
+    public function __construct(Smarty $engine, Template $temp_cont = null)
     {
         $this->templateContainer = $temp_cont;
         $this->engine = $engine;
@@ -86,8 +86,6 @@ class Renderer implements IComponent
 
     /**
      * Initialize template engine
-     *
-     * @return void
      */
     private function initTemplateEngine(): void
     {
@@ -106,8 +104,6 @@ class Renderer implements IComponent
 
     /**
      * Load variables to template
-     *
-     * @return void
      */
     public function loadTemplateVars(): void
     {
@@ -127,8 +123,6 @@ class Renderer implements IComponent
 
     /**
      * Load template files
-     *
-     * @return void
      */
     private function loadTemplateFiles(): void
     {
@@ -148,8 +142,6 @@ class Renderer implements IComponent
 
     /**
      * Render page
-     *
-     * @return void
      *
      * @throws \SmartyException
      */
@@ -182,5 +174,13 @@ class Renderer implements IComponent
 
         // Render page
         $this->render();
+    }
+
+    /**
+     * Displays error
+     */
+    public function displayError():void
+    {
+        // TODO: implement
     }
 }

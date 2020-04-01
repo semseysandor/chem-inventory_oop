@@ -36,13 +36,16 @@ namespace Inventory\Core\Exception;
 class BadArgument extends BaseException
 {
     /**
+     * Exception message
+     */
+    public const MESSAGE='Bad argument received.';
+    /**
      * Bad Argument constructor.
      *
      * @param string|null $context Context in which exception appeared
      */
     public function __construct(string $context = null)
     {
-        parent::__construct($context);
-        $this->message = ts("Bad argument received.");
+        parent::__construct($context, ts(self::MESSAGE));
     }
 }

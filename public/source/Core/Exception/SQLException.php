@@ -36,13 +36,16 @@ namespace Inventory\Core\Exception;
 class SQLException extends BaseException
 {
     /**
+     * Exception message
+     */
+    public const MESSAGE='SQL error occurred.';
+    /**
      * SQLException constructor.
      *
      * @param string|null $context Context in which exception appeared
      */
     public function __construct(string $context = null)
     {
-        parent::__construct($context);
-        $this->message = ts("SQL error occurred.");
+        parent::__construct($context, ts(self::MESSAGE));
     }
 }

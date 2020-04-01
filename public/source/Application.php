@@ -26,10 +26,15 @@ namespace Inventory;
 
 use Inventory\Core\Containers\Service;
 use Inventory\Core\Controller\BaseController;
+use Inventory\Core\Exception\BadArgument;
+use Inventory\Core\Exception\ExceptionHandler;
+use Inventory\Core\Exception\InvalidRequest;
+use Inventory\Core\Factory;
 use Inventory\Core\IComponent;
 use Inventory\Core\Renderer;
 use Inventory\Core\Routing\Router;
 use Inventory\Core\Routing\Security;
+use SmartyException;
 
 /**
  * Application Class
@@ -64,6 +69,20 @@ class Application implements IComponent
     private ?Renderer $renderer;
 
     /**
+     * Exception handler
+     *
+     * @var \Inventory\Core\Exception\ExceptionHandler|null
+     */
+    private ?ExceptionHandler $exHandler;
+
+    /**
+     * Factory
+     *
+     * @var \Inventory\Core\Factory|null
+     */
+    private ?Factory $factory;
+
+    /**
      * Application constructor.
      */
     public function __construct()
@@ -71,6 +90,19 @@ class Application implements IComponent
         $this->router = null;
         $this->controller = null;
         $this->renderer = null;
+        $this->exHandler = null;
+        $this->factory = null;
+    }
+
+    /**
+     * Boot up essential components
+     *
+     */
+    private function boot()
+    {
+        $this->factory=new Factory();
+        $this->renderer=$this->factory->createRenderer();
+        $this->exHandler=new ExceptionHandler($this, $this->renderer);
     }
 
     /**
@@ -97,29 +129,45 @@ class Application implements IComponent
         $request = $this->router->getRequest();
 
         // Get selected controller
-        $controller_class = $this->router->getControllerClass();
+        $class = $this->router->getControllerClass();
 
         // Create & run controller
-        $this->controller = Service::factory()->createController($controller_class, $request);
+        $this->controller = Service::factory()->createController($class, $request);
         $this->controller->run();
     }
 
     /**
      * Run Application
-     *
-     * @throws \Inventory\Core\Exception\BadArgument
-     * @throws \Inventory\Core\Exception\InvalidRequest
-     * @throws \SmartyException
      */
-    public function run()
+    public function run():void
     {
-        // Init session
-        Security::initSession();
+        try {
+            // Boot
+            $this->boot();
 
-        // Routing
-        $this->routing();
+            // Init session
+            Security::initSession();
 
-        // Controlling
-        $this->controlling();
+            // Routing
+            $this->routing();
+
+            // Controlling
+            $this->controlling();
+
+            // Finish
+            $this->exit();
+        } catch (BadArgument | InvalidRequest $ex) {
+            $this->exHandler->handleFatalError();
+        } catch (SmartyException $ex) {
+            $this->exHandler->handleRendererError();
+        }
+    }
+
+    /**
+     * Exit application
+     */
+    public function exit():void
+    {
+        exit;
     }
 }

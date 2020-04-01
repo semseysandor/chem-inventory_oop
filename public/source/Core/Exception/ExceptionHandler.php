@@ -24,7 +24,8 @@
 
 namespace Inventory\Core\Exception;
 
-use SmartyException;
+use Inventory\Application;
+use Inventory\Core\Renderer;
 
 /**
  * Exception Handler
@@ -38,43 +39,56 @@ use SmartyException;
 class ExceptionHandler
 {
     /**
-     * Handles Invalid Request exception
+     * Application
      *
-     * @param \Inventory\Core\Exception\InvalidRequest $ex
-     *
-     * @return void
+     * @var \Inventory\Application
      */
-    public static function handleInvalidRequest(InvalidRequest $ex): void
+    private Application $app;
+
+    /**
+     * Renderer
+     *
+     * @var \Inventory\Core\Renderer
+     */
+    private ?Renderer $renderer;
+
+    /**
+     * ExceptionHandler constructor.
+     *
+     * @param \Inventory\Application $app Application
+     * @param \Inventory\Core\Renderer|null $renderer Renderer
+     */
+    public function __construct(Application $app, Renderer $renderer = null)
     {
-        $ex->print();
-        exit;
+        $this->app=$app;
+        $this->renderer=$renderer;
     }
 
     /**
-     * Handles Smarty Exception
-     *
-     * @param \SmartyException $ex
-     *
-     * @return void
+     * Handles renderer error
      */
-    public static function handleSmarty(SmartyException $ex): void
+    public function handleRendererError(): void
     {
-        echo "smarty problem";
-        echo $ex->getMessage();
-        exit;
+        echo "renderer error";
+        $this->app->exit();
     }
 
     /**
-     * Handles Renderer Errors
-     *
-     * @param \Inventory\Core\Exception\BaseException $ex
-     *
-     * @return void
+     * Handles fatal error
      */
-    public static function handleRendererErrors(BaseException $ex): void
+    public function handleFatalError():void
     {
-        echo "renderer problem";
-        $ex->print();
-        exit;
+        // Display error
+        $this->renderer->displayError();
+
+        // Exit application
+        $this->app->exit();
+    }
+
+    /**
+     * Display static error page
+     */
+    protected function displayStaticError()
+    {
     }
 }

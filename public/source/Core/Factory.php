@@ -42,6 +42,12 @@ use Smarty;
 class Factory
 {
     /**
+     * Factory constructor.
+     */
+    public function __construct()
+    {
+    }
+    /**
      * Creates a new object
      *
      * @param string $class Class to create
@@ -100,16 +106,9 @@ class Factory
      * @param \Inventory\Core\Containers\Template $temp_cont Template container
      *
      * @return \Inventory\Core\Renderer
-     *
-     * @throws \Inventory\Core\Exception\BadArgument
      */
-    public function createRenderer(Template $temp_cont)
+    public function createRenderer(Template $temp_cont = null)
     {
-        // Check for template container
-        if (empty($temp_cont)) {
-            throw new BadArgument(ts('Template data missing for rendering'));
-        }
-
         // Create template engine
         $engine = $this->create(Smarty::class);
 
