@@ -22,77 +22,79 @@
  +---------------------------------------------------------------------+
  */
 
-namespace Inventory\Core\Containers;
+namespace Inventory\Test\Unit\Core;
 
-use Inventory\Core\DataBase\SQLDataBase;
-use Inventory\Core\Factory;
 use Inventory\Core\Settings;
+use Inventory\Test\Framework\BaseTestCase;
 
 /**
- * Service container for accessing major subsystems
+ * SettingsTest Class
  *
- * @category Container
+ * @covers \Inventory\Core\Settings
+ * @group minimal
+ *
+ * @category Test
  * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class Service
+class SettingsTest extends BaseTestCase
 {
     /**
-     * Factory
+     * SUT
      *
-     * @var \Inventory\Core\Factory|null
+     * @var \Inventory\Core\Settings
      */
-    private ?Factory $factory;
-    private ?Settings $settings;
+    protected Settings $sut;
 
-    public function __construct()
+    /**
+     * Set up
+     */
+    public function setUp():void
     {
-        $this->factory = null;
-        $this->settings = null;
+        parent::setUp();
+        $this->sut=new Settings();
     }
 
     /**
-     * Gets the settings subsystem
-     *
-     * @return \Inventory\Core\Settings
-     *
-     * @throws \Inventory\Core\Exception\BadArgument
+     * Test object is initialized
      */
-    public function settings()
+    public function testObjectInitialized()
     {
-        if ($this->settings == null) {
-            $this->settings = $this->factory->createSettings();
-        }
-
-        return $this->settings;
+        self::assertInstanceOf(Settings::class, $this->sut);
     }
 
     /**
-     * Gets the DataBase handler
+     * Test settings are accessible
+     */
+    public function testSettingsAreAccessible()
+    {
+        // Non-existent domain
+        self::assertNull($this->sut->getSetting('test', 'key'));
+        self::assertNull($this->sut->getSetting('test', ''));
+
+        // Write & read
+        $this->sut->addSetting('test', '', '');
+        self::assertNull($this->sut->getSetting('test', 'key'));
+
+        $this->sut->addSetting('test', 'key', 41);
+        self::assertNull($this->sut->getSetting('test', 'key_2'));
+
+        self::assertSame(41, $this->sut->getSetting('test', 'key'));
+    }
+
+    /**
+     * Test default config is loaded
      *
-     * @return \Inventory\Core\DataBase\SQLDataBase
-     *
-     * @throws \Inventory\Core\Exception\SQLException
      * @throws \Inventory\Core\Exception\FileMissing
+     * @throws \ReflectionException
      */
-    public static function database()
+    public function testLoadDefaultsReturnsSetting()
     {
-        return SQLDataBase::singleton($this->settings);
-    }
-
-    /**
-     * Gets the factory
-     *
-     * @return \Inventory\Core\Factory|null
-     */
-    public function factory()
-    {
-        if ($this->factory == null) {
-            $this->factory = new Factory();
-        }
-
-        return $this->factory;
+        $this->sut->loadDefaults();
+        $defaults=$this->getProtectedProperty($this->sut, 'settings');
+        self::assertIsArray($defaults);
+        self::assertGreaterThanOrEqual(1, count($defaults));
     }
 }

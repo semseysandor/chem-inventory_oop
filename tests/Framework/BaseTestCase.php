@@ -82,13 +82,6 @@ class BaseTestCase extends TestCase
     protected const DOUBLE = 978.515;
 
     /**
-     * FQN of class under test
-     *
-     * @var string
-     */
-    protected string $testClass;
-
-    /**
      * Provides test values
      *
      * @return array

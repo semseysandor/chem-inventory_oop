@@ -40,14 +40,14 @@ class Settings
     /**
      * Config file
      */
-    private const CONFIG_FILE = ROOT.'/config.php';
+    private const DEFAULT_CONFIG_FILE = ROOT.'/config.php';
 
     /**
      * Array to hold settings
      *
      * @var array
      */
-    private ?array $settings;
+    private array $settings;
 
     /**
      * Singleton instance
@@ -60,7 +60,7 @@ class Settings
      * Settings constructor.
      *
      */
-    private function __construct()
+    public function __construct()
     {
         $this->settings = [];
     }
@@ -68,34 +68,24 @@ class Settings
     /**
      * Loads defaults settings from file
      *
+     * @param string|null $config_file
+     *
      * @return void
      *
-     * @throws FileMissing
+     * @throws \Inventory\Core\Exception\FileMissing
      */
-    private function getDefaults(): void
+    public function loadDefaults(string $config_file = null): void
     {
-        if (!file_exists(self::CONFIG_FILE)) {
+        // Fallback to default config file
+        if (empty($config_file)|| !file_exists($config_file)) {
+            $config_file=self::DEFAULT_CONFIG_FILE;
+        }
+
+        if (!file_exists($config_file)) {
             throw new FileMissing(ts('Settings file could not be loaded.'));
         }
 
-        $this->settings = include self::CONFIG_FILE;
-    }
-
-    /**
-     * Singleton
-     *
-     * @return \Inventory\Core\Settings
-     *
-     * @throws FileMissing
-     */
-    public static function singleton()
-    {
-        if (self::$instance == null) {
-            self::$instance = new Settings();
-            self::$instance->getDefaults();
-        }
-
-        return self::$instance;
+        $this->settings = require self::DEFAULT_CONFIG_FILE;
     }
 
     /**

@@ -64,6 +64,17 @@ class Factory
     }
 
     /**
+     * Creates Settings Manager
+     *
+     * @return \Inventory\Core\Settings
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
+     */
+    public function createSettings()
+    {
+        return $this->create(Settings::class);
+    }
+    /**
      * Creates new Router
      *
      * @return \Inventory\Core\Routing\Router

@@ -31,6 +31,7 @@ use Inventory\Core\Factory;
 use Inventory\Core\Renderer;
 use Inventory\Core\Routing\Request;
 use Inventory\Core\Routing\Router;
+use Inventory\Core\Settings;
 use Inventory\Page\Login;
 use Inventory\Test\Framework\BaseTestCase;
 
@@ -124,5 +125,15 @@ class FactoryTest extends BaseTestCase
         // Without template
         $renderer=$this->sut->createRenderer($template);
         self::assertInstanceOf(Renderer::class, $renderer);
+    }
+
+    /**
+     * Test creating Settings Manager
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
+     */
+    public function testCreateSettingsReturnSettings()
+    {
+        self::assertInstanceOf(Settings::class, $this->sut->createSettings());
     }
 }

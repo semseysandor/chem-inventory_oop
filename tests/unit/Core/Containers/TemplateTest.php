@@ -54,7 +54,6 @@ class TemplateTest extends BaseTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->testClass = Template::class;
         $this->sut = new Template();
     }
 
@@ -64,7 +63,7 @@ class TemplateTest extends BaseTestCase
     public function testContainerIsInitialized()
     {
         // Test created
-        self::assertInstanceOf($this->testClass, $this->sut);
+        self::assertInstanceOf(Template::class, $this->sut);
 
         // Test properties initialized
         self::assertNull($this->sut->getBase());
