@@ -24,7 +24,6 @@
 
 namespace Inventory\Core\Containers;
 
-use Inventory\Core\DataBase\SQLDataBase;
 use Inventory\Core\Factory;
 use Inventory\Core\Settings;
 
@@ -45,8 +44,17 @@ class Service
      * @var \Inventory\Core\Factory|null
      */
     private ?Factory $factory;
+
+    /**
+     * Settings Manager
+     *
+     * @var \Inventory\Core\Settings|null
+     */
     private ?Settings $settings;
 
+    /**
+     * Service constructor.
+     */
     public function __construct()
     {
         $this->factory = null;
@@ -63,7 +71,7 @@ class Service
     public function settings()
     {
         if ($this->settings == null) {
-            $this->settings = $this->factory->createSettings();
+            $this->settings = $this->factory()->createSettings();
         }
 
         return $this->settings;
@@ -74,12 +82,12 @@ class Service
      *
      * @return \Inventory\Core\DataBase\SQLDataBase
      *
+     * @throws \Inventory\Core\Exception\BadArgument
      * @throws \Inventory\Core\Exception\SQLException
-     * @throws \Inventory\Core\Exception\FileMissing
      */
-    public static function database()
+    public function database()
     {
-        return SQLDataBase::singleton($this->settings);
+        return $this->factory()->createDataBase();
     }
 
     /**
@@ -90,7 +98,7 @@ class Service
     public function factory()
     {
         if ($this->factory == null) {
-            $this->factory = new Factory();
+            $this->factory = new Factory($this);
         }
 
         return $this->factory;

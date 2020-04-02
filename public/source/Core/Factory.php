@@ -24,7 +24,9 @@
 
 namespace Inventory\Core;
 
+use Inventory\Core\Containers\Service;
 use Inventory\Core\Containers\Template;
+use Inventory\Core\DataBase\SQLDataBase;
 use Inventory\Core\Exception\BadArgument;
 use Inventory\Core\Routing\Request;
 use Inventory\Core\Routing\Router;
@@ -42,17 +44,32 @@ use Smarty;
 class Factory
 {
     /**
+     * Services container
+     *
+     * @var \Inventory\Core\Containers\Service
+     */
+    protected Service $services;
+
+    /**
+     * Factory constructor.
+     *
+     * @param \Inventory\Core\Containers\Service $services
+     */
+    public function __construct(Service $services)
+    {
+        $this->services=$services;
+    }
+    /**
      * Creates a new object
      *
      * @param string $class Class to create
-     *
      * @param array|null $params Parameters pass to class
      *
      * @return mixed
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
-    public function create(string $class, array $params = null)
+    private function create(string $class, array $params = null)
     {
         if (!class_exists($class)) {
             throw new BadArgument(ts(sprintf('Tried to create non-existent class "%s"', $class)));
@@ -132,5 +149,34 @@ class Factory
 
         // Create renderer
         return $this->create(Renderer::class, [$engine, $temp_cont]);
+    }
+
+    /**
+     * Creates new DataBase handler
+     *
+     * @return \Inventory\Core\DataBase\SQLDataBase
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
+     * @throws \Inventory\Core\Exception\SQLException
+     */
+    public function createDataBase()
+    {
+        $db=$this->create(SQLDataBase::class);
+        $this->initDataBase($db);
+        return $db;
+    }
+
+    /**
+     * Initialize DataBase
+     *
+     * @param \Inventory\Core\DataBase\SQLDataBase $dataBase DB to initialize
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
+     * @throws \Inventory\Core\Exception\SQLException
+     */
+    public function initDataBase(SQLDataBase &$dataBase)
+    {
+        $settings=$this->services->settings();
+        $dataBase->initialize($settings);
     }
 }

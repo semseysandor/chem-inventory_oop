@@ -50,13 +50,6 @@ class SQLDataBase implements IDataBase
     private const ERROR_REPORTING = true;
 
     /**
-     * Singleton instance.
-     *
-     * @var \Inventory\Core\DataBase\SQLDataBase
-     */
-    private static ?SQLDataBase $instance = null;
-
-    /**
      * Link to SQLDataBase.
      *
      * @var mysqli
@@ -94,7 +87,7 @@ class SQLDataBase implements IDataBase
     /**
      * SQLDataBase constructor.
      */
-    private function __construct()
+    public function __construct()
     {
         $this->link = null;
         $this->driver = null;
@@ -112,7 +105,7 @@ class SQLDataBase implements IDataBase
      *
      * @throws \Inventory\Core\Exception\SQLException
      */
-    private function initialize(Settings $settings): void
+    public function initialize(Settings $settings): void
     {
         // Get configs
         $db_host = $settings->getSetting('db', 'host');
@@ -155,25 +148,6 @@ class SQLDataBase implements IDataBase
         $this->query = $params['query'] ?? null;
         $this->bind = $params['bind'] ?? null;
         $this->values = $params['values'] ?? null;
-    }
-
-    /**
-     * Singleton.
-     *
-     * @param \Inventory\Core\Settings $settings
-     *
-     * @return $this
-     *
-     * @throws \Inventory\Core\Exception\SQLException
-     */
-    public static function singleton(Settings $settings): SQLDataBase
-    {
-        if (self::$instance === null) {
-            self::$instance = new SQLDataBase();
-            self::$instance->initialize($settings);
-        }
-
-        return self::$instance;
     }
 
     /**

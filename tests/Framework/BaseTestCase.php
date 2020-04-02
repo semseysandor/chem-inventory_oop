@@ -110,7 +110,7 @@ class BaseTestCase extends TestCase
      *
      * @throws \ReflectionException
      */
-    protected function getProtectedMethod(&$object, string $method, array $params = null)
+    protected function invokeProtectedMethod(&$object, string $method, array $params = null)
     {
         // Gets reflection
         $reflection = new ReflectionClass(get_class($object));

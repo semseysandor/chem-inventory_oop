@@ -24,8 +24,10 @@
 
 namespace Inventory\Test\Unit\Core;
 
+use Inventory\Core\Containers\Service;
 use Inventory\Core\Containers\Template;
 use Inventory\Core\Controller\BaseController;
+use Inventory\Core\DataBase\SQLDataBase;
 use Inventory\Core\Exception\BadArgument;
 use Inventory\Core\Factory;
 use Inventory\Core\Renderer;
@@ -62,7 +64,8 @@ class FactoryTest extends BaseTestCase
     public function setUp():void
     {
         parent::setUp();
-        $this->sut=new Factory();
+        $services=$this->createStub(Service::class);
+        $this->sut=new Factory($services);
     }
 
     /**
@@ -103,16 +106,19 @@ class FactoryTest extends BaseTestCase
     /**
      * Test non-existent class throws exception
      *
-     * @throws \Inventory\Core\Exception\BadArgument
+     * @throws \ReflectionException
      */
     public function testNonExistentClassThrowsException()
     {
         self::expectException(BadArgument::class);
-        $this->sut->create('NonExistentClass');
+        $this->invokeProtectedMethod($this->sut, 'create', ['NonExistentClass']);
     }
 
     /**
      * Test creating renderer
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
+     * @throws \Inventory\Core\Exception\BadArgument
      */
     public function testCreateRendererReturnsRenderer()
     {
@@ -135,5 +141,48 @@ class FactoryTest extends BaseTestCase
     public function testCreateSettingsReturnSettings()
     {
         self::assertInstanceOf(Settings::class, $this->sut->createSettings());
+    }
+
+    /**
+     * Test creating DataBase
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
+     * @throws \Inventory\Core\Exception\SQLException
+     */
+    public function testCreateDatabaseReturnDatabaseAndCallsInitDatabase()
+    {
+        // Mock factory to not actually initialize DB
+        $services=$this->createStub(Service::class);
+        $this->sut=$this
+          ->getMockBuilder(Factory::class)
+          ->setConstructorArgs([$services])
+          ->onlyMethods(['initDataBase'])
+          ->getMock();
+
+        // Expect to call initDB
+        $this->sut->expects(self::once())->method('initDataBase');
+        self::assertInstanceOf(SQLDataBase::class, $this->sut->createDataBase());
+    }
+
+    /**
+     * Test Initialize call Database init
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
+     * @throws \Inventory\Core\Exception\SQLException
+     */
+    public function testInitializesDatabase()
+    {
+        // Stub settings
+        $settings=$this->createStub(Settings::class);
+        // Mock service to return settings stub
+        $services=$this->getMockBuilder(Service::class)->onlyMethods(['settings'])->getMock();
+        $services->method('settings')->willReturn($settings);
+        // Give mock service to factory
+        $this->sut=new Factory($services);
+        // Mock database to not actually init DB
+        $db=$this->getMockBuilder(SQLDataBase::class)->onlyMethods(['initialize'])->getMock();
+
+        $db->expects(self::once())->method('initialize');
+        $this->sut->initDataBase($db);
     }
 }

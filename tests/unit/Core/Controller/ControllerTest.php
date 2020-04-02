@@ -89,6 +89,13 @@ class ControllerTest extends BaseTestCase
     protected MockObject $renderer;
 
     /**
+     * Test Class
+     *
+     * @var string
+     */
+    protected string $testClass;
+
+    /**
      * Set up method
      */
     public function setUp(): void
@@ -129,7 +136,7 @@ class ControllerTest extends BaseTestCase
         // Mock test class
         $this->mockTestObject(BaseController::class);
 
-        self::assertInstanceOf($this->testClass, $this->sut);
+        self::assertInstanceOf(BaseController::class, $this->sut);
 
         $this->renderer->expects(self::once())->method('run');
         $this->sut->run();
@@ -146,7 +153,7 @@ class ControllerTest extends BaseTestCase
         $this->mockTestObject(BaseController::class);
 
         $this->expectException(BadArgument::class);
-        $this->getProtectedMethod($this->sut, 'setBaseTemplate', [self::STRING_EMPTY]);
+        $this->invokeProtectedMethod($this->sut, 'setBaseTemplate', [self::STRING_EMPTY]);
     }
 
     /**
@@ -160,7 +167,7 @@ class ControllerTest extends BaseTestCase
         $this->mockTestObject(BaseController::class);
 
         $this->expectException(BadArgument::class);
-        $this->getProtectedMethod($this->sut, 'setTemplateVar', [self::STRING_EMPTY, self::STRING]);
+        $this->invokeProtectedMethod($this->sut, 'setTemplateVar', [self::STRING_EMPTY, self::STRING]);
     }
 
     /**
@@ -174,7 +181,7 @@ class ControllerTest extends BaseTestCase
         $this->mockTestObject(BaseController::class);
 
         $this->expectException(BadArgument::class);
-        $this->getProtectedMethod($this->sut, 'setTemplateRegion', [self::STRING_EMPTY, self::STRING]);
+        $this->invokeProtectedMethod($this->sut, 'setTemplateRegion', [self::STRING_EMPTY, self::STRING]);
     }
 
     /**
