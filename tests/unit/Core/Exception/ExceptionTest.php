@@ -41,6 +41,7 @@ use Inventory\Test\Framework\BaseTestCase;
  * @covers \Inventory\Core\Exception\FileMissing
  * @covers \Inventory\Core\Exception\InvalidRequest
  * @covers \Inventory\Core\Exception\SQLException
+ * @group minimal
  *
  * @category Test
  * @package  chem-inventory_oop
@@ -51,11 +52,11 @@ use Inventory\Test\Framework\BaseTestCase;
 class ExceptionTest extends BaseTestCase
 {
     /**
-     * Test object
+     * SUT
      *
      * @var \Inventory\Core\Exception\BaseException
      */
-    protected BaseException $exception;
+    protected BaseException $sut;
 
     /**
      * Test exception returns info
@@ -68,10 +69,10 @@ class ExceptionTest extends BaseTestCase
     public function testExceptionReturnsInfo(string $class, string $message)
     {
         $context='test';
-        $this->exception=new $class($context);
+        $this->sut=new $class($context);
 
-        self::assertSame($context, $this->exception->getContext());
-        self::assertSame($message, $this->exception->getMessage());
+        self::assertSame($context, $this->sut->getContext());
+        self::assertSame($message, $this->sut->getMessage());
     }
 
     /**
@@ -95,9 +96,9 @@ class ExceptionTest extends BaseTestCase
      */
     public function testExceptionPrintsInfo()
     {
-        $this->exception=new BaseException('test');
+        $this->sut=new BaseException('test');
 
         self::expectOutputRegex('/test/');
-        $this->exception->print();
+        $this->sut->print();
     }
 }

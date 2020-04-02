@@ -106,10 +106,6 @@ class ExceptionHandler
      */
     protected function displayStaticError()
     {
-        // include ROOT.'/templates/static/error.html';
-
-        header('Content-Type: text; charset=UTF-8');
-        var_export($_SERVER);
-        echo "gebasz\n";
+        include ROOT.'/templates/static/error.html';
     }
 }

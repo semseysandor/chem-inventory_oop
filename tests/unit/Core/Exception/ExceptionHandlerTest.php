@@ -48,7 +48,7 @@ class ExceptionHandlerTest extends BaseTestCase
      *
      * @var \Inventory\Core\Exception\ExceptionHandler
      */
-    protected ExceptionHandler $exHandler;
+    protected ExceptionHandler $sut;
 
     /**
      * Application mock
@@ -85,7 +85,7 @@ class ExceptionHandlerTest extends BaseTestCase
           ->getMock();
 
         // Create SUT
-        $this->exHandler=new ExceptionHandler($this->app, $this->renderer);
+        $this->sut=new ExceptionHandler($this->app, $this->renderer);
     }
 
     /**
@@ -93,20 +93,20 @@ class ExceptionHandlerTest extends BaseTestCase
      */
     public function testFatalErrorCallsExit()
     {
-        $this->app->expects(self::exactly(2))->method('exit');#->willReturn(true);
+        $this->app->expects(self::exactly(2))->method('exit');
         $this->suppressOutput();
 
-        $this->exHandler->handleFatalError();
-        $this->exHandler->handleRendererError();
+        $this->sut->handleFatalError();
+        $this->sut->handleRendererError();
     }
 
     /**
-     * Fatal error invokes display
+     * Fatal error invokes dynamic error display
      */
-    public function testFatalErrorInvokesDynamicDisplayError()
+    public function testFatalErrorInvokesDynamicErrorDisplay()
     {
         $this->renderer->expects(self::once())->method('displayError');
-        $this->exHandler->handleFatalError();
+        $this->sut->handleFatalError();
     }
 
     /**
@@ -114,8 +114,8 @@ class ExceptionHandlerTest extends BaseTestCase
      */
     public function testFatalRendererErrorInvokesStaticErrorDisplay()
     {
-        $this->expectOutputString('renderer error');
-        $this->exHandler->handleRendererError();
+        $this->expectOutputRegex('/ERROR/');
+        $this->sut->handleRendererError();
     }
 
     /**
@@ -124,10 +124,9 @@ class ExceptionHandlerTest extends BaseTestCase
     public function testExceptionHandlerDecideDynamicOrStaticDisplay()
     {
         // Expect static
-        $this->exHandler=new ExceptionHandler($this->app);
-        $this->expectOutputString('renderer error');
-        $this->exHandler->handleFatalError();
-
+        $this->sut=new ExceptionHandler($this->app);
+        $this->expectOutputRegex('/ERROR/');
+        $this->sut->handleFatalError();
     }
 
     /**

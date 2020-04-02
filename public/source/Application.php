@@ -81,6 +81,8 @@ class Application implements IComponent
      */
     private ?Factory $factory;
 
+    private ?Service $serviceContainer;
+
     /**
      * Application constructor.
      */
@@ -90,7 +92,8 @@ class Application implements IComponent
         $this->controller = null;
         $this->renderer = null;
         $this->exHandler = null;
-        $this->factory = null;
+        $this->serviceContainer = null;
+        $this->factory=null;
     }
 
     /**
@@ -102,10 +105,13 @@ class Application implements IComponent
         // First the exception handler
         $this->exHandler=new ExceptionHandler($this);
 
-        // Second the factory
-        $this->factory=new Factory();
+        // Second the service container
+        $this->serviceContainer=new Service();
 
-        // Third the renderer
+        // Factory
+        $this->factory=$this->serviceContainer->factory();
+
+        // Renderer
         $this->renderer=$this->factory->createRenderer();
 
         // Now renderer is ready --> give to exception handler
@@ -120,7 +126,7 @@ class Application implements IComponent
     private function routing()
     {
         // Create & run router
-        $this->router = Service::factory()->createRouter();
+        $this->router = $this->factory->createRouter();
         $this->router->run();
     }
 
@@ -139,7 +145,7 @@ class Application implements IComponent
         $class = $this->router->getControllerClass();
 
         // Create & run controller
-        $this->controller = Service::factory()->createController($class, $request);
+        $this->controller = $this->factory->createController($class, $request);
         $this->controller->run();
     }
 

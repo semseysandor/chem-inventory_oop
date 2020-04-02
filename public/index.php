@@ -22,7 +22,25 @@
  +---------------------------------------------------------------------+
  */
 
+use Inventory\Application;
+
 require 'bootstrap.php';
 
-$app = new \Inventory\Application();
+// Setting top level exception handler for uncaught exceptions
+set_exception_handler('toplevel');
+
+/**
+ * Top level exception handler
+ *
+ * @param \Exception $ex Exception to handle
+ */
+function toplevel($ex)
+{
+    header('Content-Type: text; charset=UTF-8');
+    echo "FATAL ERROR!\n\n";
+    echo $ex->getMessage()."\n\n";
+    echo $ex->getTraceAsString();
+}
+
+$app = new Application();
 $app->run();

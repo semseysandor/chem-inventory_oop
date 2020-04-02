@@ -54,11 +54,11 @@ use Smarty;
 class ControllerTest extends BaseTestCase
 {
     /**
-     * Test object
+     * SUT
      *
      * @var \PHPUnit\Framework\MockObject\MockObject
      */
-    protected MockObject $testObject;
+    protected MockObject $sut;
 
     /**
      * Test Template
@@ -115,7 +115,7 @@ class ControllerTest extends BaseTestCase
     protected function mockTestObject(string $class)
     {
         $this->testClass = $class;
-        $this->testObject = $this
+        $this->sut = $this
           ->getMockBuilder($class)
           ->setConstructorArgs([$this->request, $this->template, $this->renderer])
           ->getMockForAbstractClass();
@@ -129,10 +129,10 @@ class ControllerTest extends BaseTestCase
         // Mock test class
         $this->mockTestObject(BaseController::class);
 
-        self::assertInstanceOf($this->testClass, $this->testObject);
+        self::assertInstanceOf($this->testClass, $this->sut);
 
         $this->renderer->expects(self::once())->method('run');
-        $this->testObject->run();
+        $this->sut->run();
     }
 
     /**
@@ -146,7 +146,7 @@ class ControllerTest extends BaseTestCase
         $this->mockTestObject(BaseController::class);
 
         $this->expectException(BadArgument::class);
-        $this->getProtectedMethod($this->testObject, 'setBaseTemplate', [self::STRING_EMPTY]);
+        $this->getProtectedMethod($this->sut, 'setBaseTemplate', [self::STRING_EMPTY]);
     }
 
     /**
@@ -160,7 +160,7 @@ class ControllerTest extends BaseTestCase
         $this->mockTestObject(BaseController::class);
 
         $this->expectException(BadArgument::class);
-        $this->getProtectedMethod($this->testObject, 'setTemplateVar', [self::STRING_EMPTY, self::STRING]);
+        $this->getProtectedMethod($this->sut, 'setTemplateVar', [self::STRING_EMPTY, self::STRING]);
     }
 
     /**
@@ -174,7 +174,7 @@ class ControllerTest extends BaseTestCase
         $this->mockTestObject(BaseController::class);
 
         $this->expectException(BadArgument::class);
-        $this->getProtectedMethod($this->testObject, 'setTemplateRegion', [self::STRING_EMPTY, self::STRING]);
+        $this->getProtectedMethod($this->sut, 'setTemplateRegion', [self::STRING_EMPTY, self::STRING]);
     }
 
     /**
@@ -192,8 +192,8 @@ class ControllerTest extends BaseTestCase
         // Mock test class
         $this->mockTestObject($class);
 
-        self::assertInstanceOf($this->testClass, $this->testObject);
-        $template = $this->getProtectedProperty($this->testObject, 'templateContainer');
+        self::assertInstanceOf($this->testClass, $this->sut);
+        $template = $this->getProtectedProperty($this->sut, 'templateContainer');
 
         self::assertSame($base_template, $template->getBase());
     }

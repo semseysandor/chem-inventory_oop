@@ -44,7 +44,14 @@ class Service
      *
      * @var \Inventory\Core\Factory|null
      */
-    private static ?Factory $factory = null;
+    private ?Factory $factory;
+    private ?Settings $settings;
+
+    public function __construct()
+    {
+        $this->factory = null;
+        $this->settings = null;
+    }
 
     /**
      * Gets the settings subsystem
@@ -76,12 +83,12 @@ class Service
      *
      * @return \Inventory\Core\Factory|null
      */
-    public static function factory()
+    public function factory()
     {
-        if (self::$factory == null) {
-            self::$factory = new Factory();
+        if ($this->factory == null) {
+            $this->factory = new Factory();
         }
 
-        return self::$factory;
+        return $this->factory;
     }
 }

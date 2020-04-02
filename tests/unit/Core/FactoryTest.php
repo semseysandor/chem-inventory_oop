@@ -22,104 +22,107 @@
  +---------------------------------------------------------------------+
  */
 
-namespace Inventory\Core;
+namespace Inventory\Test\Unit\Core;
 
 use Inventory\Core\Containers\Template;
+use Inventory\Core\Controller\BaseController;
 use Inventory\Core\Exception\BadArgument;
+use Inventory\Core\Factory;
+use Inventory\Core\Renderer;
 use Inventory\Core\Routing\Request;
 use Inventory\Core\Routing\Router;
-use Smarty;
+use Inventory\Page\Login;
+use Inventory\Test\Framework\BaseTestCase;
 
 /**
- * Factory Class
+ * FactoryTest Class
  *
- * @category Main
+ * @covers \Inventory\Core\Factory
+ * @group minimal
+ *
+ * @category Test
  * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class Factory
+class FactoryTest extends BaseTestCase
 {
     /**
-     * Creates a new object
+     * SUT
      *
-     * @param string $class Class to create
-     *
-     * @param array|null $params Parameters pass to class
-     *
-     * @return mixed
-     *
-     * @throws \Inventory\Core\Exception\BadArgument
+     * @var \Inventory\Core\Factory
      */
-    public function create(string $class, array $params = null)
+    protected Factory $sut;
+
+    /**
+     * Set up
+     */
+    public function setUp():void
     {
-        if (!class_exists($class)) {
-            throw new BadArgument(ts(sprintf('Tried to create non-existent class "%s"', $class)));
-        }
-        if (!empty($params)) {
-            return new $class(...$params);
-        }
-        return new $class();
+        parent::setUp();
+        $this->sut=new Factory();
     }
 
     /**
-     * Creates new Router
-     *
-     * @return \Inventory\Core\Routing\Router
+     * Test creating router
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
-    public function createRouter()
+    public function testCreateRouterReturnsRouter()
     {
-        // Create request
-        $request = $this->create(Request::class);
-
-        // Pass request to router
-        return $this->create(Router::class, [$request]);
+        self::assertInstanceOf(Router::class, $this->sut->createRouter());
     }
 
     /**
-     * Creates new controller
-     *
-     * @param string $class Name of controller to create
-     * @param \Inventory\Core\Routing\Request $request HTTP request
-     *
-     * @return \Inventory\Core\Controller\BaseController
+     * Test creating controller
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
-    public function createController(string $class, Request $request)
+    public function testCreateControllerReturnsController()
     {
-        // Check if argument is a controller class
-        if (preg_match('/^Inventory\\\\(Page|Form)/', $class) != 1) {
-            throw new BadArgument(ts(sprintf('Tried to create non-existent controller "%s"\'', $class)));
-        }
+        $request=$this->createStub(Request::class);
+        $controller=$this->sut->createController(Login::class, $request);
 
-        // Creates template container
-        $template = $this->create(Template::class);
-
-        // Creates renderer with the same template container
-        $renderer = $this->createRenderer($template);
-
-        // Creates controller and pass dependencies
-        return $this->create($class, [$request, $template, $renderer]);
+        self::assertInstanceOf(Login::class, $controller);
     }
 
     /**
-     * Creates new renderer
+     * Test non-existent controller throws error
      *
-     * @param \Inventory\Core\Containers\Template $temp_cont Template container
-     *
-     * @return \Inventory\Core\Renderer
      * @throws \Inventory\Core\Exception\BadArgument
      */
-    public function createRenderer(Template $temp_cont = null)
+    public function testCreateNonExistentControllerThrowsException()
     {
-        // Create template engine
-        $engine = $this->create(Smarty::class);
+        self::expectException(BadArgument::class);
+        $request=$this->createStub(Request::class);
+        $this->sut->createController(BaseController::class, $request);
+    }
 
-        // Create renderer
-        return $this->create(Renderer::class, [$engine, $temp_cont]);
+    /**
+     * Test non-existent class throws exception
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
+     */
+    public function testNonExistentClassThrowsException()
+    {
+        self::expectException(BadArgument::class);
+        $this->sut->create('NonExistentClass');
+    }
+
+    /**
+     * Test creating renderer
+     */
+    public function testCreateRendererReturnsRenderer()
+    {
+        $template=$this->createStub(Template::class);
+
+        // With Template
+        $renderer=$this->sut->createRenderer($template);
+        self::assertInstanceOf(Renderer::class, $renderer);
+
+        // Without template
+        $renderer=$this->sut->createRenderer($template);
+        self::assertInstanceOf(Renderer::class, $renderer);
     }
 }

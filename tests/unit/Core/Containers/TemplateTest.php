@@ -42,20 +42,20 @@ use Inventory\Test\Framework\BaseTestCase;
 class TemplateTest extends BaseTestCase
 {
     /**
-     * Test object
+     * SUT
      *
      * @var \Inventory\Core\Containers\Template
      */
-    protected Template $testObject;
+    protected Template $sut;
 
     /**
-     * Set up method
+     * Set up
      */
     public function setUp(): void
     {
         parent::setUp();
         $this->testClass = Template::class;
-        $this->testObject = new Template();
+        $this->sut = new Template();
     }
 
     /**
@@ -64,12 +64,12 @@ class TemplateTest extends BaseTestCase
     public function testContainerIsInitialized()
     {
         // Test created
-        self::assertInstanceOf($this->testClass, $this->testObject);
+        self::assertInstanceOf($this->testClass, $this->sut);
 
         // Test properties initialized
-        self::assertNull($this->testObject->getBase());
-        self::assertNull($this->testObject->getRegions());
-        self::assertNull($this->testObject->getVars());
+        self::assertNull($this->sut->getBase());
+        self::assertNull($this->sut->getRegions());
+        self::assertNull($this->sut->getVars());
     }
 
     /**
@@ -79,10 +79,10 @@ class TemplateTest extends BaseTestCase
     {
         // Write
         $expected_base = self::STRING;
-        $this->testObject->setBase($expected_base);
+        $this->sut->setBase($expected_base);
 
         // Read
-        $actual = $this->testObject->getBase();
+        $actual = $this->sut->getBase();
 
         // Test
         self::assertSame($expected_base, $actual);
@@ -98,8 +98,8 @@ class TemplateTest extends BaseTestCase
         $expected_template = self::STRING_SPEC;
 
         // Read
-        $this->testObject->setRegions($expected_region, $expected_template);
-        $actual = $this->testObject->getRegions();
+        $this->sut->setRegions($expected_region, $expected_template);
+        $actual = $this->sut->getRegions();
 
         // Test
         self::assertSame([$expected_region => $expected_template], $actual);
@@ -119,8 +119,8 @@ class TemplateTest extends BaseTestCase
         $expected_value = $value;
 
         // Read
-        $this->testObject->setVars($expected_var, $expected_value);
-        $actual = $this->testObject->getVars();
+        $this->sut->setVars($expected_var, $expected_value);
+        $actual = $this->sut->getVars();
 
         // Test
         self::assertSame([$expected_var => $expected_value], $actual);
@@ -133,29 +133,29 @@ class TemplateTest extends BaseTestCase
     {
         // Init
         $expected_base = self::STRING;
-        $this->testObject->setBase($expected_base);
+        $this->sut->setBase($expected_base);
 
         $expected_region = self::STRING;
         $expected_template = self::STRING_SPEC;
-        $this->testObject->setRegions($expected_region, $expected_template);
+        $this->sut->setRegions($expected_region, $expected_template);
 
         $expected_var = self::STRING;
         $expected_value = self::STRING_SPEC;
-        $this->testObject->setVars($expected_var, $expected_value);
+        $this->sut->setVars($expected_var, $expected_value);
 
         // Try to overwrite
-        $this->testObject->setBase('');
-        $this->testObject->setRegions('', self::STRING);
-        $this->testObject->setVars('', self::INT);
+        $this->sut->setBase('');
+        $this->sut->setRegions('', self::STRING);
+        $this->sut->setVars('', self::INT);
 
         // Read & test
-        $actual = $this->testObject->getBase();
+        $actual = $this->sut->getBase();
         self::assertSame($expected_base, $actual);
 
-        $actual = $this->testObject->getRegions();
+        $actual = $this->sut->getRegions();
         self::assertSame([$expected_region => $expected_template], $actual);
 
-        $actual = $this->testObject->getVars();
+        $actual = $this->sut->getVars();
         self::assertSame([$expected_var => $expected_value], $actual);
     }
 }
