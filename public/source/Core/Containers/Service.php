@@ -25,6 +25,7 @@
 namespace Inventory\Core\Containers;
 
 use Inventory\Core\Factory;
+use Inventory\Core\Routing\Security;
 use Inventory\Core\Settings;
 
 /**
@@ -53,12 +54,37 @@ class Service
     private ?Settings $settings;
 
     /**
+     * Security Manager
+     *
+     * @var \Inventory\Core\Routing\Security|null
+     */
+    private ?Security $security;
+
+    /**
      * Service constructor.
      */
     public function __construct()
     {
         $this->factory = null;
         $this->settings = null;
+        $this->security = null;
+    }
+
+    /**
+     * Gets the security subsystem
+     *
+     * @return \Inventory\Core\Routing\Security
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
+     */
+    public function security()
+    {
+        // Pseudo-singleton
+        if ($this->security == null) {
+            $this->security = $this->factory()->create(Security::class);
+        }
+
+        return $this->security;
     }
 
     /**

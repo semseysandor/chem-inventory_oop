@@ -26,6 +26,7 @@ namespace Inventory\Core\Controller;
 
 use Inventory\Core\Containers\Template;
 use Inventory\Core\Exception\BadArgument;
+use Inventory\Core\Factory;
 use Inventory\Core\IComponent;
 
 /**
@@ -54,15 +55,24 @@ abstract class BaseController implements IComponent
     protected Template $templateContainer;
 
     /**
+     * Factory
+     *
+     * @var \Inventory\Core\Factory
+     */
+    protected Factory $factory;
+
+    /**
      * Core Controller constructor.
      *
      * @param array|null $request_data Request data
      * @param \Inventory\Core\Containers\Template $temp_cont Template container
+     * @param \Inventory\Core\Factory $factory Factory
      */
-    public function __construct(?array $request_data, Template $temp_cont)
+    public function __construct(?array $request_data, Template $temp_cont, Factory $factory)
     {
         $this->requestData = $request_data;
         $this->templateContainer = $temp_cont;
+        $this->factory = $factory;
     }
 
     /**

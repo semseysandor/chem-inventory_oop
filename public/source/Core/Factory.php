@@ -27,8 +27,8 @@ namespace Inventory\Core;
 use Inventory\Core\Containers\Template;
 use Inventory\Core\DataBase\SQLDataBase;
 use Inventory\Core\Exception\BadArgument;
-use Inventory\Core\Routing\Request;
 use Inventory\Core\Routing\Router;
+use Inventory\Core\Routing\Security;
 use Smarty;
 
 /**
@@ -48,6 +48,7 @@ class Factory
     public function __construct()
     {
     }
+
     /**
      * Creates a new object
      *
@@ -58,7 +59,7 @@ class Factory
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
-    private function create(string $class, array $params = null)
+    public function create(string $class, array $params = null)
     {
         if (!class_exists($class)) {
             throw new BadArgument(ts(sprintf('Tried to create non-existent class "%s"', $class)));
@@ -66,6 +67,7 @@ class Factory
         if (!empty($params)) {
             return new $class(...$params);
         }
+
         return new $class();
     }
 
@@ -80,20 +82,21 @@ class Factory
     {
         return $this->create(Settings::class);
     }
+
     /**
      * Creates new Router
+     *
+     * @param array $route Parsed route
+     * @param \Inventory\Core\Routing\Security $security Security Manager
      *
      * @return \Inventory\Core\Routing\Router
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
-    public function createRouter()
+    public function createRouter(array $route, Security $security)
     {
-        // Create request
-        $request = $this->create(Request::class);
-
         // Pass request to router
-        return $this->create(Router::class, [$request]);
+        return $this->create(Router::class, [$route, $security]);
     }
 
     /**
@@ -117,7 +120,7 @@ class Factory
         $template_container = $this->create(Template::class);
 
         // Creates controller and pass dependencies
-        return $this->create($class, [$request_data, $template_container]);
+        return $this->create($class, [$request_data, $template_container, $this]);
     }
 
     /**

@@ -32,7 +32,7 @@ use Inventory\Core\Exception\BadArgument;
 use Inventory\Core\Exception\ExceptionHandler;
 use Inventory\Core\Exception\InvalidRequest;
 use Inventory\Core\IComponent;
-use Inventory\Core\Routing\Security;
+use Inventory\Core\Routing\Request;
 
 /**
  * Application Class
@@ -89,18 +89,24 @@ class Application implements IComponent
     /**
      * Routing
      *
-     * @throws \Inventory\Core\Exception\InvalidRequest
      * @throws \Inventory\Core\Exception\BadArgument
      */
     private function routing(): array
     {
-        // Create & run router
-        $router = $this->serviceContainer->factory()->createRouter();
+        // Parse HTTP request
+        $request = $this->serviceContainer->factory()->create(Request::class);
+        $route = $request->parseRoute();
+
+        // Create Router
+        $factory = $this->serviceContainer->factory();
+        $security = $this->serviceContainer->security();
+        $router = $factory->createRouter($route, $security);
+
         $router->run();
 
         return [
           'controller' => $router->getControllerClass(),
-          'request_data' => $router->getRequest()->parseData(),
+          'request_data' => $request->parseData(),
         ];
     }
 
@@ -151,7 +157,7 @@ class Application implements IComponent
             $this->boot();
 
             // Init session
-            Security::initSession();
+            $this->serviceContainer->security()->initSession();
 
             // Routing
             $router = $this->routing();

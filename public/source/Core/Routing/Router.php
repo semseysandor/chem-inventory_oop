@@ -40,12 +40,7 @@ use Inventory\Page\Logout;
  */
 class Router implements IComponent
 {
-    /**
-     * Request
-     *
-     * @var \Inventory\Core\Routing\Request
-     */
-    private Request $request;
+    private Security $security;
 
     /**
      * Route
@@ -64,12 +59,13 @@ class Router implements IComponent
     /**
      * Router constructor.
      *
-     * @param \Inventory\Core\Routing\Request $request HTTP request
+     * @param array $route Parsed route from URI
+     * @param \Inventory\Core\Routing\Security $security Security Manager
      */
-    public function __construct(Request $request)
+    public function __construct(array $route, Security $security)
     {
-        $this->request = $request;
-        $this->route = null;
+        $this->route = $route;
+        $this->security = $security;
         $this->controllerClass = null;
     }
 
@@ -81,7 +77,7 @@ class Router implements IComponent
     private function routeLogin(): string
     {
         // User logged in, proceed
-        if (Security::isAuthorized()) {
+        if ($this->security->isAuthorized()) {
             return '';
         }
 
@@ -115,16 +111,6 @@ class Router implements IComponent
     }
 
     /**
-     * Get request
-     *
-     * @return \Inventory\Core\Routing\Request
-     */
-    public function getRequest(): Request
-    {
-        return $this->request;
-    }
-
-    /**
      * Get controller class
      *
      * @return string|null
@@ -136,27 +122,20 @@ class Router implements IComponent
 
     /**
      * Runs router
-     *
-     * @return \Inventory\Core\Routing\Router
-     *
-     * @throws \Inventory\Core\Exception\InvalidRequest
      */
-    public function run(): Router
+    public function run(): void
     {
-        // Get route
-        $this->route = $this->request->parseRoute();
-
         // Check if user logged in or logging in now
         $class = $this->routeLogin();
+
+        // Class name returned from login check --> routing done
         if ($class) {
             $this->controllerClass = $class;
 
-            return $this;
+            return;
         }
 
-        // User logged in --> Standard routing
+        // Otherwise --> Standard routing
         $this->controllerClass = $this->route();
-
-        return $this;
     }
 }

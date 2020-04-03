@@ -49,10 +49,11 @@ class Logout extends Page
 
     /**
      * @inheritDoc
+     * @throws \Inventory\Core\Exception\BadArgument
      */
     protected function process(): void
     {
-        Security::logOut();
+        $this->factory->create(Security::class)->logOut();
         header('Location: /');
         // TODO: Implement process() method.
     }

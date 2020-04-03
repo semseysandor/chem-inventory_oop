@@ -27,6 +27,7 @@ namespace Inventory\Test\Unit\Core\Containers;
 use Inventory\Core\Containers\Service;
 use Inventory\Core\DataBase\SQLDataBase;
 use Inventory\Core\Factory;
+use Inventory\Core\Routing\Security;
 use Inventory\Core\Settings;
 use Inventory\Test\Framework\BaseTestCase;
 
@@ -54,10 +55,25 @@ class ServiceTest extends BaseTestCase
     /**
      * Set up
      */
-    public function setUp():void
+    public function setUp(): void
     {
         parent::setUp();
-        $this->sut=new Service();
+        $this->sut = new Service();
+    }
+
+    /**
+     * Return Security Manager Object and same object every time
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
+     */
+    public function testReturnSecurityManagerAndAlwaysSameObject()
+    {
+        $security = $this->sut->security();
+        self::assertInstanceOf(Security::class, $security);
+
+        // Modify object and test if same object returned
+        $security->test = 'test';
+        self::assertEquals($security, $this->sut->security());
     }
 
     /**
@@ -67,7 +83,7 @@ class ServiceTest extends BaseTestCase
      */
     public function testReturnSettingsManagerAndAlwaysSameObject()
     {
-        $settings=$this->sut->settings();
+        $settings = $this->sut->settings();
         self::assertInstanceOf(Settings::class, $settings);
 
         // Modify object and test if same object returned

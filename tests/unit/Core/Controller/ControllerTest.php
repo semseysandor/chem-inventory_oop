@@ -29,6 +29,7 @@ use Inventory\Core\Controller\BaseController;
 use Inventory\Core\Controller\Form;
 use Inventory\Core\Controller\Page;
 use Inventory\Core\Exception\BadArgument;
+use Inventory\Core\Factory;
 use Inventory\Test\Framework\BaseTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -71,6 +72,13 @@ class ControllerTest extends BaseTestCase
     protected array $requestData;
 
     /**
+     * Mock factory
+     *
+     * @var \PHPUnit\Framework\MockObject\MockObject
+     */
+    protected MockObject $factory;
+
+    /**
      * Set up method
      */
     public function setUp(): void
@@ -82,6 +90,9 @@ class ControllerTest extends BaseTestCase
 
         // Mock template
         $this->template = new Template();
+
+        // Mock factory
+        $this->factory = $this->getMockBuilder(Factory::class)->getMock();
     }
 
     /**
@@ -93,7 +104,7 @@ class ControllerTest extends BaseTestCase
     {
         $this->sut = $this
           ->getMockBuilder($class)
-          ->setConstructorArgs([$this->requestData, $this->template])
+          ->setConstructorArgs([$this->requestData, $this->template, $this->factory])
           ->getMockForAbstractClass();
     }
 

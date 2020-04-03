@@ -40,7 +40,7 @@ class Security
      *
      * @return void
      */
-    public static function initSession(): void
+    public function initSession(): void
     {
         // Start session
         session_start();
@@ -56,7 +56,7 @@ class Security
      *
      * @return bool
      */
-    public static function isAuthorized()
+    public function isAuthorized()
     {
         // If no USER_ID -> user not logged in
         if (!isset($_SESSION['USER_NAME']) || ($_SESSION['USER_NAME']) == '') {
@@ -69,7 +69,7 @@ class Security
     /**
      * Authenticate user
      */
-    public static function authenticate()
+    public function authenticate()
     {
         // TODO: implement method
     }
@@ -79,7 +79,7 @@ class Security
      *
      * @return void
      */
-    public static function logOut(): void
+    public function logOut(): void
     {
         // Unset session variables
         session_unset();

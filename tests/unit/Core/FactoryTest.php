@@ -31,6 +31,7 @@ use Inventory\Core\Exception\BadArgument;
 use Inventory\Core\Factory;
 use Inventory\Core\Renderer;
 use Inventory\Core\Routing\Router;
+use Inventory\Core\Routing\Security;
 use Inventory\Core\Settings;
 use Inventory\Page\Login;
 use Inventory\Test\Framework\BaseTestCase;
@@ -72,7 +73,9 @@ class FactoryTest extends BaseTestCase
      */
     public function testCreateRouterReturnsRouter()
     {
-        self::assertInstanceOf(Router::class, $this->sut->createRouter());
+        $security = $this->getMockBuilder(Security::class)->getMock();
+        $route = ['test', 'test2'];
+        self::assertInstanceOf(Router::class, $this->sut->createRouter($route, $security));
     }
 
     /**

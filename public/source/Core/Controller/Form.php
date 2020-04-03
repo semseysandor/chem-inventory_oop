@@ -25,6 +25,7 @@
 namespace Inventory\Core\Controller;
 
 use Inventory\Core\Containers\Template;
+use Inventory\Core\Factory;
 
 /**
  * Base Form Class
@@ -42,12 +43,13 @@ abstract class Form extends BaseController
      *
      * @param array|null $request_data Request data
      * @param \Inventory\Core\Containers\Template $temp_cont Template container
+     * @param \Inventory\Core\Factory $factory Factory
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
-    public function __construct(?array $request_data, Template $temp_cont)
+    public function __construct(?array $request_data, Template $temp_cont, Factory $factory)
     {
-        parent::__construct($request_data, $temp_cont);
+        parent::__construct($request_data, $temp_cont, $factory);
 
         // Set base template for form
         $this->setBaseTemplate('form');
