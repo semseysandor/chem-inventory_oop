@@ -29,10 +29,8 @@ use Inventory\Core\Controller\BaseController;
 use Inventory\Core\Controller\Form;
 use Inventory\Core\Controller\Page;
 use Inventory\Core\Exception\BadArgument;
-use Inventory\Core\Routing\Request;
 use Inventory\Test\Framework\BaseTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\MockObject\Stub;
 
 /**
  * BaseControllerTest Class
@@ -66,11 +64,11 @@ class ControllerTest extends BaseTestCase
     protected Template $template;
 
     /**
-     * Mock request
+     * Request data
      *
-     * @var \PHPUnit\Framework\MockObject\Stub
+     * @var array
      */
-    protected Stub $request;
+    protected array $requestData;
 
     /**
      * Set up method
@@ -80,7 +78,7 @@ class ControllerTest extends BaseTestCase
         parent::setUp();
 
         // Mock request
-        $this->request = $this->createStub(Request::class);
+        $this->requestData = self::ARRAY;
 
         // Mock template
         $this->template = new Template();
@@ -95,7 +93,7 @@ class ControllerTest extends BaseTestCase
     {
         $this->sut = $this
           ->getMockBuilder($class)
-          ->setConstructorArgs([$this->request, $this->template])
+          ->setConstructorArgs([$this->requestData, $this->template])
           ->getMockForAbstractClass();
     }
 

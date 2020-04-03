@@ -25,7 +25,6 @@
 namespace Inventory\Core\Controller;
 
 use Inventory\Core\Containers\Template;
-use Inventory\Core\Routing\Request;
 
 /**
  * Base Page Controller
@@ -41,14 +40,14 @@ abstract class Page extends BaseController
     /**
      * Page constructor.
      *
-     * @param \Inventory\Core\Routing\Request $request HTTP request
+     * @param array|null $request_data Request data
      * @param \Inventory\Core\Containers\Template $temp_cont Template container
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
-    public function __construct(Request $request, Template $temp_cont)
+    public function __construct(?array $request_data, Template $temp_cont)
     {
-        parent::__construct($request, $temp_cont);
+        parent::__construct($request_data, $temp_cont);
 
         // Set base template for page
         $this->setBaseTemplate('page');

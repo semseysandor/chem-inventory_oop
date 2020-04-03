@@ -74,22 +74,6 @@ class Router implements IComponent
     }
 
     /**
-     * Get route info from URL
-     *
-     * @return void
-     *
-     * @throws \Inventory\Core\Exception\InvalidRequest
-     */
-    private function getRouteInfo(): void
-    {
-        // Parse URL
-        $this->request->parse();
-
-        // Get route
-        $this->route = $this->request->getRoute();
-    }
-
-    /**
      * Login
      *
      * @return string
@@ -159,8 +143,8 @@ class Router implements IComponent
      */
     public function run(): Router
     {
-        // Parse request
-        $this->getRouteInfo();
+        // Get route
+        $this->route = $this->request->parseRoute();
 
         // Check if user logged in or logging in now
         $class = $this->routeLogin();

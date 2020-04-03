@@ -38,131 +38,53 @@ use Inventory\Core\Exception\InvalidRequest;
 class Request
 {
     /**
-     * Request data
-     *
-     * @var array|null
-     */
-    private ?array $requestData;
-
-    /**
-     * Request method
-     *
-     * @var string|null
-     */
-    private ?string $requestMethod;
-
-    /**
-     * Route from URI
-     *
-     * @var array|null
-     */
-    private ?array $route;
-
-    /**
-     * Request constructor.
-     */
-    public function __construct()
-    {
-        $this->requestData = null;
-        $this->requestMethod = null;
-        $this->route = null;
-    }
-
-    /**
      * Parse GET & POST data
      *
-     * @return void
+     * @return array|null
      *
      * @throws \Inventory\Core\Exception\InvalidRequest
      */
-    private function parseData(): void
+    public function parseData()
     {
         // Check for request method
-        if (!array_key_exists('REQUEST_METHOD', $_SERVER)) {
+        if (!isset($_SERVER['REQUEST_METHOD'])) {
             throw new InvalidRequest(ts('Missing request method.'));
         }
-        // GET or POST
-        switch ($_SERVER['REQUEST_METHOD']) {
-            case 'GET':
-                $this->requestMethod = 'GET';
-                break;
-            case 'POST':
-                $this->requestMethod = 'POST';
-                break;
-            default:
-                throw new InvalidRequest(ts('Not supported request method "%s".', $_SERVER['REQUEST_METHOD']));
+
+        // Check allowed request methods
+        if (!in_array($_SERVER['REQUEST_METHOD'], ['GET', 'POST'])) {
+            throw new InvalidRequest(ts('Not supported request method "%s".', $_SERVER['REQUEST_METHOD']));
         }
-        $this->requestData = $_REQUEST;
+
+        // Return request data
+        return ($_REQUEST ?? null);
     }
 
     /**
      * Parse route
      *
-     * @return void
+     * @return array
      *
      * @throws \Inventory\Core\Exception\InvalidRequest
      */
-    private function parseRoute(): void
+    public function parseRoute(): array
     {
         // Check for request URI
-        if (!array_key_exists('REQUEST_URI', $_SERVER)) {
+        if (!isset($_SERVER['REQUEST_URI'])) {
             throw new InvalidRequest(ts('Missing request URI.'));
+        }
+        if (!is_string($_SERVER['REQUEST_URI'])) {
+            throw new InvalidRequest(ts('Invalid request URI.'));
         }
 
         // Extract route from request URL
-        $this->route = explode('/', $_SERVER['REQUEST_URI']);
+        $route = explode('/', $_SERVER['REQUEST_URI']);
 
         // Push delimiter out of array '/'
-        if ($this->route) {
-            array_shift($this->route);
-        } else {
-            throw new InvalidRequest(ts('Invalid request URI.'));
+        if (count($route) > 0) {
+            array_shift($route);
         }
-    }
 
-    /**
-     * Get request data
-     *
-     * @return array|null
-     */
-    public function getRequestData(): ?array
-    {
-        return $this->requestData;
-    }
-
-    /**
-     * Get request method
-     *
-     * @return string|null
-     */
-    public function getRequestMethod(): ?string
-    {
-        return $this->requestMethod;
-    }
-
-    /**
-     * Get request route
-     *
-     * @return array|null
-     */
-    public function getRoute(): ?array
-    {
-        return $this->route;
-    }
-
-    /**
-     * Parse URL
-     *
-     * @return void
-     *
-     * @throws \Inventory\Core\Exception\InvalidRequest
-     */
-    public function parse(): void
-    {
-        // Parse request data
-        $this->parseData();
-
-        // Parse route from request
-        $this->parseRoute();
+        return $route;
     }
 }

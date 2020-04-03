@@ -32,7 +32,6 @@ use Inventory\Core\Exception\BadArgument;
 use Inventory\Core\Exception\ExceptionHandler;
 use Inventory\Core\Exception\InvalidRequest;
 use Inventory\Core\IComponent;
-use Inventory\Core\Routing\Router;
 use Inventory\Core\Routing\Security;
 
 /**
@@ -93,33 +92,37 @@ class Application implements IComponent
      * @throws \Inventory\Core\Exception\InvalidRequest
      * @throws \Inventory\Core\Exception\BadArgument
      */
-    private function routing(): Router
+    private function routing(): array
     {
         // Create & run router
         $router = $this->serviceContainer->factory()->createRouter();
+        $router->run();
 
-        return $router->run();
+        return [
+          'controller' => $router->getControllerClass(),
+          'request_data' => $router->getRequest()->parseData(),
+        ];
     }
 
     /**
      * Controlling
      *
-     * @param \Inventory\Core\Routing\Router $router Router
+     * @param array $routingData Routing information & data
      *
      * @return \Inventory\Core\Containers\Template
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
-    private function controlling(Router $router): Template
+    private function controlling(array $routingData): Template
     {
-        // Get request
-        $request = $router->getRequest();
+        // Get request data
+        $request_data = $routingData['request_data'];
 
         // Get selected controller
-        $class = $router->getControllerClass();
+        $class = $routingData['controller'];
 
         // Create & run controller
-        $controller = $this->serviceContainer->factory()->createController($class, $request);
+        $controller = $this->serviceContainer->factory()->createController($class, $request_data);
 
         return $controller->run();
     }

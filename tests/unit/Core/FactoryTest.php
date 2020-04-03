@@ -30,7 +30,6 @@ use Inventory\Core\DataBase\SQLDataBase;
 use Inventory\Core\Exception\BadArgument;
 use Inventory\Core\Factory;
 use Inventory\Core\Renderer;
-use Inventory\Core\Routing\Request;
 use Inventory\Core\Routing\Router;
 use Inventory\Core\Settings;
 use Inventory\Page\Login;
@@ -83,8 +82,8 @@ class FactoryTest extends BaseTestCase
      */
     public function testCreateControllerReturnsController()
     {
-        $request=$this->createStub(Request::class);
-        $controller=$this->sut->createController(Login::class, $request);
+        $request = self::ARRAY;
+        $controller = $this->sut->createController(Login::class, $request);
 
         self::assertInstanceOf(Login::class, $controller);
     }
@@ -97,7 +96,7 @@ class FactoryTest extends BaseTestCase
     public function testCreateNonExistentControllerThrowsException()
     {
         self::expectException(BadArgument::class);
-        $request=$this->createStub(Request::class);
+        $request = self::ARRAY;
         $this->sut->createController(BaseController::class, $request);
     }
 

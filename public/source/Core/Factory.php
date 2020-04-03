@@ -100,13 +100,13 @@ class Factory
      * Creates new controller
      *
      * @param string $class Name of controller to create
-     * @param \Inventory\Core\Routing\Request $request HTTP request
+     * @param array|null $request_data Request Data
      *
      * @return \Inventory\Core\Controller\BaseController
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
-    public function createController(string $class, Request $request)
+    public function createController(string $class, array $request_data = null)
     {
         // Check if argument is a controller class
         if (preg_match('/^Inventory\\\\(Page|Form)/', $class) != 1) {
@@ -114,13 +114,10 @@ class Factory
         }
 
         // Creates template container
-        $template = $this->create(Template::class);
-
-        // Creates renderer with the same template container
-        $renderer = $this->createRenderer($template);
+        $template_container = $this->create(Template::class);
 
         // Creates controller and pass dependencies
-        return $this->create($class, [$request, $template, $renderer]);
+        return $this->create($class, [$request_data, $template_container]);
     }
 
     /**

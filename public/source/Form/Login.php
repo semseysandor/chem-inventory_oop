@@ -54,7 +54,7 @@ class Login extends Form
     protected function process(): void
     {
         // TODO: implement
-        $data = $this->request->getRequestData();
+        $data = $this->requestData;
         if (empty($data)) {
             return;
         }

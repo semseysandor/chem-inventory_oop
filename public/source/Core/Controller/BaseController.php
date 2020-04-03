@@ -27,7 +27,6 @@ namespace Inventory\Core\Controller;
 use Inventory\Core\Containers\Template;
 use Inventory\Core\Exception\BadArgument;
 use Inventory\Core\IComponent;
-use Inventory\Core\Routing\Request;
 
 /**
  * Base Controller Class
@@ -41,11 +40,11 @@ use Inventory\Core\Routing\Request;
 abstract class BaseController implements IComponent
 {
     /**
-     * HTTP request
+     * HTTP request data
      *
-     * @var \Inventory\Core\Routing\Request
+     * @var array|null
      */
-    protected Request $request;
+    protected ?array $requestData;
 
     /**
      * Container for template data
@@ -57,12 +56,12 @@ abstract class BaseController implements IComponent
     /**
      * Core Controller constructor.
      *
-     * @param \Inventory\Core\Routing\Request $request HTTP request
+     * @param array|null $request_data Request data
      * @param \Inventory\Core\Containers\Template $temp_cont Template container
      */
-    public function __construct(Request $request, Template $temp_cont)
+    public function __construct(?array $request_data, Template $temp_cont)
     {
-        $this->request = $request;
+        $this->requestData = $request_data;
         $this->templateContainer = $temp_cont;
     }
 
