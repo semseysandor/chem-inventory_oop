@@ -80,8 +80,8 @@ class Renderer implements IComponent
      */
     public function __construct(Smarty $engine, Template $temp_cont = null)
     {
-        $this->templateContainer = $temp_cont;
         $this->engine = $engine;
+        $this->templateContainer = $temp_cont;
     }
 
     /**

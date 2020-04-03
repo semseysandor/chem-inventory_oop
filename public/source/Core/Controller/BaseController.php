@@ -27,7 +27,6 @@ namespace Inventory\Core\Controller;
 use Inventory\Core\Containers\Template;
 use Inventory\Core\Exception\BadArgument;
 use Inventory\Core\IComponent;
-use Inventory\Core\Renderer;
 use Inventory\Core\Routing\Request;
 
 /**
@@ -56,24 +55,15 @@ abstract class BaseController implements IComponent
     protected Template $templateContainer;
 
     /**
-     * Renderer
-     *
-     * @var \Inventory\Core\Renderer
-     */
-    protected Renderer $renderer;
-
-    /**
      * Core Controller constructor.
      *
      * @param \Inventory\Core\Routing\Request $request HTTP request
      * @param \Inventory\Core\Containers\Template $temp_cont Template container
-     * @param \Inventory\Core\Renderer $renderer Renderer
      */
-    public function __construct(Request $request, Template $temp_cont, Renderer $renderer)
+    public function __construct(Request $request, Template $temp_cont)
     {
         $this->request = $request;
         $this->templateContainer = $temp_cont;
-        $this->renderer = $renderer;
     }
 
     /**
@@ -130,36 +120,13 @@ abstract class BaseController implements IComponent
     }
 
     /**
-     * Runs controller
+     * Gets Template container
      *
-     * @return void
-     *
-     * @throws \SmartyException
+     * @return \Inventory\Core\Containers\Template
      */
-    public function run(): void
+    public function getTemplateContainer(): Template
     {
-        // First build page
-        $this->build();
-
-        // Then render page
-        $this->render();
-    }
-
-    /**
-     * Build page
-     *
-     * @return void
-     */
-    protected function build(): void
-    {
-        // Validate inputs
-        $this->validate();
-
-        // Process inputs
-        $this->process();
-
-        // Assemble page
-        $this->assemble();
+        return $this->templateContainer;
     }
 
     /**
@@ -184,15 +151,21 @@ abstract class BaseController implements IComponent
     abstract protected function assemble(): void;
 
     /**
-     * Render page
+     * Runs controller
      *
-     * @return void
-     *
-     * @throws \SmartyException
+     * @return Template
      */
-    protected function render(): void
+    public function run(): Template
     {
-        // Run renderer
-        $this->renderer->run();
+        // Validate inputs
+        $this->validate();
+
+        // Process inputs
+        $this->process();
+
+        // Assemble page
+        $this->assemble();
+
+        return $this->getTemplateContainer();
     }
 }

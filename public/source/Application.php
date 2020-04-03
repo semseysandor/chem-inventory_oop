@@ -24,14 +24,14 @@
 
 namespace Inventory;
 
+use Error;
+use Exception;
 use Inventory\Core\Containers\Service;
-use Inventory\Core\Controller\BaseController;
+use Inventory\Core\Containers\Template;
 use Inventory\Core\Exception\BadArgument;
 use Inventory\Core\Exception\ExceptionHandler;
 use Inventory\Core\Exception\InvalidRequest;
-use Inventory\Core\Factory;
 use Inventory\Core\IComponent;
-use Inventory\Core\Renderer;
 use Inventory\Core\Routing\Router;
 use Inventory\Core\Routing\Security;
 
@@ -47,27 +47,6 @@ use Inventory\Core\Routing\Security;
 class Application implements IComponent
 {
     /**
-     * Router
-     *
-     * @var \Inventory\Core\Routing\Router|null
-     */
-    private ?Router $router;
-
-    /**
-     * Controller
-     *
-     * @var \Inventory\Core\Controller\BaseController|null
-     */
-    private ?BaseController $controller;
-
-    /**
-     * Renderer
-     *
-     * @var \Inventory\Core\Renderer|null
-     */
-    private ?Renderer $renderer;
-
-    /**
      * Exception handler
      *
      * @var \Inventory\Core\Exception\ExceptionHandler|null
@@ -75,12 +54,10 @@ class Application implements IComponent
     private ?ExceptionHandler $exHandler;
 
     /**
-     * Factory
+     * Service container
      *
-     * @var \Inventory\Core\Factory|null
+     * @var \Inventory\Core\Containers\Service|null
      */
-    private ?Factory $factory;
-
     private ?Service $serviceContainer;
 
     /**
@@ -88,71 +65,83 @@ class Application implements IComponent
      */
     public function __construct()
     {
-        $this->router = null;
-        $this->controller = null;
-        $this->renderer = null;
         $this->exHandler = null;
         $this->serviceContainer = null;
-        $this->factory=null;
     }
 
     /**
      * Boot up essential components
      *
+     * @throws \Inventory\Core\Exception\BadArgument
      */
     private function boot()
     {
         // First the exception handler
-        $this->exHandler=new ExceptionHandler($this);
+        $this->exHandler = new ExceptionHandler($this);
 
         // Second the service container
-        $this->serviceContainer=new Service();
+        $this->serviceContainer = new Service();
 
-        // Factory
-        $this->factory=$this->serviceContainer->factory();
-
-        // Renderer
-        $this->renderer=$this->factory->createRenderer();
-
-        // Now renderer is ready --> give to exception handler
-        $this->exHandler->setRenderer($this->renderer);
+        // Create a renderer for exception handler
+        $renderer = $this->serviceContainer->factory()->createRenderer();
+        $this->exHandler->setRenderer($renderer);
     }
 
     /**
      * Routing
      *
      * @throws \Inventory\Core\Exception\InvalidRequest
+     * @throws \Inventory\Core\Exception\BadArgument
      */
-    private function routing()
+    private function routing(): Router
     {
         // Create & run router
-        $this->router = $this->factory->createRouter();
-        $this->router->run();
+        $router = $this->serviceContainer->factory()->createRouter();
+
+        return $router->run();
     }
 
     /**
      * Controlling
      *
+     * @param \Inventory\Core\Routing\Router $router Router
+     *
+     * @return \Inventory\Core\Containers\Template
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
+     */
+    private function controlling(Router $router): Template
+    {
+        // Get request
+        $request = $router->getRequest();
+
+        // Get selected controller
+        $class = $router->getControllerClass();
+
+        // Create & run controller
+        $controller = $this->serviceContainer->factory()->createController($class, $request);
+
+        return $controller->run();
+    }
+
+    /**
+     * Rendering
+     *
+     * @param \Inventory\Core\Containers\Template $template Template container
+     *
      * @throws \Inventory\Core\Exception\BadArgument
      * @throws \SmartyException
      */
-    private function controlling()
+    private function rendering(Template $template)
     {
-        // Get request
-        $request = $this->router->getRequest();
-
-        // Get selected controller
-        $class = $this->router->getControllerClass();
-
-        // Create & run controller
-        $this->controller = $this->factory->createController($class, $request);
-        $this->controller->run();
+        $renderer = $this->serviceContainer->factory()->createRenderer($template);
+        $renderer->run();
     }
 
     /**
      * Run Application
      */
-    public function run():void
+    public function run(): void
     {
         try {
             // Boot
@@ -162,14 +151,17 @@ class Application implements IComponent
             Security::initSession();
 
             // Routing
-            $this->routing();
+            $router = $this->routing();
 
             // Controlling
-            $this->controlling();
+            $template = $this->controlling($router);
+
+            // Rendering
+            $this->rendering($template);
 
             // Finish
             $this->exit();
-        } catch (BadArgument | InvalidRequest | \Exception | \Error $ex) {
+        } catch (BadArgument | InvalidRequest | Exception | Error $ex) {
             $this->exHandler->handleFatalError();
         }
     }

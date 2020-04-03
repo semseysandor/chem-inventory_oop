@@ -24,7 +24,6 @@
 
 namespace Inventory\Test\Unit\Core;
 
-use Inventory\Core\Containers\Service;
 use Inventory\Core\Containers\Template;
 use Inventory\Core\Controller\BaseController;
 use Inventory\Core\DataBase\SQLDataBase;
@@ -64,8 +63,7 @@ class FactoryTest extends BaseTestCase
     public function setUp():void
     {
         parent::setUp();
-        $services=$this->createStub(Service::class);
-        $this->sut=new Factory($services);
+        $this->sut = new Factory();
     }
 
     /**
@@ -152,37 +150,30 @@ class FactoryTest extends BaseTestCase
     public function testCreateDatabaseReturnDatabaseAndCallsInitDatabase()
     {
         // Mock factory to not actually initialize DB
-        $services=$this->createStub(Service::class);
-        $this->sut=$this
+        $settings = $this->getMockBuilder(Settings::class)->getMock();
+        $this->sut = $this
           ->getMockBuilder(Factory::class)
-          ->setConstructorArgs([$services])
           ->onlyMethods(['initDataBase'])
           ->getMock();
 
         // Expect to call initDB
         $this->sut->expects(self::once())->method('initDataBase');
-        self::assertInstanceOf(SQLDataBase::class, $this->sut->createDataBase());
+        self::assertInstanceOf(SQLDataBase::class, $this->sut->createDataBase($settings));
     }
 
     /**
      * Test Initialize call Database init
      *
-     * @throws \Inventory\Core\Exception\BadArgument
      * @throws \Inventory\Core\Exception\SQLException
      */
     public function testInitializesDatabase()
     {
-        // Stub settings
-        $settings=$this->createStub(Settings::class);
-        // Mock service to return settings stub
-        $services=$this->getMockBuilder(Service::class)->onlyMethods(['settings'])->getMock();
-        $services->method('settings')->willReturn($settings);
-        // Give mock service to factory
-        $this->sut=new Factory($services);
+        // Mock settings
+        $settings = $this->getMockBuilder(Settings::class)->getMock();
         // Mock database to not actually init DB
-        $db=$this->getMockBuilder(SQLDataBase::class)->onlyMethods(['initialize'])->getMock();
+        $db = $this->getMockBuilder(SQLDataBase::class)->onlyMethods(['initialize'])->getMock();
 
         $db->expects(self::once())->method('initialize');
-        $this->sut->initDataBase($db);
+        $this->sut->initDataBase($db, $settings);
     }
 }

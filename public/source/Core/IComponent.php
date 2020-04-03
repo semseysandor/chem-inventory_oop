@@ -34,5 +34,5 @@ interface IComponent
     /**
      * Runs component
      */
-    public function run(): void;
+    public function run();
 }

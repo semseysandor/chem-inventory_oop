@@ -70,6 +70,7 @@ class Service
      */
     public function settings()
     {
+        // Pseudo-singleton
         if ($this->settings == null) {
             $this->settings = $this->factory()->createSettings();
         }
@@ -87,7 +88,7 @@ class Service
      */
     public function database()
     {
-        return $this->factory()->createDataBase();
+        return $this->factory()->createDataBase($this->settings());
     }
 
     /**
@@ -97,8 +98,9 @@ class Service
      */
     public function factory()
     {
+        // Pseudo-singleton
         if ($this->factory == null) {
-            $this->factory = new Factory($this);
+            $this->factory = new Factory();
         }
 
         return $this->factory;

@@ -24,7 +24,6 @@
 
 namespace Inventory\Core;
 
-use Inventory\Core\Containers\Service;
 use Inventory\Core\Containers\Template;
 use Inventory\Core\DataBase\SQLDataBase;
 use Inventory\Core\Exception\BadArgument;
@@ -44,20 +43,10 @@ use Smarty;
 class Factory
 {
     /**
-     * Services container
-     *
-     * @var \Inventory\Core\Containers\Service
-     */
-    protected Service $services;
-
-    /**
      * Factory constructor.
-     *
-     * @param \Inventory\Core\Containers\Service $services
      */
-    public function __construct(Service $services)
+    public function __construct()
     {
-        $this->services=$services;
     }
     /**
      * Creates a new object
@@ -140,6 +129,7 @@ class Factory
      * @param \Inventory\Core\Containers\Template $temp_cont Template container
      *
      * @return \Inventory\Core\Renderer
+     *
      * @throws \Inventory\Core\Exception\BadArgument
      */
     public function createRenderer(Template $temp_cont = null)
@@ -154,15 +144,18 @@ class Factory
     /**
      * Creates new DataBase handler
      *
+     * @param \Inventory\Core\Settings $settings
+     *
      * @return \Inventory\Core\DataBase\SQLDataBase
      *
      * @throws \Inventory\Core\Exception\BadArgument
      * @throws \Inventory\Core\Exception\SQLException
      */
-    public function createDataBase()
+    public function createDataBase(Settings $settings)
     {
-        $db=$this->create(SQLDataBase::class);
-        $this->initDataBase($db);
+        $db = $this->create(SQLDataBase::class);
+        $this->initDataBase($db, $settings);
+
         return $db;
     }
 
@@ -170,13 +163,12 @@ class Factory
      * Initialize DataBase
      *
      * @param \Inventory\Core\DataBase\SQLDataBase $dataBase DB to initialize
+     * @param \Inventory\Core\Settings $settings Setting Manager
      *
-     * @throws \Inventory\Core\Exception\BadArgument
      * @throws \Inventory\Core\Exception\SQLException
      */
-    public function initDataBase(SQLDataBase &$dataBase)
+    public function initDataBase(SQLDataBase &$dataBase, Settings $settings)
     {
-        $settings=$this->services->settings();
         $dataBase->initialize($settings);
     }
 }

@@ -153,9 +153,11 @@ class Router implements IComponent
     /**
      * Runs router
      *
+     * @return \Inventory\Core\Routing\Router
+     *
      * @throws \Inventory\Core\Exception\InvalidRequest
      */
-    public function run(): void
+    public function run(): Router
     {
         // Parse request
         $this->getRouteInfo();
@@ -165,10 +167,12 @@ class Router implements IComponent
         if ($class) {
             $this->controllerClass = $class;
 
-            return;
+            return $this;
         }
 
         // User logged in --> Standard routing
         $this->controllerClass = $this->route();
+
+        return $this;
     }
 }
