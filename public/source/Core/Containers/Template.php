@@ -27,7 +27,7 @@ namespace Inventory\Core\Containers;
 /**
  * Container Class for Template Data
  *
- * @category Container
+ * @category Framework
  * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/

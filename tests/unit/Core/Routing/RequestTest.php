@@ -32,8 +32,8 @@ use Inventory\Test\Framework\BaseTestCase;
  * RequestTest Class
  *
  * @covers \Inventory\Core\Routing\Request
- * @group minimal
- * @backupGlobals
+ *
+ * @group Routing
  *
  * @category Test
  * @package  chem-inventory_oop

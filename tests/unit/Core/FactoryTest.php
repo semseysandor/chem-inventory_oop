@@ -40,7 +40,8 @@ use Inventory\Test\Framework\BaseTestCase;
  * FactoryTest Class
  *
  * @covers \Inventory\Core\Factory
- * @group minimal
+ *
+ * @group Framework
  *
  * @category Test
  * @package  chem-inventory_oop
@@ -106,12 +107,12 @@ class FactoryTest extends BaseTestCase
     /**
      * Test non-existent class throws exception
      *
-     * @throws \ReflectionException
+     * @throws \Inventory\Core\Exception\BadArgument
      */
     public function testNonExistentClassThrowsException()
     {
         self::expectException(BadArgument::class);
-        $this->invokeProtectedMethod($this->sut, 'create', ['NonExistentClass']);
+        $this->sut->create('NonExistentClass');
     }
 
     /**
@@ -129,7 +130,7 @@ class FactoryTest extends BaseTestCase
         self::assertInstanceOf(Renderer::class, $renderer);
 
         // Without template
-        $renderer=$this->sut->createRenderer($template);
+        $renderer = $this->sut->createRenderer();
         self::assertInstanceOf(Renderer::class, $renderer);
     }
 

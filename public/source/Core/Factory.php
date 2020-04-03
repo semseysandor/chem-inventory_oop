@@ -34,7 +34,7 @@ use Smarty;
 /**
  * Factory Class
  *
- * @category Main
+ * @category Framework
  * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/

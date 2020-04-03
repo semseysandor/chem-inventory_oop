@@ -36,7 +36,8 @@ use PHPUnit\Framework\MockObject\MockObject;
  * RouterTest Class
  *
  * @covers \Inventory\Core\Routing\Router
- * @group minimal
+ *
+ * @group Routing
  *
  * @category Test
  * @package  chem-inventory_oop
@@ -66,7 +67,6 @@ class RouterTest extends BaseTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $route = [];
         $this->security = $this->getMockBuilder(Security::class)->onlyMethods(['isAuthorized'])->getMock();
     }
 

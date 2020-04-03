@@ -21,22 +21,15 @@
  | SOFTWARE.                                                           |
  +---------------------------------------------------------------------+
  */
-
-namespace Inventory\Core;
-
 /**
- * Component Interface
- *
- * @category Framework
- * @package  chem-inventory_oop
- * @author   Sandor Semsey <semseysandor@gmail.com>
- * @license  MIT https://choosealicense.com/licenses/mit/
- * php version 7.4
+ * Test config file A
  */
-interface IComponent
-{
-    /**
-     * Runs component
-     */
-    public function run();
-}
+return [
+  'domain_A' => [
+    'key_1' => 'value_1',
+    'key_2' => 'value_2',
+  ],
+  'domain_B' => [
+    'key_3' => 'value_3',
+  ],
+];

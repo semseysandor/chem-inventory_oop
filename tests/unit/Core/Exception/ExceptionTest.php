@@ -41,7 +41,8 @@ use Inventory\Test\Framework\BaseTestCase;
  * @covers \Inventory\Core\Exception\FileMissing
  * @covers \Inventory\Core\Exception\InvalidRequest
  * @covers \Inventory\Core\Exception\SQLException
- * @group minimal
+ *
+ * @group Exception
  *
  * @category Test
  * @package  chem-inventory_oop

@@ -377,7 +377,6 @@ class SQLDaO
      *
      * @throws \Inventory\Core\Exception\BadArgument
      * @throws \Inventory\Core\Exception\SQLException
-     * @throws \Inventory\Core\Exception\FileMissing
      */
     public function retrieve(array $params = null)
     {
@@ -407,7 +406,6 @@ class SQLDaO
      *
      * @throws \Inventory\Core\Exception\BadArgument
      * @throws \Inventory\Core\Exception\SQLException
-     * @throws \Inventory\Core\Exception\FileMissing
      */
     public function retrieveRecord(int $id, array $fields = null)
     {
@@ -438,7 +436,6 @@ class SQLDaO
      * @return mixed
      *
      * @throws \Inventory\Core\Exception\BadArgument
-     * @throws \Inventory\Core\Exception\FileMissing
      * @throws \Inventory\Core\Exception\SQLException
      * @throws \Inventory\Core\Exception\FieldMissing
      */
@@ -476,7 +473,6 @@ class SQLDaO
      * @throws \Inventory\Core\Exception\BadArgument
      * @throws \Inventory\Core\Exception\FieldMissing
      * @throws \Inventory\Core\Exception\SQLException
-     * @throws \Inventory\Core\Exception\FileMissing
      */
     public function update(array $params = null)
     {
@@ -514,7 +510,6 @@ class SQLDaO
      *
      * @throws \Inventory\Core\Exception\BadArgument
      * @throws \Inventory\Core\Exception\SQLException
-     * @throws \Inventory\Core\Exception\FileMissing
      */
     public function delete(array $params = null)
     {
@@ -892,8 +887,8 @@ class SQLDaO
      *
      * @return mixed
      *
-     * @throws \Inventory\Core\Exception\FileMissing
      * @throws \Inventory\Core\Exception\SQLException
+     * @throws \Inventory\Core\Exception\BadArgument
      */
     public function execute()
     {
@@ -976,8 +971,8 @@ class SQLDaO
      *
      * @return int
      *
-     * @throws \Inventory\Core\Exception\FileMissing
      * @throws \Inventory\Core\Exception\SQLException
+     * @throws \Inventory\Core\Exception\BadArgument
      */
     public function getInsertID(): int
     {

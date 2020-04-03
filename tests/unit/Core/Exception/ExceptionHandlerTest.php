@@ -24,7 +24,6 @@
 
 namespace Inventory\Test\Unit\Core\Exception;
 
-use Inventory\Application;
 use Inventory\Core\Exception\ExceptionHandler;
 use Inventory\Core\Renderer;
 use Inventory\Test\Framework\BaseTestCase;
@@ -34,6 +33,8 @@ use PHPUnit\Framework\MockObject\MockObject;
  * ExceptionHandlerTest Class
  *
  * @covers \Inventory\Core\Exception\ExceptionHandler
+ *
+ * @group Exception
  *
  * @category Test
  * @package  chem-inventory_oop
@@ -46,9 +47,9 @@ class ExceptionHandlerTest extends BaseTestCase
     /**
      * SUT
      *
-     * @var \Inventory\Core\Exception\ExceptionHandler
+     * @var \PHPUnit\Framework\MockObject\MockObject
      */
-    protected ExceptionHandler $sut;
+    protected MockObject $sut;
 
     /**
      * Application mock
@@ -71,21 +72,19 @@ class ExceptionHandlerTest extends BaseTestCase
     {
         parent::setUp();
 
-        // Mock app
-        $this->app=$this
-          ->getMockBuilder(Application::class)
-          ->onlyMethods(['exit'])
-          ->getMock();
-
         // Mock renderer
-        $this->renderer=$this
+        $this->renderer = $this
           ->getMockBuilder(Renderer::class)
           ->disableOriginalConstructor()
           ->onlyMethods(['displayError'])
           ->getMock();
 
-        // Create SUT
-        $this->sut=new ExceptionHandler($this->app, $this->renderer);
+        // Mock SUT
+        $this->sut = $this
+          ->getMockBuilder(ExceptionHandler::class)
+          ->setConstructorArgs([$this->renderer])
+          ->onlyMethods(['exitWithFail'])
+          ->getMock();
     }
 
     /**
@@ -93,7 +92,7 @@ class ExceptionHandlerTest extends BaseTestCase
      */
     public function testFatalErrorCallsExit()
     {
-        $this->app->expects(self::exactly(2))->method('exit');
+        $this->sut->expects(self::exactly(2))->method('exitWithFail');
         $this->suppressOutput();
 
         $this->sut->handleFatalError();
@@ -120,11 +119,15 @@ class ExceptionHandlerTest extends BaseTestCase
 
     /**
      * Exception handler decides which display mode
+     * No renderer present --> static display
      */
     public function testExceptionHandlerDecideDynamicOrStaticDisplay()
     {
-        // Expect static
-        $this->sut=new ExceptionHandler($this->app);
+        // Mock SUT
+        $this->sut = $this
+          ->getMockBuilder(ExceptionHandler::class)
+          ->onlyMethods(['exitWithFail'])
+          ->getMock();
         $this->expectOutputRegex('/ERROR/');
         $this->sut->handleFatalError();
     }

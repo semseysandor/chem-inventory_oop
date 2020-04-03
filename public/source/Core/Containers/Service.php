@@ -31,7 +31,7 @@ use Inventory\Core\Settings;
 /**
  * Service container for accessing major subsystems
  *
- * @category Container
+ * @category Framework
  * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/

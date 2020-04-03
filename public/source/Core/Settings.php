@@ -29,7 +29,7 @@ use Inventory\Core\Exception\FileMissing;
 /**
  * Settings Manager
  *
- * @category Settings
+ * @category Framework
  * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/
@@ -40,7 +40,7 @@ class Settings
     /**
      * Config file
      */
-    private const DEFAULT_CONFIG_FILE = ROOT.'/config.php';
+    public const DEFAULT_CONFIG_FILE = ROOT.'/config.php';
 
     /**
      * Array to hold settings
@@ -50,23 +50,26 @@ class Settings
     private array $settings;
 
     /**
-     * Singleton instance
+     * Default config file
      *
-     * @var \Inventory\Core\Settings|null
+     * @var string|null
      */
-    private static ?Settings $instance = null;
+    private ?string $configFile;
 
     /**
      * Settings constructor.
      *
+     * @param string $default_config_file Default config file
      */
-    public function __construct()
+    public function __construct(string $default_config_file = null)
     {
         $this->settings = [];
+        // No files given --> fallback to wired default
+        $this->configFile = $default_config_file ?? self::DEFAULT_CONFIG_FILE;
     }
 
     /**
-     * Loads defaults settings from file
+     * Loads config file, if none given, fallback to default config file
      *
      * @param string|null $config_file
      *
@@ -74,18 +77,27 @@ class Settings
      *
      * @throws \Inventory\Core\Exception\FileMissing
      */
-    public function loadDefaults(string $config_file = null): void
+    public function loadConfigFile(string $config_file = null): void
     {
         // Fallback to default config file
-        if (empty($config_file)|| !file_exists($config_file)) {
-            $config_file=self::DEFAULT_CONFIG_FILE;
+        if (empty($config_file)) {
+            $config_file = $this->configFile;
         }
 
-        if (!file_exists($config_file)) {
-            throw new FileMissing(ts('Settings file could not be loaded.'));
+        // Check file is ready
+        if (!file_exists($config_file) || !is_readable($config_file)) {
+            throw new FileMissing(ts(sprintf('Settings file "%s" could not be loaded.', $config_file)));
         }
 
-        $this->settings = require self::DEFAULT_CONFIG_FILE;
+        // Load configs
+        $configs = require $config_file;
+
+        // Add to settings
+        foreach ($configs as $domain => $settings) {
+            foreach ($settings as $key => $value) {
+                $this->addSetting($domain, $key, $value);
+            }
+        }
     }
 
     /**

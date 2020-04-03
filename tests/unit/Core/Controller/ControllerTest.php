@@ -40,7 +40,8 @@ use PHPUnit\Framework\MockObject\MockObject;
  * @covers \Inventory\Core\Controller\Form
  * @covers \Inventory\Core\Controller\Page
  * @uses   \Inventory\Core\Containers\Template
- * @group minimal
+ *
+ * @group Controller
  *
  * @category Test
  * @package  chem-inventory_oop
@@ -131,7 +132,7 @@ class ControllerTest extends BaseTestCase
      * @param mixed $base_template
      *
      */
-    public function testControllerIsInitialized(string $class, $base_template)
+    public function testObjectIsInitialized(string $class, $base_template)
     {
         // Mock test class
         $this->mockController($class);
@@ -148,8 +149,6 @@ class ControllerTest extends BaseTestCase
     {
         // Mock test class
         $this->mockController(BaseController::class);
-
-        self::assertInstanceOf(BaseController::class, $this->sut);
 
         $this->sut->expects(self::once())->method('validate');
         $this->sut->expects(self::once())->method('process');

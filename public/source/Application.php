@@ -30,7 +30,6 @@ use Inventory\Core\Containers\Service;
 use Inventory\Core\Containers\Template;
 use Inventory\Core\Exception\BadArgument;
 use Inventory\Core\Exception\ExceptionHandler;
-use Inventory\Core\Exception\InvalidRequest;
 use Inventory\Core\IComponent;
 use Inventory\Core\Routing\Request;
 
@@ -76,7 +75,7 @@ class Application implements IComponent
     private function boot()
     {
         // First the exception handler
-        $this->exHandler = new ExceptionHandler($this);
+        $this->exHandler = new ExceptionHandler();
 
         // Second the service container
         $this->serviceContainer = new Service();
@@ -170,7 +169,7 @@ class Application implements IComponent
 
             // Finish
             $this->exit();
-        } catch (BadArgument | InvalidRequest | Exception | Error $ex) {
+        } catch (BadArgument | Exception | Error $ex) {
             $this->exHandler->handleFatalError();
         }
     }

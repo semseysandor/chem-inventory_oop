@@ -24,6 +24,7 @@
 
 namespace Inventory\Test\Unit\Core;
 
+use Inventory\Core\Exception\FileMissing;
 use Inventory\Core\Settings;
 use Inventory\Test\Framework\BaseTestCase;
 
@@ -31,7 +32,8 @@ use Inventory\Test\Framework\BaseTestCase;
  * SettingsTest Class
  *
  * @covers \Inventory\Core\Settings
- * @group minimal
+ *
+ * @group Framework
  *
  * @category Test
  * @package  chem-inventory_oop
@@ -51,18 +53,33 @@ class SettingsTest extends BaseTestCase
     /**
      * Set up
      */
-    public function setUp():void
+    public function setUp(): void
     {
         parent::setUp();
-        $this->sut=new Settings();
+        $this->sut = new Settings(null);
     }
 
     /**
      * Test object is initialized
+     *
+     * @throws \ReflectionException
      */
-    public function testObjectInitialized()
+    public function testObjectInitializedWithDefaultConfigFile()
     {
         self::assertInstanceOf(Settings::class, $this->sut);
+        self::assertSame($this->sut::DEFAULT_CONFIG_FILE, $this->getProtectedProperty($this->sut, 'configFile'));
+    }
+
+    /**
+     * Test object is initialized with default config file override
+     *
+     * @throws \ReflectionException
+     */
+    public function testObjectInitializedWithDefaultConfigFileOverride()
+    {
+        $this->sut = new Settings('alter config');
+        self::assertInstanceOf(Settings::class, $this->sut);
+        self::assertSame('alter config', $this->getProtectedProperty($this->sut, 'configFile'));
     }
 
     /**
@@ -85,16 +102,53 @@ class SettingsTest extends BaseTestCase
     }
 
     /**
-     * Test default config is loaded
+     * Test load config falls back to default
      *
      * @throws \Inventory\Core\Exception\FileMissing
      * @throws \ReflectionException
      */
-    public function testLoadDefaultsReturnsSetting()
+    public function testLoadConfigFallsBackToDefault()
     {
-        $this->sut->loadDefaults();
-        $defaults=$this->getProtectedProperty($this->sut, 'settings');
-        self::assertIsArray($defaults);
-        self::assertGreaterThanOrEqual(1, count($defaults));
+        // Load test config file
+        $this->sut = new Settings(ROOT.'/../tests/unit/Core/SettingsTestConfigFileA.php');
+        $this->sut->loadConfigFile();
+
+        // Test
+        $expected = include 'SettingsTestConfigFileA.php';
+        $actual = $this->getProtectedProperty($this->sut, 'settings');
+        self::assertSame($expected, $actual);
+    }
+
+    /**
+     * Test File Missing error
+     *
+     * @throws \Inventory\Core\Exception\FileMissing
+     */
+    public function testLoadDefaultsThrowsFileNotFoundError()
+    {
+        $this->sut = new Settings('NON_EXISTENT_CONFIG_FILE');
+        $this->expectException(FileMissing::class);
+        $this->sut->loadConfigFile();
+    }
+
+    /**
+     * Test configs are not overwritten
+     *
+     * @throws \Inventory\Core\Exception\FileMissing
+     * @throws \ReflectionException
+     */
+    public function testLoadConfigNotWritesSettingsOver()
+    {
+        // Load test config files
+        $this->sut = new Settings();
+        $this->sut->loadConfigFile(ROOT.'/../tests/unit/Core/SettingsTestConfigFileA.php');
+        $this->sut->loadConfigFile(ROOT.'/../tests/unit/Core/SettingsTestConfigFileB.php');
+
+        $expected_a = include 'SettingsTestConfigFileA.php';
+        $expected_b = include 'SettingsTestConfigFileB.php';
+        $expected = (array_merge($expected_a, $expected_b));
+        $actual = $this->getProtectedProperty($this->sut, 'settings');
+
+        self::assertSame($expected, $actual);
     }
 }

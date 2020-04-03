@@ -43,7 +43,6 @@ class Compound
      * @return array|null
      *
      * @throws \Inventory\Core\Exception\BadArgument
-     * @throws \Inventory\Core\Exception\FileMissing
      * @throws \Inventory\Core\Exception\SQLException
      */
     public function getAll(array $fields = null)

@@ -35,7 +35,8 @@ use Inventory\Test\Framework\BaseTestCase;
  * ServiceTest Class
  *
  * @covers \Inventory\Core\Containers\Service
- * @group minimal
+ *
+ * @group Framework
  *
  * @category Test
  * @package  chem-inventory_oop

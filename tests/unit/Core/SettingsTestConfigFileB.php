@@ -21,43 +21,15 @@
  | SOFTWARE.                                                           |
  +---------------------------------------------------------------------+
  */
-
-namespace Inventory\Test\Integration;
-
-use Inventory\Core\Containers\Service;
-use Inventory\Core\DataBase\SQLDataBase;
-use Inventory\Core\Factory;
-use Inventory\Core\Settings;
-use Inventory\Test\Framework\BaseTestCase;
-
 /**
- * ServiceTest Class
- *
- * @covers \Inventory\Core\Containers\Service
- * @group integration
- *
- * @category Test
- * @package  chem-inventory_oop
- * @author   Sandor Semsey <semseysandor@gmail.com>
- * @license  MIT https://choosealicense.com/licenses/mit/
- * php version 7.4
+ * Test config file B
  */
-class ServiceTest extends BaseTestCase
-{
-    public function testDatabaseObjectIsReturned()
-    {
-        self::markTestSkipped();
-        self::assertInstanceOf(SQLDataBase::class, Service::database());
-    }
-
-    public function testFactoryObjectIsReturned()
-    {
-        self::assertInstanceOf(Factory::class, Service::factory());
-        self::assertInstanceOf(Factory::class, Service::factory());
-    }
-
-    public function testSettingsObjectIsReturned()
-    {
-        self::assertInstanceOf(Settings::class, Service::settings());
-    }
-}
+return [
+  'domain_C' => [
+    'key_45' => 'value_1',
+    'key_65' => 'value_2',
+  ],
+  'domain_D' => [
+    'key_64' => 'value_3',
+  ],
+];

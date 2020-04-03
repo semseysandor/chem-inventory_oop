@@ -31,7 +31,6 @@ use Inventory\Test\Framework\BaseTestCase;
  * Template Container Test Class
  *
  * @covers \Inventory\Core\Containers\Template
- * @group minimal
  *
  * @category Test
  * @package  chem-inventory_oop
@@ -60,15 +59,9 @@ class TemplateTest extends BaseTestCase
     /**
      * Test if container is initialized
      */
-    public function testContainerIsInitialized()
+    public function testObjectIsInitialized()
     {
-        // Test created
         self::assertInstanceOf(Template::class, $this->sut);
-
-        // Test properties initialized
-        self::assertNull($this->sut->getBase());
-        self::assertNull($this->sut->getRegions());
-        self::assertNull($this->sut->getVars());
     }
 
     /**
@@ -81,10 +74,7 @@ class TemplateTest extends BaseTestCase
         $this->sut->setBase($expected_base);
 
         // Read
-        $actual = $this->sut->getBase();
-
-        // Test
-        self::assertSame($expected_base, $actual);
+        self::assertSame($expected_base, $this->sut->getBase());
     }
 
     /**
@@ -98,10 +88,7 @@ class TemplateTest extends BaseTestCase
 
         // Read
         $this->sut->setRegions($expected_region, $expected_template);
-        $actual = $this->sut->getRegions();
-
-        // Test
-        self::assertSame([$expected_region => $expected_template], $actual);
+        self::assertSame([$expected_region => $expected_template], $this->sut->getRegions());
     }
 
     /**
@@ -119,10 +106,7 @@ class TemplateTest extends BaseTestCase
 
         // Read
         $this->sut->setVars($expected_var, $expected_value);
-        $actual = $this->sut->getVars();
-
-        // Test
-        self::assertSame([$expected_var => $expected_value], $actual);
+        self::assertSame([$expected_var => $expected_value], $this->sut->getVars());
     }
 
     /**
@@ -148,13 +132,8 @@ class TemplateTest extends BaseTestCase
         $this->sut->setVars('', self::INT);
 
         // Read & test
-        $actual = $this->sut->getBase();
-        self::assertSame($expected_base, $actual);
-
-        $actual = $this->sut->getRegions();
-        self::assertSame([$expected_region => $expected_template], $actual);
-
-        $actual = $this->sut->getVars();
-        self::assertSame([$expected_var => $expected_value], $actual);
+        self::assertSame($expected_base, $this->sut->getBase());
+        self::assertSame([$expected_region => $expected_template], $this->sut->getRegions());
+        self::assertSame([$expected_var => $expected_value], $this->sut->getVars());
     }
 }
