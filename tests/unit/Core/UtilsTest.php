@@ -22,44 +22,51 @@
  +---------------------------------------------------------------------+
  */
 
-namespace Inventory\Core;
+namespace Inventory\Test\Unit\Core;
+
+use Inventory\Core\Utils;
+use Inventory\Test\Framework\BaseTestCase;
 
 /**
- * Utilities
+ * UtilsTest Class
  *
- * @category Framework
+ * @covers \Inventory\Core\Utils
+ *
+ * @group Framework
+ *
+ * @category Test
  * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class Utils
+class UtilsTest extends BaseTestCase
 {
     /**
-     * Gets Path from Class name (Namespace -> Path)
+     * Test if correct path is returned
+     *
+     * @dataProvider provideClassAndExpectedPath
      *
      * @param string $class Class name
-     *
-     * @return string
+     * @param string $path Path
      */
-    public static function getPathFromClass(string $class): string
+    public function testCorrectPathReturned(string $class, string $path)
     {
-        // Check if class exist
-        if (!class_exists($class)) {
-            return '';
-        }
+        self::assertSame($path, Utils::getPathFromClass($class));
+    }
 
-        // Change '\' to '/'
-        $path = str_replace('\\', '/', $class);
-
-        // Remove leading '/' if present
-        if ($path[0] == '/') {
-            $path = substr($path, 1);
-        }
-
-        // Remove leading namespace
-        $path = preg_replace('/^.*\//U', '', $path);
-
-        return $path;
+    /**
+     * Provides class & path
+     *
+     * @return array
+     */
+    public function provideClassAndExpectedPath()
+    {
+        return [
+          'Non-existent class' => ['NON_EXIST', ''],
+          'Real inventory class' => ['Inventory\Core\Utils', 'Core/Utils',],
+          'General class' => ['PHPUnit\Framework\TestCase', 'Framework/TestCase'],
+          'General class with leading backslash' => ['\PHPUnit\Framework\TestCase', 'Framework/TestCase'],
+        ];
     }
 }
