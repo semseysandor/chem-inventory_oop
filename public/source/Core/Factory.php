@@ -1,25 +1,30 @@
 <?php
 /**
- +---------------------------------------------------------------------+
- | This file is part of chem-inventory.                                |
- |                                                                     |
- | Copyright (c) 2020 Sandor Semsey                                    |
- | All rights reserved.                                                |
- |                                                                     |
- | This work is published under the MIT License.                       |
- | https://choosealicense.com/licenses/mit/                            |
- |                                                                     |
- | It's a free software;)                                              |
- |                                                                     |
- | THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,     |
- | EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES     |
- | OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND            |
- | NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS |
- | BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN  |
- | ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN   |
- | CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE    |
- | SOFTWARE.                                                           |
- +---------------------------------------------------------------------+
+ +-----------------------------------------------+
+ | This file is part of chem-inventory.          |
+ |                                               |
+ | (c) Sandor Semsey <semseysandor@gmail.com>    |
+ | All rights reserved.                          |
+ |                                               |
+ | This work is published under the MIT License. |
+ | https://choosealicense.com/licenses/mit/      |
+ |                                               |
+ | It's a free software;)                        |
+ +-----------------------------------------------+
+ */
+
+/**
+ * +-----------------------------------------------+
+ * | This file is part of chem-inventory.          |
+ * |                                               |
+ * | (c) Sandor Semsey <semseysandor@gmail.com>    |
+ * | All rights reserved.                          |
+ * |                                               |
+ * | This work is published under the MIT License. |
+ * | https://choosealicense.com/licenses/mit/      |
+ * |                                               |
+ * | It's a free software;)                        |
+ * +-----------------------------------------------+
  */
 
 namespace Inventory\Core;
@@ -62,7 +67,7 @@ class Factory
     public function create(string $class, array $params = null)
     {
         if (!class_exists($class)) {
-            throw new BadArgument(ts(sprintf('Tried to create non-existent class "%s"', $class)));
+            throw new BadArgument(ts('Tried to create non-existent class "%s"', $class));
         }
         if (!empty($params)) {
             return new $class(...$params);
@@ -113,7 +118,7 @@ class Factory
     {
         // Check if argument is a controller class
         if (preg_match('/^Inventory\\\\(Page|Form)/', $class) != 1) {
-            throw new BadArgument(ts(sprintf('Tried to create non-existent controller "%s"\'', $class)));
+            throw new BadArgument(ts('Tried to create non-existent controller "%s"\'', $class));
         }
 
         // Creates template container

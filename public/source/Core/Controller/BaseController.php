@@ -1,25 +1,30 @@
 <?php
 /**
- +---------------------------------------------------------------------+
- | This file is part of chem-inventory.                                |
- |                                                                     |
- | Copyright (c) 2020 Sandor Semsey                                    |
- | All rights reserved.                                                |
- |                                                                     |
- | This work is published under the MIT License.                       |
- | https://choosealicense.com/licenses/mit/                            |
- |                                                                     |
- | It's a free software;)                                              |
- |                                                                     |
- | THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,     |
- | EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES     |
- | OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND            |
- | NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS |
- | BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN  |
- | ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN   |
- | CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE    |
- | SOFTWARE.                                                           |
- +---------------------------------------------------------------------+
+ +-----------------------------------------------+
+ | This file is part of chem-inventory.          |
+ |                                               |
+ | (c) Sandor Semsey <semseysandor@gmail.com>    |
+ | All rights reserved.                          |
+ |                                               |
+ | This work is published under the MIT License. |
+ | https://choosealicense.com/licenses/mit/      |
+ |                                               |
+ | It's a free software;)                        |
+ +-----------------------------------------------+
+ */
+
+/**
+ * +-----------------------------------------------+
+ * | This file is part of chem-inventory.          |
+ * |                                               |
+ * | (c) Sandor Semsey <semseysandor@gmail.com>    |
+ * | All rights reserved.                          |
+ * |                                               |
+ * | This work is published under the MIT License. |
+ * | https://choosealicense.com/licenses/mit/      |
+ * |                                               |
+ * | It's a free software;)                        |
+ * +-----------------------------------------------+
  */
 
 namespace Inventory\Core\Controller;
@@ -87,7 +92,7 @@ abstract class BaseController implements IComponent
     protected function setBaseTemplate(string $base_template): void
     {
         if (empty($base_template)) {
-            throw new BadArgument(ts(sprintf('Base template missing at "%s".', self::class)));
+            throw new BadArgument(ts('Base template missing at "%s".', self::class));
         }
         $this->templateContainer->setBase($base_template);
     }
@@ -105,7 +110,7 @@ abstract class BaseController implements IComponent
     protected function setTemplateVar(string $name, $value): void
     {
         if (empty($name)) {
-            throw new BadArgument(ts(sprintf('Template variable name missing at "%s".', self::class)));
+            throw new BadArgument(ts('Template variable name missing at "%s".', self::class));
         }
         $this->templateContainer->setVars($name, $value);
     }
@@ -123,7 +128,7 @@ abstract class BaseController implements IComponent
     protected function setTemplateRegion(string $region, string $template): void
     {
         if (empty($region)) {
-            throw new BadArgument(ts(sprintf('Template region name missing at "%s".', self::class)));
+            throw new BadArgument(ts('Template region name missing at "%s".', self::class));
         }
         $this->templateContainer->setRegions($region, $template);
     }
