@@ -3,32 +3,14 @@
  +-----------------------------------------------+
  | This file is part of chem-inventory.          |
  |                                               |
- | (c) Sandor Semsey <semseysandor@gmail.com>    |
+ | Copyright 2020 Sandor Semsey                  |
  | All rights reserved.                          |
  |                                               |
  | This work is published under the MIT License. |
  | https://choosealicense.com/licenses/mit/      |
- |                                               |
- | It's a free software;)                        |
  +-----------------------------------------------+
  */
 
-/**
- * +-----------------------------------------------+
- * | This file is part of chem-inventory.          |
- * |                                               |
- * | (c) Sandor Semsey <semseysandor@gmail.com>    |
- * | All rights reserved.                          |
- * |                                               |
- * | This work is published under the MIT License. |
- * | https://choosealicense.com/licenses/mit/      |
- * |                                               |
- * | It's a free software;)                        |
- * +-----------------------------------------------+
- */
-
-// LDAP server
-// LEGACY code
 define('LDAP_HOST', 'your_host');            # LDAP host
 define('LDAP_DN', 'CN=Users,DC=company,DC=local');                # LDAP dn
 define('LDAP_USR_DOM', '@company.local');  # LDAP user domain

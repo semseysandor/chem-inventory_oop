@@ -2,12 +2,10 @@
  +-----------------------------------------------+
  | This file is part of chem-inventory.          |
  |                                               |
- | (c) Sandor Semsey <semseysandor@gmail.com>    |
+ | Copyright 2020 Sandor Semsey                  |
  | All rights reserved.                          |
  |                                               |
  | This work is published under the MIT License. |
  | https://choosealicense.com/licenses/mit/      |
- |                                               |
- | It's a free software;)                        |
  +-----------------------------------------------+
 *}
