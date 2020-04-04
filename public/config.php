@@ -3,17 +3,14 @@
  +-----------------------------------------------+
  | This file is part of chem-inventory.          |
  |                                               |
- | Copyright 2020 Sandor Semsey                  |
+ | Copyright 2020                                |
+ | Sandor Semsey <semseysandor@gmail.com>        |
  | All rights reserved.                          |
  |                                               |
  | This work is published under the MIT License. |
  | https://choosealicense.com/licenses/mit/      |
  +-----------------------------------------------+
  */
-
-define('LDAP_HOST', 'your_host');            # LDAP host
-define('LDAP_DN', 'CN=Users,DC=company,DC=local');                # LDAP dn
-define('LDAP_USR_DOM', '@company.local');  # LDAP user domain
 
 /**
  * Settings
