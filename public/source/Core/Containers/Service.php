@@ -70,7 +70,7 @@ class Service
     {
         // Pseudo-singleton
         if ($this->security == null) {
-            $this->security = $this->factory()->create(Security::class);
+            $this->security = $this->factory()->createSecurity();
         }
 
         return $this->security;

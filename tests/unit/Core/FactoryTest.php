@@ -19,6 +19,7 @@ use Inventory\Core\DataBase\SQLDataBase;
 use Inventory\Core\Exception\BadArgument;
 use Inventory\Core\Factory;
 use Inventory\Core\Renderer;
+use Inventory\Core\Routing\Request;
 use Inventory\Core\Routing\Router;
 use Inventory\Core\Routing\Security;
 use Inventory\Core\Settings;
@@ -50,10 +51,30 @@ class FactoryTest extends BaseTestCase
     /**
      * Set up
      */
-    public function setUp():void
+    public function setUp(): void
     {
         parent::setUp();
         $this->sut = new Factory();
+    }
+
+    /**
+     * Test creating request
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
+     */
+    public function testCreateRequestReturnsRequest()
+    {
+        self::assertInstanceOf(Request::class, $this->sut->createRequest());
+    }
+
+    /**
+     * Test creating Security Manager
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
+     */
+    public function testCreateSecurityReturnsSecurity()
+    {
+        self::assertInstanceOf(Security::class, $this->sut->createSecurity());
     }
 
     /**
@@ -97,11 +118,12 @@ class FactoryTest extends BaseTestCase
      * Test non-existent class throws exception
      *
      * @throws \Inventory\Core\Exception\BadArgument
+     * @throws \ReflectionException
      */
     public function testNonExistentClassThrowsException()
     {
         self::expectException(BadArgument::class);
-        $this->sut->create('NonExistentClass');
+        $this->invokeProtectedMethod($this->sut, 'create', ['NonExistentClass']);
     }
 
     /**

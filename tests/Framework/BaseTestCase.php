@@ -108,6 +108,11 @@ class BaseTestCase extends TestCase
         // Set method accessible
         $method->setAccessible(true);
 
+        // Invoke function needs an array anyway
+        if (is_null($params)) {
+            $params = [];
+        }
+
         // Invoke method & return results
         return $method->invokeArgs($object, $params);
     }

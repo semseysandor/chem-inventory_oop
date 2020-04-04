@@ -16,6 +16,7 @@ namespace Inventory\Core;
 use Inventory\Core\Containers\Template;
 use Inventory\Core\DataBase\SQLDataBase;
 use Inventory\Core\Exception\BadArgument;
+use Inventory\Core\Routing\Request;
 use Inventory\Core\Routing\Router;
 use Inventory\Core\Routing\Security;
 use Smarty;
@@ -48,7 +49,7 @@ class Factory
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
-    public function create(string $class, array $params = null)
+    private function create(string $class, array $params = null)
     {
         if (!class_exists($class)) {
             throw new BadArgument(ts('Tried to create non-existent class "%s"', $class));
@@ -58,6 +59,30 @@ class Factory
         }
 
         return new $class();
+    }
+
+    /**
+     * Creates new Request
+     *
+     * @return \Inventory\Core\Routing\Request
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
+     */
+    public function createRequest(): Request
+    {
+        return $this->create(Request::class);
+    }
+
+    /**
+     * Creates new Security Manager
+     *
+     * @return \Inventory\Core\Routing\Security
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
+     */
+    public function createSecurity(): Security
+    {
+        return $this->create(Security::class);
     }
 
     /**

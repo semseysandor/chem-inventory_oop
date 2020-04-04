@@ -19,8 +19,8 @@ use Inventory\Core\Containers\Service;
 use Inventory\Core\Containers\Template;
 use Inventory\Core\Exception\BadArgument;
 use Inventory\Core\Exception\ExceptionHandler;
+use Inventory\Core\Exception\InvalidRequest;
 use Inventory\Core\IComponent;
-use Inventory\Core\Routing\Request;
 
 /**
  * Application Class
@@ -78,11 +78,12 @@ class Application implements IComponent
      * Routing
      *
      * @throws \Inventory\Core\Exception\BadArgument
+     * @throws \Inventory\Core\Exception\InvalidRequest
      */
     private function routing(): array
     {
         // Parse HTTP request
-        $request = $this->serviceContainer->factory()->create(Request::class);
+        $request = $this->serviceContainer->factory()->createRequest();
         $route = $request->parseRoute();
 
         // Create Router
@@ -158,7 +159,7 @@ class Application implements IComponent
 
             // Finish
             $this->exit();
-        } catch (BadArgument | Exception | Error $ex) {
+        } catch (BadArgument | InvalidRequest | Exception | Error $ex) {
             $this->exHandler->handleFatalError();
         }
     }
