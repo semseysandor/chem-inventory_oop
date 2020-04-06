@@ -22,41 +22,14 @@ define('ROOT', __DIR__);
  */
 include ROOT.'/../vendor/autoload.php';
 
+/**
+ * Some global functions
+ */
+include ROOT.'/global.php';
+
 // Set error reporting level
 error_reporting(E_ALL);
 // error_reporting(0);
 
-// Setting top level exception handler for uncaught exceptions
+// Setting top level exception handler for any uncaught exceptions
 set_exception_handler('toplevel');
-
-/**
- * Top level exception handler
- *
- * @param \Exception $ex Exception to handle
- */
-function toplevel($ex)
-{
-    header('Content-Type: text; charset=UTF-8');
-    echo "FATAL ERROR!\n\n";
-    echo $ex->getMessage()."\n\n";
-    echo $ex->getTraceAsString();
-}
-
-/**
- * Translate function
- *
- * @param string $string String to translate
- * @param array $params
- *
- * @return string
- */
-function ts(string $string, ...$params)
-{
-    // If simple string
-    if (empty($params)) {
-        return $string;
-    }
-
-    // There are other params -> formatted
-    return sprintf($string, ...$params);
-}
