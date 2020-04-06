@@ -221,6 +221,8 @@ class SQLDataBaseTest extends BaseTestCase
      * @param string $bind
      * @param array $values
      *
+     * @param $expected
+     *
      * @throws \Inventory\Core\Exception\SQLException
      */
     public function testValidExport(string $query, string $bind, array $values, $expected)
@@ -255,7 +257,7 @@ class SQLDataBaseTest extends BaseTestCase
             null,
           ],
           'Simple query' => [
-            'INSERT INTO test_table (name) VALUES (head)',
+            'INSERT INTO test_table (name) VALUES (\'head\')',
             '',
             [],
             1,
@@ -327,7 +329,7 @@ class SQLDataBaseTest extends BaseTestCase
         $this->truncateTestDB();
         $this->sut->connect();
         $params = [
-          'query' => 'INSERT INTO test_table (name) VALUES (head)',
+          'query' => 'INSERT INTO test_table (name) VALUES (\'head\')',
         ];
         $this->sut->import($params);
         self::assertSame(1, $this->sut->getLastID());
