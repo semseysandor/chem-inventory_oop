@@ -87,6 +87,26 @@ class SQLDataBase implements IDataBase
     }
 
     /**
+     * Initialize a query.
+     *
+     * @param array $params Query parameters
+     * $params =
+     *   [
+     *    query  => 'query string'
+     *    bind   => 'sii'
+     *    values => [value_1, value_2, value_3]
+     *   ]
+     *
+     * @return void
+     */
+    private function initQuery(array $params): void
+    {
+        $this->query = $params['query'] ?? null;
+        $this->bind = $params['bind'] ?? null;
+        $this->values = $params['values'] ?? null;
+    }
+
+    /**
      * Make a connection to the DataBase.
      *
      * @param \Inventory\Core\Settings $settings
@@ -118,26 +138,6 @@ class SQLDataBase implements IDataBase
 
         // Set character set
         $this->link->set_charset('utf8');
-    }
-
-    /**
-     * Initialize a query.
-     *
-     * @param array $params Query parameters
-     * $params =
-     *   [
-     *    query  => 'query string'
-     *    bind   => 'sii'
-     *    values => [value_1, value_2, value_3]
-     *   ]
-     *
-     * @return void
-     */
-    private function initQuery(array $params): void
-    {
-        $this->query = $params['query'] ?? null;
-        $this->bind = $params['bind'] ?? null;
-        $this->values = $params['values'] ?? null;
     }
 
     /**

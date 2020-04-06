@@ -28,7 +28,8 @@ class SQLException extends BaseException
     /**
      * Exception message
      */
-    public const MESSAGE='SQL error occurred.';
+    public const MESSAGE = 'SQL error occurred.';
+
     /**
      * SQLException constructor.
      *

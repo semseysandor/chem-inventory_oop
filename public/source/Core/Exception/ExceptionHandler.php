@@ -51,7 +51,7 @@ class ExceptionHandler
      */
     public function setRenderer(Renderer $renderer)
     {
-        $this->renderer=$renderer;
+        $this->renderer = $renderer;
     }
 
     /**
@@ -66,7 +66,7 @@ class ExceptionHandler
     /**
      * Handles fatal error
      */
-    public function handleFatalError():void
+    public function handleFatalError(): void
     {
         // There is a renderer --> use it
         if ($this->renderer) {

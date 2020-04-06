@@ -93,25 +93,6 @@ class Renderer implements IComponent
     }
 
     /**
-     * Load variables to template
-     */
-    public function loadTemplateVars(): void
-    {
-        // Get variables from template container
-        $vars = $this->templateContainer->getVars();
-
-        // Check if they are set
-        if (empty($vars)) {
-            return;
-        }
-
-        // Load variables to template
-        foreach ($vars as $name => $value) {
-            $this->engine->assign($name, $value);
-        }
-    }
-
-    /**
      * Load template files
      */
     private function loadTemplateFiles(): void
@@ -145,6 +126,25 @@ class Renderer implements IComponent
     }
 
     /**
+     * Load variables to template
+     */
+    public function loadTemplateVars(): void
+    {
+        // Get variables from template container
+        $vars = $this->templateContainer->getVars();
+
+        // Check if they are set
+        if (empty($vars)) {
+            return;
+        }
+
+        // Load variables to template
+        foreach ($vars as $name => $value) {
+            $this->engine->assign($name, $value);
+        }
+    }
+
+    /**
      * Renders a template in HTML
      *
      * @return void
@@ -169,7 +169,7 @@ class Renderer implements IComponent
     /**
      * Displays error
      */
-    public function displayError():void
+    public function displayError(): void
     {
         // TODO: implement
     }

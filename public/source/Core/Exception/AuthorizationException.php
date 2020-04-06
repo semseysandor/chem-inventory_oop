@@ -15,7 +15,7 @@
 namespace Inventory\Core\Exception;
 
 /**
- * File Missing Exception
+ * Authorization Exception
  *
  * @category Exception
  * @package  chem-inventory_oop
@@ -23,15 +23,15 @@ namespace Inventory\Core\Exception;
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class FileMissing extends BaseException
+class AuthorizationException extends BaseException
 {
     /**
      * Exception message
      */
-    public const MESSAGE = 'A file is missing.';
+    public const MESSAGE = 'Not authorized.';
 
     /**
-     * File Missing constructor.
+     * Authorization Exception constructor.
      *
      * @param string|null $context Context in which exception appeared
      */

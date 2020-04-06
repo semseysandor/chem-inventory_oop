@@ -14,6 +14,7 @@
 
 namespace Inventory\Test\Unit\Core\Exception;
 
+use Inventory\Core\Exception\AuthorizationException;
 use Inventory\Core\Exception\BadArgument;
 use Inventory\Core\Exception\BaseException;
 use Inventory\Core\Exception\FieldMissing;
@@ -74,11 +75,12 @@ class ExceptionTest extends BaseTestCase
     public function provideException()
     {
         return [
+          'Authorization Exception' => [AuthorizationException::class, AuthorizationException::MESSAGE],
           'Bad Argument' => [BadArgument::class, BadArgument::MESSAGE],
-          'FieldMissing' => [FieldMissing::class, FieldMissing::MESSAGE],
-          'FileMissing' => [FileMissing::class, FileMissing::MESSAGE],
-          'InvalidRequest' => [InvalidRequest::class, InvalidRequest::MESSAGE],
-          'SQLException' => [SQLException::class, SQLException::MESSAGE],
+          'Field Missing' => [FieldMissing::class, FieldMissing::MESSAGE],
+          'File Missing' => [FileMissing::class, FileMissing::MESSAGE],
+          'Invalid Request' => [InvalidRequest::class, InvalidRequest::MESSAGE],
+          'SQL Exception' => [SQLException::class, SQLException::MESSAGE],
         ];
     }
 

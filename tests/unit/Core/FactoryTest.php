@@ -118,7 +118,6 @@ class FactoryTest extends BaseTestCase
     /**
      * Test non-existent class throws exception
      *
-     * @throws \Inventory\Core\Exception\BadArgument
      * @throws \ReflectionException
      */
     public function testNonExistentClassThrowsException()

@@ -28,7 +28,8 @@ class BadArgument extends BaseException
     /**
      * Exception message
      */
-    public const MESSAGE='Bad argument received.';
+    public const MESSAGE = 'Bad argument received.';
+
     /**
      * Bad Argument constructor.
      *

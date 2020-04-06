@@ -28,7 +28,8 @@ class FieldMissing extends BaseException
     /**
      * Exception message
      */
-    public const MESSAGE='A field is missing.';
+    public const MESSAGE = 'A field is missing.';
+
     /**
      * Field Missing constructor.
      *

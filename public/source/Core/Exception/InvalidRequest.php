@@ -28,7 +28,8 @@ class InvalidRequest extends BaseException
     /**
      * Exception message
      */
-    public const MESSAGE='Invalid request received.';
+    public const MESSAGE = 'Invalid request received.';
+
     /**
      * Invalid Request constructor.
      *

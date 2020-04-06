@@ -14,6 +14,8 @@
 
 namespace Inventory\Core\Routing;
 
+use Inventory\Core\Exception\AuthorizationException;
+
 /**
  * Security Class
  *
@@ -29,6 +31,8 @@ class Security
      * Initialize session
      *
      * @return void
+     *
+     * @throws \Inventory\Core\Exception\AuthorizationException
      */
     public function initSession(): void
     {
@@ -37,7 +41,7 @@ class Security
 
         // Abort script if session not loaded
         if (session_status() != PHP_SESSION_ACTIVE) {
-            exit(ts('Session start failed.'));
+            throw new AuthorizationException(ts('Session start failed.'));
         }
     }
 

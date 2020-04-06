@@ -15,7 +15,6 @@
 namespace Inventory\Page;
 
 use Inventory\Core\Controller\Page;
-use Inventory\Core\Routing\Security;
 
 /**
  * Logout Class
@@ -43,9 +42,8 @@ class Logout extends Page
      */
     protected function process(): void
     {
-        $this->factory->create(Security::class)->logOut();
+        $this->factory->createSecurity()->logOut();
         header('Location: /');
-        // TODO: Implement process() method.
     }
 
     /**
