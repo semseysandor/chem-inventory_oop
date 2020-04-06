@@ -23,7 +23,7 @@ define('ROOT', __DIR__);
 include ROOT.'/../vendor/autoload.php';
 
 /**
- * Some global functions
+ * Few global functions
  */
 include ROOT.'/global.php';
 
@@ -32,4 +32,4 @@ error_reporting(E_ALL);
 // error_reporting(0);
 
 // Setting top level exception handler for any uncaught exceptions
-set_exception_handler('toplevel');
+set_exception_handler('inventory_top_level_exception_handler');

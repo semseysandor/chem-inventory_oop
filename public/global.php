@@ -17,12 +17,23 @@
  *
  * @param \Exception $ex Exception to handle
  */
-function toplevel($ex)
+function inventory_top_level_exception_handler($ex)
 {
-    header('Content-Type: text; charset=UTF-8');
-    echo "FATAL ERROR!\n\n";
-    echo $ex->getMessage()."\n\n";
-    echo $ex->getTraceAsString();
+    $message = $ex->getMessage();
+    $trace = $ex->getTraceAsString();
+
+    if (!headers_sent()) {
+        // Console type response
+        header('Content-Type: text; charset=UTF-8');
+        echo "FATAL ERROR!\n\n";
+        echo $message."\n\n";
+        echo $trace;
+    } else {
+        // HTML type response
+        echo "<div><h1>Fatal Error</h1>";
+        echo "<p>".$message."</p>";
+        echo "<p>".$trace."</p></div>";
+    }
 }
 
 /**
