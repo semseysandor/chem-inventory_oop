@@ -41,7 +41,7 @@ class Index extends Page
     {
         // TODO: implement more
         try {
-            $bao = new Compound();
+            $bao = new Compound($this->service->database());
             $this->setTemplateVar('compounds', $bao->getAll(['id', 'name']));
         } catch (BaseException $ex) {
             echo $ex->getMessage().' '.$ex->getContext();

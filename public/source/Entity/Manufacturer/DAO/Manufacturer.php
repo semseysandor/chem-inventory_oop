@@ -15,6 +15,7 @@
 namespace Inventory\Entity\Manufacturer\DAO;
 
 use Inventory\Core\DataBase\SQLDaO;
+use Inventory\Core\DataBase\SQLDataBase;
 
 /**
  * Manufacturer entity DataObject
@@ -72,11 +73,13 @@ class Manufacturer extends SQLDaO
     /**
      * Manufacturer constructor.
      *
+     * @param \Inventory\Core\DataBase\SQLDataBase $dataBase
+     *
      * @throws \Inventory\Core\Exception\BadArgument
      */
-    public function __construct()
+    public function __construct(SQLDataBase $dataBase)
     {
-        parent::__construct();
+        parent::__construct($dataBase);
 
         // Init fields
         $this->id = null;

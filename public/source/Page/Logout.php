@@ -42,7 +42,7 @@ class Logout extends Page
      */
     protected function process(): void
     {
-        $this->factory->createSecurity()->logOut();
+        $this->service->factory()->createSecurity()->logOut();
         header('Location: /');
     }
 

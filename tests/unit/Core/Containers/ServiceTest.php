@@ -102,24 +102,28 @@ class ServiceTest extends BaseTestCase
      * @throws \Inventory\Core\Exception\SQLException
      * @throws \ReflectionException
      */
-    public function testReturnDataBaseObjectAndAlwaysNewObject()
+    public function testReturnDataBaseObjectAndAlwaysSameObject()
     {
         // Mock factory to not initialize DB
-        $service=$this->createStub(Service::class);
-        $factory=$this
-          ->getMockBuilder(Factory::class)
-          ->setConstructorArgs([$service])
-          ->onlyMethods(['initDataBase'])
-          ->getMock();
+        $factory = $this->getMockBuilder(Factory::class)->onlyMethods(['initDataBase'])->getMock();
 
-        // Give mock factory to SUT
+        // Mock Settings Manager
+        $settings = $this->getMockBuilder(Settings::class)->setMethodsExcept(['addSetting', 'getSetting'])->getMock();
+        $settings->addSetting('db', 'host', 'localhost');
+        $settings->addSetting('db', 'port', 1000);
+        $settings->addSetting('db', 'name', 'test');
+        $settings->addSetting('db', 'user', 'test');
+        $settings->addSetting('db', 'pass', 'test');
+
+        // Give mock factory & settings manager to SUT
+        $this->setProtectedProperty($this->sut, 'settings', $settings);
         $this->setProtectedProperty($this->sut, 'factory', $factory);
 
-        $database_return=$this->sut->database();
+        $database_return = $this->sut->database();
         self::assertInstanceOf(SQLDataBase::class, $database_return);
 
-        // Modify object and test if different object returned
-        $database_return->test='test';
-        self::assertNotEquals($database_return, $this->sut->database());
+        // Modify object and test if same object returned
+        $database_return->test = 'test';
+        self::assertEquals($database_return, $this->sut->database());
     }
 }

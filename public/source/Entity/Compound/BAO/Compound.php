@@ -14,6 +14,8 @@
 
 namespace Inventory\Entity\Compound\BAO;
 
+use Inventory\Core\DataBase\SQLDataBase;
+
 /**
  * Compound BaO
  *
@@ -25,6 +27,18 @@ namespace Inventory\Entity\Compound\BAO;
  */
 class Compound
 {
+    protected SQLDataBase $dataBase;
+
+    /**
+     * Compound constructor.
+     *
+     * @param \Inventory\Core\DataBase\SQLDataBase $dataBase
+     */
+    public function __construct(SQLDataBase $dataBase)
+    {
+        $this->dataBase = $dataBase;
+    }
+
     /**
      * Gets all compounds from DataBase
      *
@@ -37,13 +51,13 @@ class Compound
      */
     public function getAll(array $fields = null)
     {
-        $dao = new \Inventory\Entity\Compound\DAO\Compound();
+        $dao = new \Inventory\Entity\Compound\DAO\Compound($this->dataBase);
 
         $result = $dao->retrieve(
-            [
+          [
             'fields' => $fields,
             'order_by' => ['name'],
-            ]
+          ]
         );
 
         return $dao->fetchResults($result);

@@ -14,6 +14,7 @@
 
 namespace Inventory\Core\Containers;
 
+use Inventory\Core\DataBase\SQLDataBase;
 use Inventory\Core\Factory;
 use Inventory\Core\Routing\Security;
 use Inventory\Core\Settings;
@@ -51,6 +52,13 @@ class Service
     private ?Security $security;
 
     /**
+     * DataBase
+     *
+     * @var \Inventory\Core\DataBase\SQLDataBase|null
+     */
+    private ?SQLDataBase $dataBase;
+
+    /**
      * Service constructor.
      */
     public function __construct()
@@ -58,6 +66,7 @@ class Service
         $this->factory = null;
         $this->settings = null;
         $this->security = null;
+        $this->dataBase = null;
     }
 
     /**
@@ -104,7 +113,19 @@ class Service
      */
     public function database()
     {
-        return $this->factory()->createDataBase($this->settings());
+        // Pseudo-singleton
+        if ($this->dataBase == null) {
+            // Get configs
+            $host = $this->settings()->getSetting('db', 'host');
+            $port = $this->settings()->getSetting('db', 'port');
+            $name = $this->settings()->getSetting('db', 'name');
+            $user = $this->settings()->getSetting('db', 'user');
+            $pass = $this->settings()->getSetting('db', 'pass');
+
+            $this->dataBase = $this->factory()->createDataBase($host, $port, $name, $user, $pass);
+        }
+
+        return $this->dataBase;
     }
 
     /**

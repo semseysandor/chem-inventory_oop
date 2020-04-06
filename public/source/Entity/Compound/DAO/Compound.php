@@ -15,6 +15,7 @@
 namespace Inventory\Entity\Compound\DAO;
 
 use Inventory\Core\DataBase\SQLDaO;
+use Inventory\Core\DataBase\SQLDataBase;
 
 /**
  * Compound entity DataObject
@@ -149,11 +150,13 @@ class Compound extends SQLDaO
     /**
      * Compound constructor.
      *
+     * @param \Inventory\Core\DataBase\SQLDataBase $dataBase
+     *
      * @throws \Inventory\Core\Exception\BadArgument
      */
-    public function __construct()
+    public function __construct(SQLDataBase $dataBase)
     {
-        parent::__construct();
+        parent::__construct($dataBase);
 
         // Init fields
         $this->id = null;

@@ -40,11 +40,11 @@ return [
       // database name
     'name' => 'inventory',
       // database port
-    'port' => '3306',
+    'port' => 3306,
   ],
   'general' => [
       // HTML title
-    'title' => 'Leltár',
+    'title' => 'Chem-Inv',
       // Stylesheets
     'stylesheet' => [
       'style/general.css',

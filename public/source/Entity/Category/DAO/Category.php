@@ -15,6 +15,7 @@
 namespace Inventory\Entity\Category\DAO;
 
 use Inventory\Core\DataBase\SQLDaO;
+use Inventory\Core\DataBase\SQLDataBase;
 
 /**
  * Category entity DataObject
@@ -65,11 +66,13 @@ class Category extends SQLDaO
     /**
      * Category constructor.
      *
+     * @param \Inventory\Core\DataBase\SQLDataBase $dataBase DataBase
+     *
      * @throws \Inventory\Core\Exception\BadArgument
      */
-    public function __construct()
+    public function __construct(SQLDataBase $dataBase)
     {
-        parent::__construct();
+        parent::__construct($dataBase);
 
         // Init fields
         $this->id = null;

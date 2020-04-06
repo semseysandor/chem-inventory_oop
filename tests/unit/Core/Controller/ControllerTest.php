@@ -14,6 +14,7 @@
 
 namespace Inventory\Test\Unit\Core\Controller;
 
+use Inventory\Core\Containers\Service;
 use Inventory\Core\Containers\Template;
 use Inventory\Core\Controller\BaseController;
 use Inventory\Core\Controller\Form;
@@ -69,12 +70,17 @@ class ControllerTest extends BaseTestCase
      */
     protected MockObject $factory;
 
+    protected MockObject $service;
+
     /**
      * Set up method
      */
     public function setUp(): void
     {
         parent::setUp();
+
+        // Mock service
+        $this->service = $this->getMockBuilder(Service::class)->getMock();
 
         // Mock request
         $this->requestData = self::ARRAY;
@@ -95,7 +101,7 @@ class ControllerTest extends BaseTestCase
     {
         $this->sut = $this
           ->getMockBuilder($class)
-          ->setConstructorArgs([$this->requestData, $this->template, $this->factory])
+          ->setConstructorArgs([$this->requestData, $this->template, $this->service])
           ->getMockForAbstractClass();
     }
 

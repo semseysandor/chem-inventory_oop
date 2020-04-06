@@ -14,7 +14,9 @@
 
 namespace Inventory\Core;
 
+use Inventory\Core\Containers\Service;
 use Inventory\Core\Containers\Template;
+use Inventory\Core\Controller\BaseController;
 use Inventory\Core\DataBase\SQLDataBase;
 use Inventory\Core\Exception\BadArgument;
 use Inventory\Core\Exception\ExceptionHandler;
@@ -34,13 +36,6 @@ use Smarty;
  */
 class Factory
 {
-    /**
-     * Factory constructor.
-     */
-    public function __construct()
-    {
-    }
-
     /**
      * Creates a new object
      *
@@ -94,9 +89,12 @@ class Factory
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
-    public function createSettings()
+    public function createSettings(): Settings
     {
-        return $this->create(Settings::class);
+        $settings = $this->create(Settings::class);
+        $settings->loadConfigFile();
+
+        return $settings;
     }
 
     /**
@@ -109,7 +107,7 @@ class Factory
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
-    public function createRouter(array $route, Security $security)
+    public function createRouter(array $route, Security $security): Router
     {
         // Pass request to router
         return $this->create(Router::class, [$route, $security]);
@@ -118,6 +116,8 @@ class Factory
     /**
      * Creates new controller
      *
+     * @param \Inventory\Core\Containers\Service $service
+     *
      * @param string $class Name of controller to create
      * @param array|null $request_data Request Data
      *
@@ -125,7 +125,7 @@ class Factory
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
-    public function createController(string $class, array $request_data = null)
+    public function createController(Service $service, string $class, array $request_data = null): BaseController
     {
         // Check if argument is a controller class
         if (preg_match('/^Inventory\\\\(Page|Form)/', $class) != 1) {
@@ -136,7 +136,7 @@ class Factory
         $template_container = $this->create(Template::class);
 
         // Creates controller and pass dependencies
-        return $this->create($class, [$request_data, $template_container, $this]);
+        return $this->create($class, [$request_data, $template_container, $service]);
     }
 
     /**
@@ -149,7 +149,7 @@ class Factory
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
-    public function createRenderer(ExceptionHandler $exHandler, Template $temp_cont = null)
+    public function createRenderer(ExceptionHandler $exHandler, Template $temp_cont = null): Renderer
     {
         // Create template engine
         $engine = $this->create(Smarty::class);
@@ -161,31 +161,34 @@ class Factory
     /**
      * Creates new DataBase handler
      *
-     * @param \Inventory\Core\Settings $settings
+     * @param string $host DB host
+     * @param int $port DB port
+     * @param string $name DB name
+     * @param string $user DB user
+     * @param string $pass DB pass
      *
      * @return \Inventory\Core\DataBase\SQLDataBase
      *
      * @throws \Inventory\Core\Exception\BadArgument
      * @throws \Inventory\Core\Exception\SQLException
      */
-    public function createDataBase(Settings $settings)
+    public function createDataBase(string $host, int $port, string $name, string $user, string $pass): SQLDataBase
     {
-        $db = $this->create(SQLDataBase::class);
-        $this->initDataBase($db, $settings);
+        $db = $this->create(SQLDataBase::class, [$host, $port, $name, $user, $pass]);
+        $this->initDataBase($db);
 
         return $db;
     }
 
     /**
-     * Initialize DataBase
+     * Initializes DataBase
      *
-     * @param \Inventory\Core\DataBase\SQLDataBase $dataBase DB to initialize
-     * @param \Inventory\Core\Settings $settings Setting Manager
+     * @param \Inventory\Core\DataBase\SQLDataBase $db
      *
      * @throws \Inventory\Core\Exception\SQLException
      */
-    public function initDataBase(SQLDataBase &$dataBase, Settings $settings)
+    public function initDataBase(SQLDataBase &$db): void
     {
-        $dataBase->initialize($settings);
+        $db->connect();
     }
 }

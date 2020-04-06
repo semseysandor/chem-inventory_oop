@@ -42,13 +42,4 @@ interface IDataBase
      * @return mixed
      */
     public function export(array $params);
-
-    /**
-     * Executes a command on the DataBase.
-     *
-     * @param array $params Command and metadata
-     *
-     * @return mixed
-     */
-    public function execute(array $params);
 }

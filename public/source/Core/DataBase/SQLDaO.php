@@ -14,7 +14,6 @@
 
 namespace Inventory\Core\DataBase;
 
-use Inventory\Core\Containers\Service;
 use Inventory\Core\Exception\BadArgument;
 use Inventory\Core\Exception\FieldMissing;
 use mysqli_result;
@@ -30,6 +29,8 @@ use mysqli_result;
  */
 class SQLDaO
 {
+    protected SQLDataBase $dataBase;
+
     /**
      * Query string.
      *
@@ -123,10 +124,13 @@ class SQLDaO
 
     /**
      * DAO constructor.
+     *
+     * @param \Inventory\Core\DataBase\SQLDataBase $dataBase
      */
-    protected function __construct()
+    protected function __construct(SQLDataBase $dataBase)
     {
         $this->initQuery();
+        $this->dataBase = $dataBase;
     }
 
     /**
@@ -878,7 +882,6 @@ class SQLDaO
      * @return mixed
      *
      * @throws \Inventory\Core\Exception\SQLException
-     * @throws \Inventory\Core\Exception\BadArgument
      */
     public function execute()
     {
@@ -902,11 +905,10 @@ class SQLDaO
         ];
 
         // DataBase
-        $db = Service::database();
         if ($this->queryType == 'select') {
-            return $db->export($params);
+            return $this->dataBase->export($params);
         } else {
-            return $db->import($params);
+            return $this->dataBase->import($params);
         }
     }
 
@@ -961,11 +963,9 @@ class SQLDaO
      *
      * @return int
      *
-     * @throws \Inventory\Core\Exception\SQLException
-     * @throws \Inventory\Core\Exception\BadArgument
      */
     public function getInsertID(): int
     {
-        return Service::database()->getLastID();
+        return $this->dataBase->getLastID();
     }
 }

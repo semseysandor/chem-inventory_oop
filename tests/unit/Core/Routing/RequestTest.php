@@ -103,7 +103,7 @@ class RequestTest extends BaseTestCase
      *
      * @throws \Inventory\Core\Exception\InvalidRequest
      */
-    public function testMissingRequestURIThrowsInvalidRequest()
+    public function testMissingRequestUriThrowsInvalidRequest()
     {
         if (isset($_SERVER['REQUEST_URI'])) {
             unset($_SERVER['REQUEST_URI']);
@@ -117,7 +117,7 @@ class RequestTest extends BaseTestCase
      *
      * @throws \Inventory\Core\Exception\InvalidRequest
      */
-    public function testInvalidRequestURIThrowsInvalidRequest()
+    public function testInvalidRequestUriThrowsInvalidRequest()
     {
         $_SERVER['REQUEST_URI'] = self::ARRAY;
         self::expectException(InvalidRequest::class);

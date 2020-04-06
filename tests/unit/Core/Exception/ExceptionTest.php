@@ -27,11 +27,13 @@ use Inventory\Test\Framework\BaseTestCase;
 /**
  * ExceptionTest Class
  *
+ * @covers \Inventory\Core\Exception\AuthorizationException
  * @covers \Inventory\Core\Exception\BaseException
  * @covers \Inventory\Core\Exception\BadArgument
  * @covers \Inventory\Core\Exception\FieldMissing
  * @covers \Inventory\Core\Exception\FileMissing
  * @covers \Inventory\Core\Exception\InvalidRequest
+ * @covers \Inventory\Core\Exception\RenderingError
  * @covers \Inventory\Core\Exception\SQLException
  *
  * @group Exception

@@ -19,6 +19,7 @@ use Inventory\Core\Exception\ExceptionHandler;
 use Inventory\Core\Renderer;
 use Inventory\Test\Framework\BaseTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
+use Smarty;
 
 /**
  * RendererTest Class
@@ -66,7 +67,7 @@ class RendererTest extends BaseTestCase
         parent::setUp();
 
         $this->template = $this->getMockBuilder(Template::class)->getMock();
-        $this->engine = $this->getMockBuilder(\Smarty::class)->getMock();
+        $this->engine = $this->getMockBuilder(Smarty::class)->getMock();
         $this->exHandler = $this->getMockBuilder(ExceptionHandler::class)->getMock();
         $this->sut = new Renderer($this->exHandler, $this->engine, $this->template);
     }
@@ -88,12 +89,5 @@ class RendererTest extends BaseTestCase
     {
         $this->engine->expects(self::once())->method('display');
         $this->sut->run();
-    }
-
-    /**
-     * Test displaying errors
-     */
-    public function testDisplayErrorRendersExceptionInfo()
-    {
     }
 }

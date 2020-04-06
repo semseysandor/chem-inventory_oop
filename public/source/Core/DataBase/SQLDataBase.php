@@ -14,8 +14,8 @@
 
 namespace Inventory\Core\DataBase;
 
+use Exception;
 use Inventory\Core\Exception\SQLException;
-use Inventory\Core\Settings;
 use mysqli;
 use mysqli_driver;
 use mysqli_stmt;
@@ -75,15 +75,57 @@ class SQLDataBase implements IDataBase
     private ?array $values;
 
     /**
-     * SQLDataBase constructor.
+     * DataBase host
+     *
+     * @var string
      */
-    public function __construct()
+    private string $host;
+
+    /**
+     * DataBase port
+     *
+     * @var int
+     */
+    private int $port;
+
+    /**
+     * DataBase name
+     *
+     * @var string
+     */
+    private string $name;
+
+    /**
+     * DataBase user
+     *
+     * @var string
+     */
+    private string $user;
+
+    /**
+     * DataBase password
+     *
+     * @var string
+     */
+    private string $pass;
+
+    /**
+     * SQLDataBase constructor.
+     *
+     * @param string $host DB host
+     * @param int $port DB port
+     * @param string $name DB name
+     * @param string $user DB user
+     * @param string $pass DB pass
+     */
+    public function __construct(string $host, int $port, string $name, string $user, string $pass)
     {
+        $this->host = $host;
+        $this->port = $port;
+        $this->name = $name;
+        $this->user = $user;
+        $this->pass = $pass;
         $this->link = null;
-        $this->driver = null;
-        $this->query = null;
-        $this->bind = null;
-        $this->values = null;
     }
 
     /**
@@ -96,8 +138,6 @@ class SQLDataBase implements IDataBase
      *    bind   => 'sii'
      *    values => [value_1, value_2, value_3]
      *   ]
-     *
-     * @return void
      */
     private function initQuery(array $params): void
     {
@@ -107,33 +147,24 @@ class SQLDataBase implements IDataBase
     }
 
     /**
-     * Make a connection to the DataBase.
-     *
-     * @param \Inventory\Core\Settings $settings
-     *
-     * @return void
+     * Connects to the DataBase
      *
      * @throws \Inventory\Core\Exception\SQLException
      */
-    public function initialize(Settings $settings): void
+    public function connect(): void
     {
-        // Get configs
-        $db_host = $settings->getSetting('db', 'host');
-        $db_user = $settings->getSetting('db', 'user');
-        $db_pass = $settings->getSetting('db', 'pass');
-        $db_name = $settings->getSetting('db', 'name');
-        $db_port = $settings->getSetting('db', 'port');
+        // Init link
+        $this->link = mysqli_init();
+        $this->driver = new mysqli_driver();
 
-        // Open a connection
-        $this->link = new mysqli($db_host, $db_user, $db_pass, $db_name, $db_port);
-
-        // If error in connection
-        if ($this->link->connect_error) {
-            throw new SQLException(ts('No connection to SQL Database'));
+        try {
+            // Connect to DB
+            $this->link->real_connect($this->host, $this->user, $this->pass, $this->name, $this->port);
+        } catch (Exception $ex) {
+            throw new SQLException(ts('Error connecting to SQL Database: "%s"', $this->link->connect_error));
         }
 
         // Error reporting level
-        $this->driver = new mysqli_driver();
         $this->driver->report_mode = self::ERROR_REPORTING ? MYSQLI_REPORT_ERROR : MYSQLI_REPORT_OFF;
 
         // Set character set
@@ -151,45 +182,39 @@ class SQLDataBase implements IDataBase
      *    values => [value_1, value_2, value_3]
      *   ]
      *
-     * @return int
+     * @return int|null
      *
      * @throws SQLException
      */
-    public function import(array $params): int
+    public function import(array $params)
     {
-        // Init query
-        $this->initQuery($params);
+        try {
+            // Init query
+            $this->initQuery($params);
 
-        // Check query
-        if (empty($this->query)) {
-            return null;
-        }
+            // Check query
+            if (empty($this->query)) {
+                return null;
+            }
 
-        // No bind or values supplied -> simple query
-        if (empty($this->bind) || empty($this->values)) {
-            // Execute query
-            $result = $this->link->query($this->query);
+            // No bind or values supplied -> simple query
+            if (empty($this->bind) || empty($this->values)) {
+                // Execute query
+                $this->link->query($this->query);
+            } else {
+                // Otherwise prepared statement
+                $stmt = new mysqli_stmt($this->link, $this->query);
+                $stmt->bind_param($this->bind, ...$this->values);
 
-            // Check results
-            if (!$result) {
-                throw new SQLException($this->query);
+                // Execute query
+                $stmt->execute();
             }
 
             // Return number of affected rows
             return $this->link->affected_rows;
+        } catch (Exception $ex) {
+            throw new SQLException($ex->getMessage());
         }
-
-        // Otherwise prepared statement
-        $stmt = new mysqli_stmt($this->link, $this->query);
-        $stmt->bind_param($this->bind, ...$this->values);
-
-        // Execute query and check for results
-        if (!($stmt->execute())) {
-            throw new SQLException($this->query);
-        }
-
-        // Return number of affected rows
-        return $this->link->affected_rows;
     }
 
     /**
@@ -209,43 +234,30 @@ class SQLDataBase implements IDataBase
      */
     public function export(array $params)
     {
-        // Init query
-        $this->initQuery($params);
+        try {
+            // Init query
+            $this->initQuery($params);
 
-        // Check query
-        if (empty($this->query)) {
-            return null;
-        }
+            // Check query
+            if (empty($this->query)) {
+                return null;
+            }
 
-        if (empty($this->bind) || empty($this->values)) {
-            // No bind or values supplied -> simple query
-            $result = $this->link->query($this->query);
-        } else {
-            // Otherwise prepared statement
-            $stmt = new mysqli_stmt($this->link, $this->query);
-            $stmt->bind_param($this->bind, ...$this->values);
-            $stmt->execute();
-            $result = $stmt->get_result();
-        }
+            if (empty($this->bind) || empty($this->values)) {
+                // No bind or values supplied -> simple query
+                $result = $this->link->query($this->query);
+            } else {
+                // Otherwise prepared statement
+                $stmt = new mysqli_stmt($this->link, $this->query);
+                $stmt->bind_param($this->bind, ...$this->values);
+                $stmt->execute();
+                $result = $stmt->get_result();
+            }
 
-        // Check for errors
-        if (!$result) {
+            return $result;
+        } catch (Exception $ex) {
             throw new SQLException($this->query);
         }
-
-        return $result;
-    }
-
-    /**
-     * Executes a command on the database.
-     *
-     * @param array $params Data and metadata
-     *
-     * @return mixed|void
-     */
-    public function execute(array $params)
-    {
-        // TODO: implement execute method
     }
 
     /**
@@ -256,32 +268,5 @@ class SQLDataBase implements IDataBase
     public function getLastID(): int
     {
         return (int)$this->link->insert_id;
-    }
-
-    /**
-     * Debug function.
-     *
-     * @param array $params Data and metadata
-     *
-     * @return void
-     */
-    public function debug(array $params): void
-    {
-        $this->initQuery($params);
-
-        $this->printQuery();
-    }
-
-    /**
-     * Prints query.
-     *
-     * @return void
-     */
-    public function printQuery(): void
-    {
-        echo 'Query : '.$this->query."\n";
-        echo 'bind  : '.$this->bind."\n";
-        echo 'values: ';
-        echo var_export($this->values);
     }
 }

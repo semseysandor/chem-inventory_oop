@@ -16,10 +16,13 @@ namespace Inventory;
 
 use Inventory\Core\Containers\Service;
 use Inventory\Core\Containers\Template;
+use Inventory\Core\Exception\AuthorizationException;
 use Inventory\Core\Exception\BadArgument;
 use Inventory\Core\Exception\ExceptionHandler;
 use Inventory\Core\Exception\InvalidRequest;
+use Inventory\Core\Exception\RenderingError;
 use Inventory\Core\IComponent;
+use SmartyException;
 
 /**
  * Application Class
@@ -116,7 +119,10 @@ class Application implements IComponent
         $class = $routingData['controller'];
 
         // Create & run controller
-        $controller = $this->serviceContainer->factory()->createController($class, $request_data);
+        $controller = $this
+          ->serviceContainer
+          ->factory()
+          ->createController($this->serviceContainer, $class, $request_data);
 
         return $controller->run();
     }
@@ -127,12 +133,16 @@ class Application implements IComponent
      * @param \Inventory\Core\Containers\Template $template Template container
      *
      * @throws \Inventory\Core\Exception\BadArgument
-     * @throws \SmartyException
+     * @throws \Inventory\Core\Exception\RenderingError
      */
     private function rendering(Template $template)
     {
-        $renderer = $this->serviceContainer->factory()->createRenderer($this->exHandler, $template);
-        $renderer->run();
+        try {
+            $renderer = $this->serviceContainer->factory()->createRenderer($this->exHandler, $template);
+            $renderer->run();
+        } catch (SmartyException $ex) {
+            throw new RenderingError($ex->getMessage());
+        }
     }
 
     /**
@@ -158,8 +168,10 @@ class Application implements IComponent
 
             // Finish
             $this->exit();
-        } catch (BadArgument | InvalidRequest $ex) {
+        } catch (AuthorizationException | BadArgument | InvalidRequest $ex) {
             $this->exHandler->handleFatalError($ex);
+        } catch (RenderingError $ex) {
+            $this->exHandler->handleRenderingError($ex);
         }
     }
 
