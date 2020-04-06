@@ -20,6 +20,7 @@ use Inventory\Core\Exception\BaseException;
 use Inventory\Core\Exception\FieldMissing;
 use Inventory\Core\Exception\FileMissing;
 use Inventory\Core\Exception\InvalidRequest;
+use Inventory\Core\Exception\RenderingError;
 use Inventory\Core\Exception\SQLException;
 use Inventory\Test\Framework\BaseTestCase;
 
@@ -80,6 +81,7 @@ class ExceptionTest extends BaseTestCase
           'Field Missing' => [FieldMissing::class, FieldMissing::MESSAGE],
           'File Missing' => [FileMissing::class, FileMissing::MESSAGE],
           'Invalid Request' => [InvalidRequest::class, InvalidRequest::MESSAGE],
+          'Rendering Error' => [RenderingError::class, RenderingError::MESSAGE],
           'SQL Exception' => [SQLException::class, SQLException::MESSAGE],
         ];
     }

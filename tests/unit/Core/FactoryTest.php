@@ -18,6 +18,7 @@ use Inventory\Core\Containers\Template;
 use Inventory\Core\Controller\BaseController;
 use Inventory\Core\DataBase\SQLDataBase;
 use Inventory\Core\Exception\BadArgument;
+use Inventory\Core\Exception\ExceptionHandler;
 use Inventory\Core\Factory;
 use Inventory\Core\Renderer;
 use Inventory\Core\Routing\Request;
@@ -134,14 +135,15 @@ class FactoryTest extends BaseTestCase
      */
     public function testCreateRendererReturnsRenderer()
     {
-        $template=$this->createStub(Template::class);
+        $template = $this->createStub(Template::class);
+        $ex_handler = $this->createStub(ExceptionHandler::class);
 
         // With Template
-        $renderer=$this->sut->createRenderer($template);
+        $renderer = $this->sut->createRenderer($ex_handler, $template);
         self::assertInstanceOf(Renderer::class, $renderer);
 
         // Without template
-        $renderer = $this->sut->createRenderer();
+        $renderer = $this->sut->createRenderer($ex_handler);
         self::assertInstanceOf(Renderer::class, $renderer);
     }
 

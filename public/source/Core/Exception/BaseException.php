@@ -43,7 +43,7 @@ class BaseException extends Exception
      * @param int $code Exception code
      * @param Throwable $previous Previous exception
      */
-    public function __construct(string $context = null, string $message = "", int $code = 0, Throwable $previous = null)
+    public function __construct(string $context = "", string $message = "", int $code = 0, Throwable $previous = null)
     {
         parent::__construct($message, $code, $previous);
         $this->context = $context;

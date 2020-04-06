@@ -17,6 +17,7 @@ namespace Inventory\Core;
 use Inventory\Core\Containers\Template;
 use Inventory\Core\DataBase\SQLDataBase;
 use Inventory\Core\Exception\BadArgument;
+use Inventory\Core\Exception\ExceptionHandler;
 use Inventory\Core\Routing\Request;
 use Inventory\Core\Routing\Router;
 use Inventory\Core\Routing\Security;
@@ -141,19 +142,20 @@ class Factory
     /**
      * Creates new renderer
      *
+     * @param \Inventory\Core\Exception\ExceptionHandler $exHandler
      * @param \Inventory\Core\Containers\Template $temp_cont Template container
      *
      * @return \Inventory\Core\Renderer
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
-    public function createRenderer(Template $temp_cont = null)
+    public function createRenderer(ExceptionHandler $exHandler, Template $temp_cont = null)
     {
         // Create template engine
         $engine = $this->create(Smarty::class);
 
         // Create renderer
-        return $this->create(Renderer::class, [$engine, $temp_cont]);
+        return $this->create(Renderer::class, [$exHandler, $engine, $temp_cont]);
     }
 
     /**

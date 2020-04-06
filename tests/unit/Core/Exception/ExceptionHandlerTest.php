@@ -14,6 +14,7 @@
 
 namespace Inventory\Test\Unit\Core\Exception;
 
+use Inventory\Core\Exception\BaseException;
 use Inventory\Core\Exception\ExceptionHandler;
 use Inventory\Core\Renderer;
 use Inventory\Test\Framework\BaseTestCase;
@@ -85,8 +86,8 @@ class ExceptionHandlerTest extends BaseTestCase
         $this->sut->expects(self::exactly(2))->method('exitWithFail');
         $this->suppressOutput();
 
-        $this->sut->handleFatalError();
-        $this->sut->handleRendererError();
+        $this->sut->handleFatalError(new BaseException());
+        $this->sut->handleRenderingError(new BaseException());
     }
 
     /**
@@ -95,7 +96,7 @@ class ExceptionHandlerTest extends BaseTestCase
     public function testFatalErrorInvokesDynamicErrorDisplay()
     {
         $this->renderer->expects(self::once())->method('displayError');
-        $this->sut->handleFatalError();
+        $this->sut->handleFatalError(new BaseException());
     }
 
     /**
@@ -104,7 +105,7 @@ class ExceptionHandlerTest extends BaseTestCase
     public function testFatalRendererErrorInvokesStaticErrorDisplay()
     {
         $this->expectOutputRegex('/ERROR/');
-        $this->sut->handleRendererError();
+        $this->sut->handleRenderingError(new BaseException());
     }
 
     /**
@@ -119,7 +120,7 @@ class ExceptionHandlerTest extends BaseTestCase
           ->onlyMethods(['exitWithFail'])
           ->getMock();
         $this->expectOutputRegex('/ERROR/');
-        $this->sut->handleFatalError();
+        $this->sut->handleFatalError(new BaseException());
     }
 
     /**

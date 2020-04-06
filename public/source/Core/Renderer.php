@@ -15,6 +15,8 @@
 namespace Inventory\Core;
 
 use Inventory\Core\Containers\Template;
+use Inventory\Core\Exception\BaseException;
+use Inventory\Core\Exception\ExceptionHandler;
 use Smarty;
 
 /**
@@ -63,13 +65,22 @@ class Renderer implements IComponent
     private Smarty $engine;
 
     /**
+     * Exception handler
+     *
+     * @var \Inventory\Core\Exception\ExceptionHandler
+     */
+    private Exception\ExceptionHandler $exHandler;
+
+    /**
      * Renderer constructor.
      *
+     * @param \Inventory\Core\Exception\ExceptionHandler $exHandler Exception handler
      * @param \Smarty $engine Template engine
      * @param \Inventory\Core\Containers\Template $temp_cont Template container
      */
-    public function __construct(Smarty $engine, Template $temp_cont = null)
+    public function __construct(ExceptionHandler $exHandler, Smarty $engine, Template $temp_cont = null)
     {
+        $this->exHandler = $exHandler;
         $this->engine = $engine;
         $this->templateContainer = $temp_cont;
     }
@@ -112,20 +123,6 @@ class Renderer implements IComponent
     }
 
     /**
-     * Render page
-     *
-     * @throws \SmartyException
-     */
-    private function render(): void
-    {
-        // Set base template file
-        $base_template = ($this->templateContainer->getBase()).self::FILE_EXT;
-
-        // Display template
-        $this->engine->display($base_template);
-    }
-
-    /**
      * Load variables to template
      */
     public function loadTemplateVars(): void
@@ -142,6 +139,20 @@ class Renderer implements IComponent
         foreach ($vars as $name => $value) {
             $this->engine->assign($name, $value);
         }
+    }
+
+    /**
+     * Render page
+     *
+     * @throws \SmartyException
+     */
+    private function render(): void
+    {
+        // Set base template file
+        $base_template = ($this->templateContainer->getBase()).self::FILE_EXT;
+
+        // Display template
+        $this->engine->display($base_template);
     }
 
     /**
@@ -168,9 +179,22 @@ class Renderer implements IComponent
 
     /**
      * Displays error
+     *
+     * @param \Inventory\Core\Exception\BaseException $ex Exception to display*
      */
-    public function displayError(): void
+    public function displayError(BaseException $ex): void
     {
-        // TODO: implement
+        try {
+            // Init template engine
+            $this->initTemplateEngine();
+            $this->engine->assign('message', $ex->getMessage());
+            $this->engine->assign('context', $ex->getContext());
+            // Set base template file
+            $base_template = ('error'.self::FILE_EXT);
+            // Display template
+            $this->engine->display($base_template);
+        } catch (\Exception $ex) {
+            $this->exHandler->handleRenderingError($ex);
+        }
     }
 }

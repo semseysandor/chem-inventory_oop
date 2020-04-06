@@ -15,7 +15,7 @@
 namespace Inventory\Core\Exception;
 
 /**
- * Invalid Request Exception
+ * Rendering Error
  *
  * @category Exception
  * @package  chem-inventory_oop
@@ -23,15 +23,15 @@ namespace Inventory\Core\Exception;
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class InvalidRequest extends BaseException
+class RenderingError extends BaseException
 {
     /**
      * Exception message
      */
-    public const MESSAGE = 'Invalid request received.';
+    public const MESSAGE = 'Rendering failed.';
 
     /**
-     * Invalid Request constructor.
+     * Rendering Error constructor.
      *
      * @param string|null $context Context in which exception appeared
      */

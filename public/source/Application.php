@@ -14,8 +14,6 @@
 
 namespace Inventory;
 
-use Error;
-use Exception;
 use Inventory\Core\Containers\Service;
 use Inventory\Core\Containers\Template;
 use Inventory\Core\Exception\BadArgument;
@@ -71,7 +69,7 @@ class Application implements IComponent
         $this->serviceContainer = new Service();
 
         // Create a renderer for exception handler
-        $renderer = $this->serviceContainer->factory()->createRenderer();
+        $renderer = $this->serviceContainer->factory()->createRenderer($this->exHandler);
         $this->exHandler->setRenderer($renderer);
     }
 
@@ -133,7 +131,7 @@ class Application implements IComponent
      */
     private function rendering(Template $template)
     {
-        $renderer = $this->serviceContainer->factory()->createRenderer($template);
+        $renderer = $this->serviceContainer->factory()->createRenderer($this->exHandler, $template);
         $renderer->run();
     }
 
@@ -160,15 +158,15 @@ class Application implements IComponent
 
             // Finish
             $this->exit();
-        } catch (BadArgument | InvalidRequest | Exception | Error $ex) {
-            $this->exHandler->handleFatalError();
+        } catch (BadArgument | InvalidRequest $ex) {
+            $this->exHandler->handleFatalError($ex);
         }
     }
 
     /**
      * Exit application
      */
-    public function exit():void
+    public function exit(): void
     {
         exit;
     }

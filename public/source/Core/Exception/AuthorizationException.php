@@ -35,7 +35,7 @@ class AuthorizationException extends BaseException
      *
      * @param string|null $context Context in which exception appeared
      */
-    public function __construct(string $context = null)
+    public function __construct(string $context = "")
     {
         parent::__construct($context, ts(self::MESSAGE));
     }

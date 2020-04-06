@@ -14,6 +14,7 @@
 
 namespace Inventory\Core\Exception;
 
+use Exception;
 use Inventory\Core\Renderer;
 
 /**
@@ -56,35 +57,41 @@ class ExceptionHandler
 
     /**
      * Handles renderer error
+     *
+     * @param \Exception $ex Exception to handle
      */
-    public function handleRendererError(): void
+    public function handleRenderingError(\Exception $ex): void
     {
-        $this->displayStaticError();
-        $this->exitWithFail(1);
+        $this->displayStaticError($ex);
+        $this->exitWithFail($ex->getCode());
     }
 
     /**
      * Handles fatal error
+     *
+     * @param \Inventory\Core\Exception\BaseException $ex
      */
-    public function handleFatalError(): void
+    public function handleFatalError(BaseException $ex): void
     {
         // There is a renderer --> use it
         if ($this->renderer) {
             // Display error
-            $this->renderer->displayError();
+            $this->renderer->displayError($ex);
         } else {
             // No renderer --> fallback to static error page
-            $this->displayStaticError();
+            $this->displayStaticError($ex);
         }
 
         // Exit application
-        $this->exitWithFail(1);
+        $this->exitWithFail($ex->getCode());
     }
 
     /**
      * Display static error page
+     *
+     * @param \Exception $ex
      */
-    protected function displayStaticError()
+    protected function displayStaticError(Exception $ex)
     {
         include ROOT.'/templates/static/error.html';
     }
@@ -94,7 +101,7 @@ class ExceptionHandler
      *
      * @param int $code Error code
      */
-    public function exitWithFail(int $code): void
+    public function exitWithFail(int $code = 1): void
     {
         // Don't allow zero or negative status codes
         if ($code < 1) {
