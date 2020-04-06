@@ -24,7 +24,7 @@ use Inventory\Test\Framework\HeadlessDataBaseTrait;
  *
  * @covers \Inventory\Core\DataBase\SQLDataBase
  *
- * @group DataBase
+ * @group database
  *
  * @category Test
  * @package  chem-inventory_oop

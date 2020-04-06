@@ -36,7 +36,7 @@ use Inventory\Test\Framework\BaseTestCase;
  * @covers \Inventory\Core\Exception\RenderingError
  * @covers \Inventory\Core\Exception\SQLException
  *
- * @group Exception
+ * @group exception
  *
  * @category Test
  * @package  chem-inventory_oop

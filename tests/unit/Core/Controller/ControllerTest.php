@@ -32,7 +32,7 @@ use PHPUnit\Framework\MockObject\MockObject;
  * @covers \Inventory\Core\Controller\Page
  * @uses   \Inventory\Core\Containers\Template
  *
- * @group Controller
+ * @group controlling
  *
  * @category Test
  * @package  chem-inventory_oop

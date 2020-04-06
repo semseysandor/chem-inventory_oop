@@ -23,7 +23,7 @@ use Inventory\Test\Framework\BaseTestCase;
  *
  * @covers \Inventory\Core\Routing\Request
  *
- * @group Routing
+ * @group routing
  *
  * @category Test
  * @package  chem-inventory_oop

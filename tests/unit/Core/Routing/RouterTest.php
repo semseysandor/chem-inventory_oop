@@ -27,7 +27,7 @@ use PHPUnit\Framework\MockObject\MockObject;
  *
  * @covers \Inventory\Core\Routing\Router
  *
- * @group Routing
+ * @group routing
  *
  * @category Test
  * @package  chem-inventory_oop

@@ -23,7 +23,7 @@ use Inventory\Test\Framework\BaseTestCase;
  *
  * @covers \Inventory\Core\Settings
  *
- * @group Framework
+ * @group framework
  *
  * @category Test
  * @package  chem-inventory_oop

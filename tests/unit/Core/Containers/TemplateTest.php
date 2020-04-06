@@ -22,6 +22,8 @@ use Inventory\Test\Framework\BaseTestCase;
  *
  * @covers \Inventory\Core\Containers\Template
  *
+ * @group framework
+ *
  * @category Test
  * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>

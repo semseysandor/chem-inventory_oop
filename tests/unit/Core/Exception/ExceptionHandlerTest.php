@@ -25,7 +25,7 @@ use PHPUnit\Framework\MockObject\MockObject;
  *
  * @covers \Inventory\Core\Exception\ExceptionHandler
  *
- * @group Exception
+ * @group exception
  *
  * @category Test
  * @package  chem-inventory_oop

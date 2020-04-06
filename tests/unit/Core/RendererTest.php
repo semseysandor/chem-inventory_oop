@@ -26,7 +26,7 @@ use Smarty;
  *
  * @covers \Inventory\Core\Renderer
  *
- * @group Rendering
+ * @group rendering
  *
  * @category Test
  * @package  chem-inventory_oop
