@@ -141,7 +141,7 @@ class SQLDataBase implements IDataBase
      */
     private function initQuery(array $params): void
     {
-        $this->query = $params['query'] ?? null;
+        $this->query = trim($params['query']) ?? null;
         $this->bind = $params['bind'] ?? null;
         $this->values = $params['values'] ?? null;
     }

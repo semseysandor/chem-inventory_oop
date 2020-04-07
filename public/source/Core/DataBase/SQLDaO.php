@@ -120,14 +120,14 @@ class SQLDaO
      *
      * @var int|null
      */
-    protected ?int $id;
+    public ?int $id;
 
     /**
      * DAO constructor.
      *
      * @param \Inventory\Core\DataBase\SQLDataBase $dataBase
      */
-    protected function __construct(SQLDataBase $dataBase)
+    public function __construct(SQLDataBase $dataBase)
     {
         $this->initQuery();
         $this->dataBase = $dataBase;
@@ -163,6 +163,10 @@ class SQLDaO
 
         // Loops through fields from metadata
         foreach ($this->metadata as $field => $meta) {
+            // Dont' include id
+            if ($field == 'id') {
+                continue;
+            }
             // If field is set --> add to selected fields
             if (isset($this->$field)) {
                 $fields_set[] = $field;
@@ -348,6 +352,20 @@ class SQLDaO
           'description' => $desc,
           'required' => $req,
         ];
+    }
+
+    /**
+     * Adds parameters to bind.
+     *
+     * @param string $bind Bind string (int: i, string: s)
+     *
+     * @return $this fluent interface
+     */
+    protected function bind(string $bind): SQLDaO
+    {
+        $this->bind .= $bind;
+
+        return $this;
     }
 
     /**
@@ -577,7 +595,7 @@ class SQLDaO
         // Init query
         $this->initQuery();
         $this->queryType = 'delete';
-        $this->query = 'DELETE FROM '.$this->tableName.' ';
+        $this->query = 'DELETE FROM '.$this->tableName;
 
         return $this;
     }
@@ -605,7 +623,6 @@ class SQLDaO
 
         // Remove last comma
         $field_string = rtrim($field_string, ',');
-        $field_string .= ' ';
 
         $this->query .= $field_string;
 
@@ -625,7 +642,7 @@ class SQLDaO
     public function setInsert(array $fields)
     {
         $column_string = '(';
-        $values_string = 'VALUES(';
+        $values_string = 'VALUES (';
 
         if (empty($fields)) {
             throw new BadArgument(ts('No fields to insert into "%s".', $this->tableName));
@@ -646,10 +663,6 @@ class SQLDaO
             } else {
                 throw new FieldMissing(ts('Inserting into "%s".', $this->tableName));
             }
-        }
-
-        if (empty($this->values)) {
-            throw new BadArgument(ts('No values to insert into "%s".', $this->tableName));
         }
 
         // Remove last comma
@@ -693,10 +706,6 @@ class SQLDaO
             } else {
                 throw new FieldMissing(ts('Updating "%s".', $this->tableName));
             }
-        }
-
-        if (empty($this->values)) {
-            throw new BadArgument(ts('No values to update "%s".', $this->tableName));
         }
 
         // Remove last comma
@@ -863,20 +872,6 @@ class SQLDaO
     }
 
     /**
-     * Adds parameters to bind.
-     *
-     * @param string $bind Bind string (int: i, string: s)
-     *
-     * @return $this fluent interface
-     */
-    protected function bind(string $bind): SQLDaO
-    {
-        $this->bind .= $bind;
-
-        return $this;
-    }
-
-    /**
      * Executes query.
      *
      * @return mixed
@@ -888,12 +883,27 @@ class SQLDaO
         // Compose query
         switch ($this->queryType) {
             case 'select':
-                $this->query .= $this->from.' '.$this->where.' ';
-                $this->query .= $this->orderBy.' '.$this->limit.' '.$this->offset;
+                if ($this->from) {
+                    $this->query .= ' '.$this->from;
+                }
+                if ($this->where) {
+                    $this->query .= ' '.$this->where;
+                }
+                if ($this->orderBy) {
+                    $this->query .= ' '.$this->orderBy;
+                }
+                if ($this->limit) {
+                    $this->query .= ' '.$this->limit;
+                }
+                if ($this->offset) {
+                    $this->query .= ' '.$this->offset;
+                }
                 break;
             case 'update':
             case 'delete':
-                $this->query .= ' '.$this->where;
+                if ($this->where) {
+                    $this->query .= ' '.$this->where;
+                }
                 break;
         }
 
