@@ -176,7 +176,7 @@ class Compound extends SQLDaO
         $this->lastModTime = null;
 
         // Add metadata
-        $this->addMetadata('id', 'i', 'compound_id', 'Compound ID', true);
+        $this->addMetadata('id', 'i', 'compound_id', 'Compound ID');
         $this->addMetadata('name', 's', 'name', 'Compound Name', true);
         $this->addMetadata('nameAlt', 's', 'name_alt', 'Compound Alternative Name');
         $this->addMetadata('abbrev', 's', 'abbrev', 'Abbreviation');
