@@ -26,6 +26,7 @@ use Inventory\Core\Routing\Request;
 use Inventory\Core\Routing\Router;
 use Inventory\Core\Routing\Security;
 use Inventory\Core\Settings;
+use Inventory\Entity\Compound\DAO\Compound;
 use Inventory\Page\Login;
 use Inventory\Test\Framework\BaseTestCase;
 
@@ -157,7 +158,7 @@ class FactoryTest extends BaseTestCase
      */
     public function testCreateSettingsReturnSettings()
     {
-        self::assertInstanceOf(Settings::class, $this->sut->createSettings());
+        self::assertInstanceOf(Settings::class, $this->sut->createSettings(null));
     }
 
     /**
@@ -173,5 +174,32 @@ class FactoryTest extends BaseTestCase
 
         $db = $this->sut->createDataBase('test', '1000', 'test', 'test', 'test');
         self::assertInstanceOf(SQLDataBase::class, $db);
+    }
+
+    /**
+     * Test creating DaO
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
+     */
+    public function testCreateDaoReturnsDao()
+    {
+        $database = $this->getMockBuilder(SQLDataBase::class)->disableOriginalConstructor()->getMock();
+        $dao = $this->sut->createDaO($database, Compound::class);
+
+        self::assertInstanceOf(Compound::class, $dao);
+    }
+
+    /**
+     * Test non-existent DaO throws error
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
+     */
+    public function testCreateNonExistentDaoThrowsException()
+    {
+        $database = $this->getMockBuilder(SQLDataBase::class)->disableOriginalConstructor()->getMock();
+
+        self::expectException(BadArgument::class);
+
+        $this->sut->createDaO($database, \Inventory\Entity\Compound\BAO\Compound::class);
     }
 }

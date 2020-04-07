@@ -89,15 +89,22 @@ class Service
     /**
      * Gets the settings subsystem
      *
+     * @param string $default_config_file Default config file
+     *
      * @return \Inventory\Core\Settings
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
-    public function settings()
+    public function settings(string $default_config_file = null)
     {
+        // If no default config file specified fallback to default
+        if (is_null($default_config_file)) {
+            $default_config_file = Settings::DEFAULT_CONFIG_FILE;
+        }
+
         // Pseudo-singleton
         if ($this->settings == null) {
-            $this->settings = $this->factory()->createSettings();
+            $this->settings = $this->factory()->createSettings($default_config_file);
         }
 
         return $this->settings;

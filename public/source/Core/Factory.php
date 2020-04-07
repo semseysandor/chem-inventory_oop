@@ -17,6 +17,7 @@ namespace Inventory\Core;
 use Inventory\Core\Containers\Service;
 use Inventory\Core\Containers\Template;
 use Inventory\Core\Controller\BaseController;
+use Inventory\Core\DataBase\SQLDaO;
 use Inventory\Core\DataBase\SQLDataBase;
 use Inventory\Core\Exception\BadArgument;
 use Inventory\Core\Exception\ExceptionHandler;
@@ -85,13 +86,15 @@ class Factory
     /**
      * Creates Settings Manager
      *
+     * @param string $default_config_file Default config file
+     *
      * @return \Inventory\Core\Settings
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
-    public function createSettings(): Settings
+    public function createSettings(string $default_config_file = null): Settings
     {
-        $settings = $this->create(Settings::class);
+        $settings = $this->create(Settings::class, [$default_config_file]);
         $settings->loadConfigFile();
 
         return $settings;
@@ -187,8 +190,19 @@ class Factory
      *
      * @throws \Inventory\Core\Exception\SQLException
      */
-    public function initDataBase(SQLDataBase &$db): void
+    protected function initDataBase(SQLDataBase &$db): void
     {
         $db->connect();
+    }
+
+    public function createDaO(SQLDataBase $database, string $class): SQLDaO
+    {
+        // Check if argument is a DaO class
+        if (preg_match('/^Inventory\\\\Entity\\\\.*\\\\DAO/', $class) != 1) {
+            throw new BadArgument(ts('Tried to create non-existent DaO "%s"\'', $class));
+        }
+
+        // Creates DaO and pass dependencies
+        return $this->create($class, [$database]);
     }
 }

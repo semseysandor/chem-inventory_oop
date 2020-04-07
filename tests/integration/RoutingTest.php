@@ -28,6 +28,8 @@ use Inventory\Test\Framework\BaseTestCase;
  * @covers \Inventory\Core\Routing\Router
  * @covers \Inventory\Core\Routing\Security
  *
+ * @group backend
+ *
  * @category Test
  * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>

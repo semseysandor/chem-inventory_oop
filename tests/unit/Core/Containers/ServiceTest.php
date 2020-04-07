@@ -74,12 +74,12 @@ class ServiceTest extends BaseTestCase
      */
     public function testReturnSettingsManagerAndAlwaysSameObject()
     {
-        $settings = $this->sut->settings();
+        $settings = $this->sut->settings(null);
         self::assertInstanceOf(Settings::class, $settings);
 
         // Modify object and test if same object returned
-        $settings->test='test';
-        self::assertEquals($settings, $this->sut->settings());
+        $settings->test = 'test';
+        self::assertEquals($settings, $this->sut->settings(null));
     }
 
     /**

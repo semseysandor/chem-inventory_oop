@@ -27,6 +27,8 @@ use Inventory\Test\Framework\HeadlessDataBaseTrait;
  * @covers \Inventory\Core\DataBase\SQLDaO
  * @covers \Inventory\Entity\Compound\DAO\Compound
  *
+ * @group backend
+ *
  * @category Test
  * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>
