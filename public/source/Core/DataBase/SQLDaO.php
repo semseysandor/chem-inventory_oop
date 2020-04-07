@@ -390,7 +390,7 @@ class SQLDaO
      * @throws \Inventory\Core\Exception\BadArgument
      * @throws \Inventory\Core\Exception\SQLException
      */
-    public function retrieve(array $params = null)
+    public function retrieve($params = null)
     {
         // Init select query
         $this->initSelect();

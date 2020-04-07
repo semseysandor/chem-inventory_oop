@@ -74,11 +74,19 @@ trait HeadlessDataBaseTrait
     }
 
     /**
-     * Truncates test DataBase table
+     * Truncates test DataBase tables
      */
     protected function truncateTestDB()
     {
+        // Connect to DB
         $link = $this->connectDB();
-        $link->query("TRUNCATE TABLE test_table");
+
+        // Get tables
+        $tables = $link->query("SHOW TABLES");
+
+        // Truncate each table in DB
+        while ($row = $tables->fetch_row()) {
+            $link->query("TRUNCATE TABLE $row[0]");
+        }
     }
 }
