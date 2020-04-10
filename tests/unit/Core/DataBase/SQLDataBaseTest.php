@@ -18,6 +18,7 @@ use Inventory\Core\DataBase\SQLDataBase;
 use Inventory\Core\Exception\SQLException;
 use Inventory\Test\Framework\BaseTestCase;
 use Inventory\Test\Framework\HeadlessDataBaseTrait;
+use mysqli_result;
 
 /**
  * SQLDataBaseTest Class
@@ -333,5 +334,50 @@ class SQLDataBaseTest extends BaseTestCase
         ];
         $this->sut->import($params);
         self::assertSame(1, $this->sut->getLastID());
+    }
+
+    /**
+     * Test execute with empty query
+     *
+     * @throws \Inventory\Core\Exception\SQLException
+     */
+    public function testExecuteEmptyQuery()
+    {
+        $this->sut->connect();
+        $result = $this->sut->execute('');
+        self::assertNull($result);
+    }
+
+    /**
+     * Test execute with invalid query
+     *
+     * @throws \Inventory\Core\Exception\SQLException
+     */
+    public function testExecuteInvalidQuery()
+    {
+        $this->sut->connect();
+        self::expectException(SQLException::class);
+        $this->sut->execute('INVALID');
+    }
+
+    /**
+     * Test execute with valid query
+     *
+     * @throws \Inventory\Core\Exception\SQLException
+     */
+    public function testExecuteValidQuery()
+    {
+        $this->sut->connect();
+
+        // Show tables
+        $result = $this->sut->execute('SHOW TABLES');
+        self::assertInstanceOf(mysqli_result::class, $result);
+
+        // Truncate tables
+        while ($tables = $result->fetch_row()) {
+            echo $tables[0];
+            $result_truncate = $this->sut->execute("TRUNCATE TABLE $tables[0]");
+            self::assertTrue($result_truncate);
+        }
     }
 }

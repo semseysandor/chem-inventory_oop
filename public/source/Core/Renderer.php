@@ -14,10 +14,13 @@
 
 namespace Inventory\Core;
 
+use Exception;
 use Inventory\Core\Containers\Template;
 use Inventory\Core\Exception\BaseException;
 use Inventory\Core\Exception\ExceptionHandler;
+use Inventory\Core\Exception\RenderingError;
 use Smarty;
+use SmartyException;
 
 /**
  * Renderer
@@ -34,6 +37,11 @@ class Renderer implements IComponent
      * Templates directory
      */
     private const TEMPLATE_DIR = ROOT.'/templates/';
+
+    /**
+     * Config directory
+     */
+    private const CONFIG_DIR = ROOT.'/templates/config/';
 
     /**
      * Compiled templates directory
@@ -90,6 +98,9 @@ class Renderer implements IComponent
      */
     private function initTemplateEngine(): void
     {
+        // Set config directory
+        $this->engine->setConfigDir(self::CONFIG_DIR);
+
         // Set default template directory
         $this->engine->setTemplateDir(self::TEMPLATE_DIR);
 
@@ -160,21 +171,25 @@ class Renderer implements IComponent
      *
      * @return void
      *
-     * @throws \SmartyException
+     * @throws \Inventory\Core\Exception\RenderingError
      */
     public function run(): void
     {
-        // Init template engine
-        $this->initTemplateEngine();
+        try {
+            // Init template engine
+            $this->initTemplateEngine();
 
-        // Load template variables to engine
-        $this->loadTemplateVars();
+            // Load template variables to engine
+            $this->loadTemplateVars();
 
-        // Load templates to engine
-        $this->loadTemplateFiles();
+            // Load templates to engine
+            $this->loadTemplateFiles();
 
-        // Render page
-        $this->render();
+            // Render page
+            $this->render();
+        } catch (SmartyException $ex) {
+            throw new RenderingError();
+        }
     }
 
     /**
@@ -193,7 +208,7 @@ class Renderer implements IComponent
             $base_template = ('error'.self::FILE_EXT);
             // Display template
             $this->engine->display($base_template);
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
             $this->exHandler->handleRenderingError($ex);
         }
     }

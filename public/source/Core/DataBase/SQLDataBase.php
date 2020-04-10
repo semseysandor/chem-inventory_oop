@@ -261,6 +261,28 @@ class SQLDataBase implements IDataBase
     }
 
     /**
+     * Executes a command on the DataBase
+     *
+     * @param string $command Command
+     *
+     * @return mixed
+     * @throws \Inventory\Core\Exception\SQLException
+     * @throws \Inventory\Core\Exception\SQLException
+     */
+    public function execute(string $command)
+    {
+        try {
+            if (empty($command)) {
+                return null;
+            }
+
+            return $this->link->query($command);
+        } catch (Exception $ex) {
+            throw new SQLException($ex->getMessage());
+        }
+    }
+
+    /**
      * Gets auto-increment ID for last insertion
      *
      * @return int
