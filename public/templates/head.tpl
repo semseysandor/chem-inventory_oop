@@ -10,7 +10,9 @@
  | https://choosealicense.com/licenses/mit/      |
  +-----------------------------------------------+
 *}
-<head>
-  <meta charset="UTF-8">
-  <title>Fankimanki</title>
-</head>
+{strip}
+  <head>
+    <meta charset="UTF-8">
+    <title>Fankimanki</title>
+  </head>
+{/strip}

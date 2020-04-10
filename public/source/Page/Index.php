@@ -71,8 +71,7 @@ class Index extends Page
      */
     protected function assemble(): void
     {
-        $this->setTemplateRegion('body', Utils::getPathFromClass(self::class));
-
+        $this->setBaseTemplate(Utils::getPathFromClass(self::class));
         $this->setTemplateVar('user', $_SESSION['USER_NAME']);
     }
 }

@@ -195,6 +195,15 @@ class Factory
         $db->connect();
     }
 
+    /**
+     * Creates new Dao
+     *
+     * @param \Inventory\Core\DataBase\SQLDataBase $database DataBase
+     * @param string $class Dao class name
+     *
+     * @return \Inventory\Core\DataBase\SQLDaO
+     * @throws \Inventory\Core\Exception\BadArgument
+     */
     public function createDaO(SQLDataBase $database, string $class): SQLDaO
     {
         // Check if argument is a DaO class

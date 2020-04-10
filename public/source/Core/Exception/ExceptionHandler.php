@@ -60,7 +60,7 @@ class ExceptionHandler
      *
      * @param \Exception $ex Exception to handle
      */
-    public function handleRenderingError(\Exception $ex): void
+    public function handleRenderingError(Exception $ex): void
     {
         $this->displayStaticError($ex);
         $this->exitWithFail($ex->getCode());
@@ -93,6 +93,8 @@ class ExceptionHandler
      */
     protected function displayStaticError(Exception $ex)
     {
+        $message = $ex->getMessage();
+        $trace = $ex->getTrace();
         include ROOT.'/templates/static/error.html';
     }
 

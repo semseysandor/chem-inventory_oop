@@ -77,7 +77,7 @@ class Renderer implements IComponent
      *
      * @var \Inventory\Core\Exception\ExceptionHandler
      */
-    private Exception\ExceptionHandler $exHandler;
+    private ExceptionHandler $exHandler;
 
     /**
      * Renderer constructor.

@@ -10,3 +10,5 @@
  | https://choosealicense.com/licenses/mit/      |
  +-----------------------------------------------+
 *}
+{strip}
+{/strip}

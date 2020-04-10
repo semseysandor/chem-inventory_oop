@@ -22,7 +22,6 @@ use Inventory\Core\Exception\ExceptionHandler;
 use Inventory\Core\Exception\InvalidRequest;
 use Inventory\Core\Exception\RenderingError;
 use Inventory\Core\IComponent;
-use SmartyException;
 
 /**
  * Application Class
@@ -137,12 +136,8 @@ class Application implements IComponent
      */
     private function rendering(Template $template)
     {
-        try {
-            $renderer = $this->serviceContainer->factory()->createRenderer($this->exHandler, $template);
-            $renderer->run();
-        } catch (SmartyException $ex) {
-            throw new RenderingError($ex->getMessage());
-        }
+        $renderer = $this->serviceContainer->factory()->createRenderer($this->exHandler, $template);
+        $renderer->run();
     }
 
     /**

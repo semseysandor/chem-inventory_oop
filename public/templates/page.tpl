@@ -10,14 +10,16 @@
  | https://choosealicense.com/licenses/mit/      |
  +-----------------------------------------------+
 *}
-<!DOCTYPE html>
-<html lang="en">
-{* HTML Head *}
-{include file='head.tpl'}
-<body>
-{* Body *}
-{include file=$_template_body}
-{* Footer *}
-{include file='footer.tpl'}
-</body>
-</html>
+{strip}
+{config_load "elements.conf"}
+  <!DOCTYPE html>
+  <html lang="en">
+  {* HTML Head *}
+  {include file='head.tpl'}
+  <body>
+  {block body}{/block}
+  {* Footer *}
+  {include file='footer.tpl'}
+  </body>
+  </html>
+{/strip}

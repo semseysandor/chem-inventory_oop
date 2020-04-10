@@ -55,7 +55,7 @@ class Login extends Page
      */
     protected function assemble(): void
     {
-        $this->setTemplateRegion('body', Utils::getPathFromClass(self::class));
+        $this->setBaseTemplate(Utils::getPathFromClass(self::class));
         $this->setTemplateRegion('form', Utils::getPathFromClass(\Inventory\Form\Login::class));
     }
 }
