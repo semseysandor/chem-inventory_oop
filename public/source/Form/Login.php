@@ -14,7 +14,7 @@
 
 namespace Inventory\Form;
 
-use Inventory\Core\Controller\Form;
+use Inventory\Core\Controller\BaseController;
 
 /**
  * Login Form
@@ -25,17 +25,8 @@ use Inventory\Core\Controller\Form;
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class Login extends Form
+class Login extends BaseController
 {
-    /**
-     * Validate input
-     *
-     * @return void
-     */
-    protected function validate(): void
-    {
-    }
-
     /**
      * Process input
      *
@@ -43,6 +34,8 @@ class Login extends Form
      */
     protected function process(): void
     {
+        parent::process();
+
         // TODO: implement
         $data = $this->requestData;
         if (empty($data)) {
@@ -52,14 +45,5 @@ class Login extends Form
         $_SESSION['USER_NAME'] = $data['user'];
         header('Location: /');
         exit;
-    }
-
-    /**
-     * Assemble page
-     *
-     * @return void
-     */
-    protected function assemble(): void
-    {
     }
 }

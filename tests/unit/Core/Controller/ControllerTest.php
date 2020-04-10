@@ -17,10 +17,11 @@ namespace Inventory\Test\Unit\Core\Controller;
 use Inventory\Core\Containers\Service;
 use Inventory\Core\Containers\Template;
 use Inventory\Core\Controller\BaseController;
-use Inventory\Core\Controller\Form;
-use Inventory\Core\Controller\Page;
 use Inventory\Core\Exception\BadArgument;
 use Inventory\Core\Factory;
+use Inventory\Page\Index;
+use Inventory\Page\Login;
+use Inventory\Page\Logout;
 use Inventory\Test\Framework\BaseTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -28,8 +29,11 @@ use PHPUnit\Framework\MockObject\MockObject;
  * BaseControllerTest Class
  *
  * @covers \Inventory\Core\Controller\BaseController
- * @covers \Inventory\Core\Controller\Form
- * @covers \Inventory\Core\Controller\Page
+ * @covers \Inventory\Page\Login
+ * @covers \Inventory\Page\Logout
+ * @covers \Inventory\Page\Index
+ * @covers \Inventory\Form\Login
+ *
  * @uses   \Inventory\Core\Containers\Template
  *
  * @group controlling
@@ -45,9 +49,9 @@ class ControllerTest extends BaseTestCase
     /**
      * SUT
      *
-     * @var \PHPUnit\Framework\MockObject\MockObject
+     * @var \Inventory\Core\Controller\BaseController
      */
-    protected MockObject $sut;
+    protected BaseController $sut;
 
     /**
      * Test Template
@@ -70,6 +74,11 @@ class ControllerTest extends BaseTestCase
      */
     protected MockObject $factory;
 
+    /**
+     * Mock Service container
+     *
+     * @var \PHPUnit\Framework\MockObject\MockObject
+     */
     protected MockObject $service;
 
     /**
@@ -90,19 +99,8 @@ class ControllerTest extends BaseTestCase
 
         // Mock factory
         $this->factory = $this->getMockBuilder(Factory::class)->getMock();
-    }
 
-    /**
-     * Mocks test object
-     *
-     * @param string $class
-     */
-    protected function mockController(string $class)
-    {
-        $this->sut = $this
-          ->getMockBuilder($class)
-          ->setConstructorArgs([$this->requestData, $this->template, $this->service])
-          ->getMockForAbstractClass();
+        $this->sut = new BaseController($this->requestData, $this->template, $this->service);
     }
 
     /**
@@ -113,9 +111,11 @@ class ControllerTest extends BaseTestCase
     public function provideClass(): array
     {
         return [
-          'base' => [BaseController::class, null],
-          'form' => [Form::class, 'form'],
-          'page' => [Page::class, 'page'],
+          'base' => [BaseController::class],
+          'Login Page' => [Login::class],
+          'Index Page' => [Index::class],
+          'Logout Page' => [Logout::class],
+          'Login Form' => [\Inventory\Form\Login::class],
         ];
     }
 
@@ -125,17 +125,13 @@ class ControllerTest extends BaseTestCase
      * @dataProvider provideClass
      *
      * @param string $class
-     * @param mixed $base_template
-     *
      */
-    public function testObjectIsInitialized(string $class, $base_template)
+    public function testObjectIsInitialized(string $class)
     {
         // Mock test class
-        $this->mockController($class);
+        $this->sut = new $class($this->requestData, $this->template, $this->service);
 
         self::assertInstanceOf($class, $this->sut);
-
-        self::assertSame($base_template, $this->sut->getTemplateContainer()->getBase());
     }
 
     /**
@@ -143,12 +139,6 @@ class ControllerTest extends BaseTestCase
      */
     public function testRunBuildsPageAndReturnTemplateContainer()
     {
-        // Mock test class
-        $this->mockController(BaseController::class);
-
-        $this->sut->expects(self::once())->method('validate');
-        $this->sut->expects(self::once())->method('process');
-        $this->sut->expects(self::once())->method('assemble');
         self::assertInstanceOf(Template::class, $this->sut->run());
     }
 
@@ -159,9 +149,6 @@ class ControllerTest extends BaseTestCase
      */
     public function testEmptyStringThrowsExceptionAtBaseTemplate()
     {
-        // Mock test class
-        $this->mockController(BaseController::class);
-
         $this->expectException(BadArgument::class);
         $this->invokeProtectedMethod($this->sut, 'setBaseTemplate', [self::STRING_EMPTY]);
     }
@@ -173,9 +160,6 @@ class ControllerTest extends BaseTestCase
      */
     public function testEmptyStringThrowsExceptionAtTemplateRegion()
     {
-        // Mock test class
-        $this->mockController(BaseController::class);
-
         $this->expectException(BadArgument::class);
         $this->invokeProtectedMethod($this->sut, 'setTemplateVar', [self::STRING_EMPTY, self::STRING]);
     }
@@ -187,9 +171,6 @@ class ControllerTest extends BaseTestCase
      */
     public function testEmptyStringThrowsExceptionAtTemplateVariable()
     {
-        // Mock test class
-        $this->mockController(BaseController::class);
-
         $this->expectException(BadArgument::class);
         $this->invokeProtectedMethod($this->sut, 'setTemplateRegion', [self::STRING_EMPTY, self::STRING]);
     }
@@ -201,9 +182,6 @@ class ControllerTest extends BaseTestCase
      */
     public function testPropertiesAreAccessible()
     {
-        // Mock controller
-        $this->mockController(BaseController::class);
-
         // Write
         $this->invokeProtectedMethod($this->sut, 'setBaseTemplate', [self::STRING]);
         $this->invokeProtectedMethod($this->sut, 'setTemplateVar', [self::STRING, self::ARRAY]);

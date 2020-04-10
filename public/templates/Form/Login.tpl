@@ -12,11 +12,11 @@
 *}
 {extends "form.tpl"}
 {block action}log-in{/block}
-{block form_content}
+{block form_content}{strip}
   <label>User Name
     <input type="text" name="user" autofocus required/>
   </label>
-{/block}
+{/strip}{/block}
 {block form_submit}
     {include #button_submit# name=Login}
 {/block}

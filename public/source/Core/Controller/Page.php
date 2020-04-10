@@ -26,7 +26,7 @@ use Inventory\Core\Containers\Template;
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-abstract class Page extends BaseController
+class Page extends BaseController
 {
     /**
      * Page constructor.
@@ -35,13 +35,9 @@ abstract class Page extends BaseController
      * @param \Inventory\Core\Containers\Template $temp_cont Template container
      * @param \Inventory\Core\Containers\Service $service Service container
      *
-     * @throws \Inventory\Core\Exception\BadArgument
      */
     public function __construct(?array $request_data, Template $temp_cont, Service $service)
     {
         parent::__construct($request_data, $temp_cont, $service);
-
-        // Set base template for page
-        $this->setBaseTemplate('page');
     }
 }

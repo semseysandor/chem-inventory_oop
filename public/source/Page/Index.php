@@ -16,7 +16,7 @@ namespace Inventory\Page;
 
 use Error;
 use Exception;
-use Inventory\Core\Controller\Page;
+use Inventory\Core\Controller\BaseController;
 use Inventory\Core\Exception\BaseException;
 use Inventory\Core\Utils;
 use Inventory\Entity\Compound\BAO\Compound;
@@ -30,15 +30,14 @@ use Inventory\Entity\Compound\BAO\Compound;
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class Index extends Page
+class Index extends BaseController
 {
     /**
      * Process input
-     *
-     * @return void
      */
     protected function process(): void
     {
+        parent::process();
         // TODO: implement more
         try {
             $bao = new Compound($this->service->database());
@@ -54,15 +53,6 @@ class Index extends Page
     }
 
     /**
-     * Validate input
-     *
-     * @return void
-     */
-    protected function validate(): void
-    {
-    }
-
-    /**
      * Assemble page
      *
      * @return void
@@ -71,6 +61,8 @@ class Index extends Page
      */
     protected function assemble(): void
     {
+        parent::assemble();
+
         $this->setBaseTemplate(Utils::getPathFromClass(self::class));
         $this->setTemplateVar('user', $_SESSION['USER_NAME']);
     }

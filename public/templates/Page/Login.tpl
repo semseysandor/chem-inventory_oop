@@ -11,8 +11,8 @@
  +-----------------------------------------------+
 *}
 {extends file='page.tpl'}
-{block body}
+{block body}{strip}
   <h1>Login</h1>
     {include file=$_template_form}
-{/block}
+{/strip}{/block}
 

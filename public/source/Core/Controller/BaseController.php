@@ -28,7 +28,7 @@ use Inventory\Core\IComponent;
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-abstract class BaseController implements IComponent
+class BaseController implements IComponent
 {
     /**
      * HTTP request data
@@ -133,21 +133,27 @@ abstract class BaseController implements IComponent
      *
      * @return void
      */
-    abstract protected function validate(): void;
+    protected function validate(): void
+    {
+    }
 
     /**
      * Process input
      *
      * @return void
      */
-    abstract protected function process(): void;
+    protected function process(): void
+    {
+    }
 
     /**
      * Assemble page
      *
      * @return void
      */
-    abstract protected function assemble(): void;
+    protected function assemble(): void
+    {
+    }
 
     /**
      * Runs controller

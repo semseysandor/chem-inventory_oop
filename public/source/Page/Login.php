@@ -14,7 +14,7 @@
 
 namespace Inventory\Page;
 
-use Inventory\Core\Controller\Page;
+use Inventory\Core\Controller\BaseController;
 use Inventory\Core\Utils;
 
 /**
@@ -26,26 +26,8 @@ use Inventory\Core\Utils;
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class Login extends Page
+class Login extends BaseController
 {
-    /**
-     * Validate input
-     *
-     * @return void
-     */
-    protected function validate(): void
-    {
-    }
-
-    /**
-     * Process input
-     *
-     * @return void
-     */
-    protected function process(): void
-    {
-    }
-
     /**
      * Assemble page
      *
@@ -55,6 +37,8 @@ class Login extends Page
      */
     protected function assemble(): void
     {
+        parent::assemble();
+
         $this->setBaseTemplate(Utils::getPathFromClass(self::class));
         $this->setTemplateRegion('form', Utils::getPathFromClass(\Inventory\Form\Login::class));
     }

@@ -14,7 +14,7 @@
 
 namespace Inventory\Page;
 
-use Inventory\Core\Controller\Page;
+use Inventory\Core\Controller\BaseController;
 
 /**
  * Logout Class
@@ -25,32 +25,18 @@ use Inventory\Core\Controller\Page;
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class Logout extends Page
+class Logout extends BaseController
 {
-
     /**
-     * @inheritDoc
-     */
-    protected function validate(): void
-    {
-        // TODO: Implement validate() method.
-    }
-
-    /**
-     * @inheritDoc
+     * Process input
+     *
      * @throws \Inventory\Core\Exception\BadArgument
      */
     protected function process(): void
     {
+        parent::process();
+
         $this->service->factory()->createSecurity()->logOut();
         header('Location: /');
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function assemble(): void
-    {
-        // TODO: Implement assemble() method.
     }
 }
