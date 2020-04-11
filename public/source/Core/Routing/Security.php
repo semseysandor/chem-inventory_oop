@@ -36,6 +36,9 @@ class Security
      */
     public function initSession(): void
     {
+        // Session name
+        session_name('id');
+
         // Start session
         session_start();
 
