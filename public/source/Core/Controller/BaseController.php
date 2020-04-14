@@ -130,8 +130,6 @@ class BaseController implements IComponent
 
     /**
      * Validate input
-     *
-     * @return void
      */
     protected function validate(): void
     {
@@ -139,8 +137,6 @@ class BaseController implements IComponent
 
     /**
      * Process input
-     *
-     * @return void
      */
     protected function process(): void
     {
@@ -148,8 +144,6 @@ class BaseController implements IComponent
 
     /**
      * Assemble page
-     *
-     * @return void
      */
     protected function assemble(): void
     {

@@ -14,7 +14,7 @@
 
 namespace Inventory\Page;
 
-use Inventory\Core\Controller\BaseController;
+use Inventory\Core\Controller\Page;
 
 /**
  * Logout Class
@@ -25,7 +25,7 @@ use Inventory\Core\Controller\BaseController;
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class Logout extends BaseController
+class Logout extends Page
 {
     /**
      * Process input

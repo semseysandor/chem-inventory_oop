@@ -14,7 +14,7 @@
 
 namespace Inventory\Page;
 
-use Inventory\Core\Controller\BaseController;
+use Inventory\Core\Controller\Page;
 use Inventory\Core\Utils;
 
 /**
@@ -26,7 +26,7 @@ use Inventory\Core\Utils;
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class Login extends BaseController
+class Login extends Page
 {
     /**
      * Assemble page

@@ -17,6 +17,8 @@ namespace Inventory\Test\Unit\Core\Controller;
 use Inventory\Core\Containers\Service;
 use Inventory\Core\Containers\Template;
 use Inventory\Core\Controller\BaseController;
+use Inventory\Core\Controller\Form;
+use Inventory\Core\Controller\Page;
 use Inventory\Core\Exception\BadArgument;
 use Inventory\Core\Factory;
 use Inventory\Page\Index;
@@ -112,6 +114,8 @@ class ControllerTest extends BaseTestCase
     {
         return [
           'base' => [BaseController::class],
+          'Core Form' => [Form::class],
+          'Core Page' => [Page::class],
           'Login Page' => [Login::class],
           'Index Page' => [Index::class],
           'Logout Page' => [Logout::class],

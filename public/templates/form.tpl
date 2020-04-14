@@ -11,7 +11,7 @@
  +-----------------------------------------------+
 *}
 {strip}
-  <form method="post" action="{block action}{/block}">
+  <form id="{block id}{/block}" method="post" action="{block action}{/block}">
     <div>
         {block form_meta}{/block}
     </div>
