@@ -56,7 +56,7 @@ class Security
     public function isAuthorized()
     {
         // If no USER_ID -> user not logged in
-        if (!isset($_SESSION['USER_NAME']) || ($_SESSION['USER_NAME']) == '') {
+        if (!isset($_SESSION['USER_ID']) || ((int)$_SESSION['USER_ID']) < 1) {
             return false;
         }
 
@@ -65,10 +65,25 @@ class Security
 
     /**
      * Authenticate user
+     *
+     * @param string $password Password
+     * @param string $hash Hash
+     *
+     * @return bool
      */
-    public function authenticate()
+    public function authenticate(string $password, string $hash)
     {
-        // TODO: implement method
+        return password_verify($password, $hash);
+    }
+
+    /**
+     * Logs user in
+     *
+     * @param int $user_id
+     */
+    public function logIn(int $user_id)
+    {
+        $_SESSION['USER_ID'] = $user_id;
     }
 
     /**

@@ -56,15 +56,15 @@ class Utils
     /**
      * Cleans user input string
      *
-     * @param string|null $input Input string
+     * @param string $input Input string
      * @param string $mode Filtering mode (word|extended)
      *
-     * @return string|null
+     * @return string
      */
-    public static function sanitizeString(?string $input, ?string $mode = 'extended')
+    public static function sanitizeString(string $input, ?string $mode = 'extended')
     {
-        if (is_null($input)) {
-            return null;
+        if ($input == "") {
+            return "";
         }
 
         // Trim string
@@ -82,7 +82,7 @@ class Utils
                 $pattern = '/[^\w <>.,\-+()%]/';
                 break;
             default:
-                return null;
+                return "";
         }
         $input = preg_replace($pattern, '', $input);
 
@@ -96,7 +96,7 @@ class Utils
      *
      * @return int|null
      */
-    public static function sanitizeID(?string $id)
+    public static function sanitizeID(string $id)
     {
         if (is_null($id)) {
             return null;

@@ -82,7 +82,7 @@ class UtilsTest extends BaseTestCase
     public function provideInputs()
     {
         return [
-          'null' => [null, null, null],
+          'null' => [null, "", ""],
           'word' => ['word', '  <script>te st</script>@#]["!/?.,>><%  ', 'test'],
           'extended' => ['extended', '  <script>"monkey worlds"</script>@#]["!/?.,>><%  ', 'monkey worlds.,>><%'],
           'real' => ['extended', ' puriss., <99.5%', 'puriss., <99.5%'],
@@ -110,7 +110,7 @@ class UtilsTest extends BaseTestCase
     public function provideId()
     {
         return [
-          'null' => [null, null],
+          'null' => ["", null],
           'string' => ['abc', null],
           'negative' => ['-5', null],
           'positive' => ['56', 56],

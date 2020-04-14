@@ -101,7 +101,7 @@ class FrontendTest extends BaseTestCase
     public function testLoginPage()
     {
         // Set template
-        $this->template->setBase('page');
+        $this->template->setBase('base/page');
         $this->template->setRegions('body', 'Page/Login');
         $this->template->setRegions('form', 'Form/Login');
         $this->renderer = $this->service->factory()->createRenderer($this->exHandler, $this->template);

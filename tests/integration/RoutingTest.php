@@ -97,7 +97,7 @@ class RoutingTest extends BaseTestCase
     public function testValidRequestFromLoggedInUser()
     {
         // Set up environment
-        $_SESSION['USER_NAME'] = 'test';
+        $_SESSION['USER_ID'] = 1;
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_SERVER['REQUEST_URI'] = '/';
 

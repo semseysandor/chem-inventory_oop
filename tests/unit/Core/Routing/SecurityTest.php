@@ -62,7 +62,7 @@ class SecurityTest extends BaseTestCase
      */
     public function testUserIsAuthorized()
     {
-        $_SESSION['USER_NAME'] = 'test';
+        $_SESSION['USER_ID'] = 1;
         self::assertTrue($this->sut->isAuthorized());
     }
 }

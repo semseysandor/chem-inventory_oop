@@ -767,7 +767,7 @@ class SQLDaO
                 $where_string .= ' LIKE ';
                 break;
             default:
-                throw new BadArgument(ts('Invalid operator "%s".', $this->tableName));
+                throw new BadArgument(ts('Invalid operator "%s".', $operator));
                 break;
         }
 
@@ -929,11 +929,35 @@ class SQLDaO
      *
      * @return null|array
      *   Format:
-     *     [ fields => [field1, field2],
-     *       rows   => [row1, row2]
+     *     [ 0 =>
+     *        'field_1 => row_1, field_2 => row_1,
+     *       1 =>
+     *        'field_1 => row_2, field_2 => row_2,
      *     ]
      */
     public function fetchResults(mysqli_result $result)
+    {
+        // If no rows then return null
+        if ($result->num_rows < 1) {
+            return null;
+        }
+
+        // Return results
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    /**
+     * Parse results from select query
+     *
+     * @param \mysqli_result $result Result from query
+     *
+     * @return null|array
+     *   Format:
+     *     [ fields => [field_1, field_2],
+     *       rows   => [row_1, row_2]
+     *     ]
+     */
+    public function fetchResultsTable(mysqli_result $result)
     {
         // If no rows then return null
         if ($result->num_rows < 1) {
@@ -950,6 +974,30 @@ class SQLDaO
         $data['rows'] = $result->fetch_all(MYSQLI_NUM);
 
         return $data;
+    }
+
+    /**
+     * Parse results from select query
+     *
+     * @param \mysqli_result $result Result from query
+     *
+     * @return null|array
+     *   Format:
+     *     [ field_1 => data_1,
+     *       field_2 => data_2
+     *     ]
+     */
+    public function fetchResultsOne(mysqli_result $result)
+    {
+        // If not a single row then return null
+        if ($result->num_rows != 1) {
+            return null;
+        }
+
+        // Return results
+        $data = $result->fetch_all(MYSQLI_ASSOC);
+
+        return $data[0];
     }
 
     /**

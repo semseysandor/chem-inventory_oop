@@ -92,7 +92,7 @@ class DataBaseTest extends BaseTestCase
 
         // Retrieve
         $actual = $this->dao->retrieveRecord($id, ['name', 'subCategory']);
-        $actual = $this->dao->fetchResults($actual);
+        $actual = $this->dao->fetchResultsTable($actual);
 
         $expected = [
           'fields' => ['name', 'sub_category_id'],
