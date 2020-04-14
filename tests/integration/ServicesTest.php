@@ -16,7 +16,7 @@ namespace Inventory\Test\Integration;
 
 use Inventory\Core\Containers\Service;
 use Inventory\Entity\Compound\DAO\Compound;
-use PHPUnit\Framework\TestCase;
+use Inventory\Test\Framework\IntegrationTestCase;
 
 /**
  * Services Integration Test Class
@@ -34,22 +34,8 @@ use PHPUnit\Framework\TestCase;
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class ServicesTest extends TestCase
+class ServicesTest extends IntegrationTestCase
 {
-    /**
-     * SUT
-     *
-     * @var \Inventory\Core\Containers\Service
-     */
-    protected Service $service;
-
-    /**
-     * Test config file
-     *
-     * @var string
-     */
-    protected string $testConfigFile = ROOT.'/../tests/integration/TestConfigFile.php';
-
     /**
      * Set up
      *

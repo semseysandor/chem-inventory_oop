@@ -19,7 +19,7 @@ use Inventory\Core\Routing\Router;
 use Inventory\Core\Routing\Security;
 use Inventory\Page\Index;
 use Inventory\Page\Login;
-use Inventory\Test\Framework\BaseTestCase;
+use Inventory\Test\Framework\IntegrationTestCase;
 
 /**
  * Routing Integration Test Class
@@ -36,29 +36,8 @@ use Inventory\Test\Framework\BaseTestCase;
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class RoutingTest extends BaseTestCase
+class RoutingTest extends IntegrationTestCase
 {
-    /**
-     * Request
-     *
-     * @var \Inventory\Core\Routing\Request
-     */
-    protected Request $request;
-
-    /**
-     * Router
-     *
-     * @var \Inventory\Core\Routing\Router
-     */
-    protected Router $router;
-
-    /**
-     * Security
-     *
-     * @var \Inventory\Core\Routing\Security
-     */
-    protected Security $security;
-
     /**
      * Set up
      */
@@ -82,6 +61,7 @@ class RoutingTest extends BaseTestCase
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_SERVER['REQUEST_URI'] = '/index';
 
+        // Run
         $route = $this->request->parseRoute();
         $this->router = new Router($route, $this->security);
         $this->router->run();
@@ -101,6 +81,7 @@ class RoutingTest extends BaseTestCase
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_SERVER['REQUEST_URI'] = '/';
 
+        // Run
         $route = $this->request->parseRoute();
         $this->router = new Router($route, $this->security);
         $this->router->run();

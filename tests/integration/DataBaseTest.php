@@ -14,11 +14,9 @@
 
 namespace Inventory\Test\Integration;
 
-use Inventory\Core\DataBase\SQLDaO;
 use Inventory\Core\DataBase\SQLDataBase;
 use Inventory\Entity\Compound\DAO\Compound;
-use Inventory\Test\Framework\BaseTestCase;
-use Inventory\Test\Framework\HeadlessDataBaseTrait;
+use Inventory\Test\Framework\IntegrationTestCase;
 
 /**
  * DataBase Integration Test Class
@@ -35,23 +33,16 @@ use Inventory\Test\Framework\HeadlessDataBaseTrait;
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class DataBaseTest extends BaseTestCase
+class DataBaseTest extends IntegrationTestCase
 {
-    use HeadlessDataBaseTrait;
+    public function __construct()
+    {
+        parent::__construct();
 
-    /**
-     * DataBase
-     *
-     * @var \Inventory\Core\DataBase\SQLDataBase
-     */
-    protected SQLDataBase $dataBase;
-
-    /**
-     * DaO
-     *
-     * @var \Inventory\Core\DataBase\SQLDaO|\Inventory\Entity\Compound\DAO\Compound
-     */
-    protected SQLDaO $dao;
+        // Connect test DB
+        $this->dataBase = new SQLDataBase($this->host, $this->port, $this->name, $this->user, $this->pass);
+        $this->dataBase->connect();
+    }
 
     /**
      * Set up
@@ -62,11 +53,11 @@ class DataBaseTest extends BaseTestCase
     public function setUp(): void
     {
         parent::setUp();
-        // Connect test DB & truncate
-        $this->dataBase = new SQLDataBase($this->host, $this->port, $this->name, $this->user, $this->pass);
-        $this->dataBase->connect();
+
+        // Truncate test DB
         $this->truncateTestDB();
 
+        // Create DAO
         $this->dao = new Compound($this->dataBase);
     }
 
@@ -92,15 +83,33 @@ class DataBaseTest extends BaseTestCase
 
         // Retrieve
         $actual = $this->dao->retrieveRecord($id, ['name', 'subCategory']);
-        $actual = $this->dao->fetchResultsTable($actual);
+        $actual_assoc = $this->dao->fetchResults($actual);
 
-        $expected = [
+        $actual = $this->dao->retrieveRecord($id, ['name', 'subCategory']);
+        $actual_one = $this->dao->fetchResultsOne($actual);
+
+        $actual = $this->dao->retrieveRecord($id, ['name', 'subCategory']);
+        $actual_table = $this->dao->fetchResultsTable($actual);
+
+        $expected_assoc = [
+          0 => [
+            'name' => 'testCompound',
+            'sub_category_id' => '1',
+          ],
+        ];
+        $expected_one = [
+          'name' => 'testCompound',
+          'sub_category_id' => '1',
+        ];
+        $expected_table = [
           'fields' => ['name', 'sub_category_id'],
           'rows' => [
             ['testCompound', '1'],
           ],
         ];
-        self::assertSame($expected, $actual);
+        self::assertSame($expected_assoc, $actual_assoc);
+        self::assertSame($expected_one, $actual_one);
+        self::assertSame($expected_table, $actual_table);
 
         // Delete one record with ID
         $this->dao->id = 1;

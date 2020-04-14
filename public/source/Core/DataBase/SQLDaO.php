@@ -996,7 +996,6 @@ class SQLDaO
 
         // Return results
         $data = $result->fetch_all(MYSQLI_ASSOC);
-
         return $data[0];
     }
 

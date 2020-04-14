@@ -19,8 +19,7 @@ use Inventory\Core\Containers\Template;
 use Inventory\Core\Exception\AuthorizationException;
 use Inventory\Core\Exception\ExceptionHandler;
 use Inventory\Core\Exception\RenderingError;
-use Inventory\Core\Renderer;
-use Inventory\Test\Framework\BaseTestCase;
+use Inventory\Test\Framework\IntegrationTestCase;
 
 /**
  * Frontend Integration Test Class
@@ -38,36 +37,8 @@ use Inventory\Test\Framework\BaseTestCase;
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class FrontendTest extends BaseTestCase
+class FrontendTest extends IntegrationTestCase
 {
-    /**
-     * Exception handler
-     *
-     * @var \Inventory\Core\Exception\ExceptionHandler
-     */
-    protected ExceptionHandler $exHandler;
-
-    /**
-     * Template container
-     *
-     * @var \Inventory\Core\Containers\Template
-     */
-    protected Template $template;
-
-    /**
-     * Service container
-     *
-     * @var \Inventory\Core\Containers\Service
-     */
-    protected Service $service;
-
-    /**
-     * Renderer
-     *
-     * @var \Inventory\Core\Renderer
-     */
-    protected Renderer $renderer;
-
     /**
      * Set up
      */
