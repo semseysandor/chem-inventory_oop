@@ -106,6 +106,21 @@ class ControllerTest extends BaseTestCase
     }
 
     /**
+     * Test controller is initialized
+     *
+     * @dataProvider provideClass
+     *
+     * @param string $class
+     */
+    public function testObjectIsInitialized(string $class)
+    {
+        // Mock test class
+        $this->sut = new $class($this->requestData, $this->template, $this->service);
+
+        self::assertInstanceOf($class, $this->sut);
+    }
+
+    /**
      * Provides class & base template name
      *
      * @return array
@@ -121,21 +136,6 @@ class ControllerTest extends BaseTestCase
           'Logout Page' => [Logout::class],
           'Login Form' => [\Inventory\Form\Login::class],
         ];
-    }
-
-    /**
-     * Test controller is initialized
-     *
-     * @dataProvider provideClass
-     *
-     * @param string $class
-     */
-    public function testObjectIsInitialized(string $class)
-    {
-        // Mock test class
-        $this->sut = new $class($this->requestData, $this->template, $this->service);
-
-        self::assertInstanceOf($class, $this->sut);
     }
 
     /**

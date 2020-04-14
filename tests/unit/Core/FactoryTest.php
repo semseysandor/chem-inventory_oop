@@ -89,8 +89,7 @@ class FactoryTest extends BaseTestCase
     public function testCreateRouterReturnsRouter()
     {
         $security = $this->getMockBuilder(Security::class)->getMock();
-        $route = ['test', 'test2'];
-        self::assertInstanceOf(Router::class, $this->sut->createRouter($route, $security));
+        self::assertInstanceOf(Router::class, $this->sut->createRouter([], $security));
     }
 
     /**
@@ -101,8 +100,7 @@ class FactoryTest extends BaseTestCase
     public function testCreateControllerReturnsController()
     {
         $service = $this->getMockBuilder(Service::class)->getMock();
-        $request = self::ARRAY;
-        $controller = $this->sut->createController($service, Login::class, $request);
+        $controller = $this->sut->createController($service, Login::class, []);
 
         self::assertInstanceOf(Login::class, $controller);
     }
@@ -116,8 +114,8 @@ class FactoryTest extends BaseTestCase
     {
         $service = $this->getMockBuilder(Service::class)->getMock();
         self::expectException(BadArgument::class);
-        $request = self::ARRAY;
-        $this->sut->createController($service, BaseController::class, $request);
+
+        $this->sut->createController($service, BaseController::class, []);
     }
 
     /**
@@ -158,7 +156,7 @@ class FactoryTest extends BaseTestCase
      */
     public function testCreateSettingsReturnSettings()
     {
-        self::assertInstanceOf(Settings::class, $this->sut->createSettings(null));
+        self::assertInstanceOf(Settings::class, $this->sut->createSettings());
     }
 
     /**

@@ -83,7 +83,7 @@ class RendererTest extends BaseTestCase
     /**
      * Test run start smarty display
      *
-     * @throws \SmartyException
+     * @throws \Inventory\Core\Exception\RenderingError
      */
     public function testRunStartSmartyRenderProcess()
     {

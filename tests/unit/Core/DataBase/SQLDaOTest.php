@@ -42,11 +42,13 @@ class SQLDaOTest extends BaseTestCase
     protected SQLDaO $sut;
 
     /**
-     * Set up
+     * SQLDaOTest constructor.
+     *
+     * @throws \ReflectionException
      */
-    public function setUp(): void
+    public function __construct()
     {
-        parent::setUp();
+        parent::__construct();
 
         // Mock database
         $database = $this

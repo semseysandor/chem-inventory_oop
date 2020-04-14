@@ -35,6 +35,11 @@ use Inventory\Test\Framework\IntegrationTestCase;
  */
 class DataBaseTest extends IntegrationTestCase
 {
+    /**
+     * DataBaseTest constructor.
+     *
+     * @throws \Inventory\Core\Exception\SQLException
+     */
     public function __construct()
     {
         parent::__construct();
@@ -54,11 +59,11 @@ class DataBaseTest extends IntegrationTestCase
     {
         parent::setUp();
 
-        // Truncate test DB
-        $this->truncateTestDB();
-
         // Create DAO
         $this->dao = new Compound($this->dataBase);
+
+        // Truncate test table
+        $this->dataBase->execute('TRUNCATE TABLE leltar_compound');
     }
 
     /**

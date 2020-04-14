@@ -93,9 +93,9 @@ class ExceptionTest extends BaseTestCase
      */
     public function testExceptionPrintsInfo()
     {
-        $this->sut=new BaseException('test');
+        $this->sut = new BaseException('test context');
 
-        self::expectOutputRegex('/test/');
+        self::expectOutputRegex('/test context/');
         $this->sut->print();
     }
 }

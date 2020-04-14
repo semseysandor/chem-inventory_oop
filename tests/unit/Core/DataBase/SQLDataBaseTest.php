@@ -18,7 +18,6 @@ use Inventory\Core\DataBase\SQLDataBase;
 use Inventory\Core\Exception\SQLException;
 use Inventory\Test\Framework\BaseTestCase;
 use Inventory\Test\Framework\HeadlessDataBaseTrait;
-use mysqli_result;
 
 /**
  * SQLDataBaseTest Class
@@ -44,11 +43,14 @@ class SQLDataBaseTest extends BaseTestCase
 
     /**
      * Set up
+     *
+     * @throws \Inventory\Core\Exception\SQLException
      */
     public function setUp(): void
     {
         parent::setUp();
         $this->sut = new SQLDataBase($this->host, $this->port, $this->name, $this->user, $this->pass);
+        $this->sut->connect();
     }
 
     /**
@@ -56,7 +58,6 @@ class SQLDataBaseTest extends BaseTestCase
      */
     public function testObjectIsInitialized()
     {
-        $this->truncateTestDB();
         self::assertInstanceOf(SQLDataBase::class, $this->sut);
     }
 
@@ -90,7 +91,7 @@ class SQLDataBaseTest extends BaseTestCase
           'bind' => $bind,
           'values' => $values,
         ];
-        $this->sut->connect();
+
         self::expectException(SQLException::class);
         $this->sut->import($params);
     }
@@ -113,7 +114,7 @@ class SQLDataBaseTest extends BaseTestCase
           'bind' => $bind,
           'values' => $values,
         ];
-        $this->sut->connect();
+
         self::expectException(SQLException::class);
         $this->sut->export($params);
     }
@@ -209,7 +210,7 @@ class SQLDataBaseTest extends BaseTestCase
           'bind' => $bind,
           'values' => $values,
         ];
-        $this->sut->connect();
+
         self::assertSame($affected_rows, $this->sut->import($params));
     }
 
@@ -233,7 +234,7 @@ class SQLDataBaseTest extends BaseTestCase
           'bind' => $bind,
           'values' => $values,
         ];
-        $this->sut->connect();
+
         $actual = $this->sut->export($params);
 
         if (is_null($expected)) {
@@ -327,8 +328,8 @@ class SQLDataBaseTest extends BaseTestCase
      */
     public function testLastInsertId()
     {
-        $this->truncateTestDB();
-        $this->sut->connect();
+        $this->truncateTestTable();
+
         $params = [
           'query' => 'INSERT INTO test_table (name) VALUES (\'head\')',
         ];
@@ -343,7 +344,6 @@ class SQLDataBaseTest extends BaseTestCase
      */
     public function testExecuteEmptyQuery()
     {
-        $this->sut->connect();
         $result = $this->sut->execute('');
         self::assertNull($result);
     }
@@ -355,7 +355,6 @@ class SQLDataBaseTest extends BaseTestCase
      */
     public function testExecuteInvalidQuery()
     {
-        $this->sut->connect();
         self::expectException(SQLException::class);
         $this->sut->execute('INVALID');
     }
@@ -367,17 +366,7 @@ class SQLDataBaseTest extends BaseTestCase
      */
     public function testExecuteValidQuery()
     {
-        $this->sut->connect();
-
-        // Show tables
-        $result = $this->sut->execute('SHOW TABLES');
-        self::assertInstanceOf(mysqli_result::class, $result);
-
-        // Truncate tables
-        while ($tables = $result->fetch_row()) {
-            echo $tables[0];
-            $result_truncate = $this->sut->execute("TRUNCATE TABLE $tables[0]");
-            self::assertTrue($result_truncate);
-        }
+        $result = $this->sut->execute('TRUNCATE TABLE test_table');
+        self::assertTrue($result);
     }
 }

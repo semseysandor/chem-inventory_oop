@@ -46,7 +46,7 @@ class SettingsTest extends BaseTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->sut = new Settings(null);
+        $this->sut = new Settings();
     }
 
     /**
@@ -68,6 +68,7 @@ class SettingsTest extends BaseTestCase
     public function testObjectInitializedWithDefaultConfigFileOverride()
     {
         $this->sut = new Settings('alter config');
+
         self::assertInstanceOf(Settings::class, $this->sut);
         self::assertSame('alter config', $this->getProtectedProperty($this->sut, 'configFile'));
     }

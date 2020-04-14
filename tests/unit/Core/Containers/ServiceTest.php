@@ -96,7 +96,7 @@ class ServiceTest extends BaseTestCase
     }
 
     /**
-     * Return DataBase object and a new instance every time
+     * Return DataBase object and same object every time
      *
      * @throws \Inventory\Core\Exception\BadArgument
      * @throws \Inventory\Core\Exception\SQLException
