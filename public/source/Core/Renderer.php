@@ -188,7 +188,7 @@ class Renderer implements IComponent
             // Render page
             $this->render();
         } catch (SmartyException $ex) {
-            throw new RenderingError();
+            throw new RenderingError($ex->getMessage());
         }
     }
 
@@ -205,7 +205,7 @@ class Renderer implements IComponent
             $this->engine->assign('message', $ex->getMessage());
             $this->engine->assign('context', $ex->getContext());
             // Set base template file
-            $base_template = ('error'.self::FILE_EXT);
+            $base_template = ('base/error'.self::FILE_EXT);
             // Display template
             $this->engine->display($base_template);
         } catch (Exception $ex) {

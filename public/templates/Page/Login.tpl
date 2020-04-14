@@ -10,7 +10,7 @@
  | https://choosealicense.com/licenses/mit/      |
  +-----------------------------------------------+
 *}
-{extends file='page.tpl'}
+{extends file='base/page.tpl'}
 {block body}{strip}
   <h1>Login</h1>
     {include file=$_template_form}

@@ -89,11 +89,12 @@ class ExceptionHandler
     /**
      * Display static error page
      *
-     * @param \Exception $ex
+     * @param \Inventory\Core\Exception\BaseException $ex
      */
-    protected function displayStaticError(Exception $ex)
+    protected function displayStaticError(BaseException $ex)
     {
         $message = $ex->getMessage();
+        $context = $ex->getContext();
         $trace = $ex->getTrace();
         include ROOT.'/templates/static/error.html';
     }

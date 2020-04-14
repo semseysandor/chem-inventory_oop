@@ -15,11 +15,11 @@
   <!DOCTYPE html>
   <html lang="en">
   {* HTML Head *}
-  {include file='head.tpl'}
+  {include file='base/head.tpl'}
   <body>
   {block body}{/block}
   {* Footer *}
-  {include file='footer.tpl'}
+  {include file='base/footer.tpl'}
   </body>
   </html>
 {/strip}

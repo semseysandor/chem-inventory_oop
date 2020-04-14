@@ -16,6 +16,7 @@ namespace Inventory\Test\Integration;
 
 use Inventory\Core\Containers\Service;
 use Inventory\Core\Containers\Template;
+use Inventory\Core\Exception\AuthorizationException;
 use Inventory\Core\Exception\ExceptionHandler;
 use Inventory\Core\Exception\RenderingError;
 use Inventory\Core\Renderer;
@@ -111,5 +112,26 @@ class FrontendTest extends BaseTestCase
         self::expectOutputRegex('/<html.*>.*<head>.*<\/head>.*<body>.*<\/body>.*<\/html>/s');
 
         $this->renderer->run();
+    }
+
+    /**
+     * Test error display
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
+     * @throws \Inventory\Core\Exception\RenderingError
+     */
+    public function testErrorDisplay()
+    {
+        $ex = new AuthorizationException('test context');
+        $this->renderer = $this->service->factory()->createRenderer($this->exHandler);
+
+        // Expect Doctype
+        self::expectOutputRegex('/^<!DOCTYPE html>/');
+        // Expect html tags
+        self::expectOutputRegex('/<html.*>.*<head>.*<\/head>.*<body>.*<\/body>.*<\/html>/s');
+        // Expect context
+        self::expectOutputRegex('/test context/i');
+
+        $this->renderer->displayError($ex);
     }
 }
