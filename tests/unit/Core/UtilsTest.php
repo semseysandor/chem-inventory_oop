@@ -83,7 +83,7 @@ class UtilsTest extends BaseTestCase
     {
         return [
           'null' => [null, "", ""],
-          'word' => ['word', '  <script>te st</script>@#]["!/?.,>><%  ', 'test'],
+          'word' => ['word', '  <script>alert(\'hello\')</script>@#]["!/?.,>><%  ', 'alerthello'],
           'extended' => ['extended', '  <script>"monkey worlds"</script>@#]["!/?.,>><%  ', 'monkey worlds.,>><%'],
           'real' => ['extended', ' puriss., <99.5%', 'puriss., <99.5%'],
         ];

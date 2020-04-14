@@ -146,11 +146,11 @@ class LoginTest extends IntegrationTestCase
 
         // Insert to DB
         $this->service->database()->import(
-          [
+            [
             'query' => 'INSERT INTO main_users (name, hash) VALUES (?,?)',
             'bind' => 'ss',
             'values' => [$user, $hash],
-          ]
+            ]
         );
     }
 

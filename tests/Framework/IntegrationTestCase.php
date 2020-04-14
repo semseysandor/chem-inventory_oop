@@ -24,6 +24,15 @@ use Inventory\Core\Routing\Request;
 use Inventory\Core\Routing\Router;
 use Inventory\Core\Routing\Security;
 
+/**
+ * Integration Test Case Class
+ *
+ * @category Test
+ * @package  chem-inventory_oop
+ * @author   Sandor Semsey <semseysandor@gmail.com>
+ * @license  MIT https://choosealicense.com/licenses/mit/
+ * php version 7.4
+ */
 class IntegrationTestCase extends BaseTestCase
 {
     use HeadlessDataBaseTrait;
@@ -98,6 +107,11 @@ class IntegrationTestCase extends BaseTestCase
      */
     protected string $testConfigFile = ROOT.'/../tests/integration/TestConfigFile.php';
 
+    /**
+     * Set up services
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
+     */
     public function setUpServices()
     {
         // Create Exception handler
