@@ -59,4 +59,62 @@ class UtilsTest extends BaseTestCase
           'General class with leading backslash' => ['\PHPUnit\Framework\TestCase', 'Framework/TestCase'],
         ];
     }
+
+    /**
+     * Test Input sanitization
+     *
+     * @dataProvider provideInputs
+     *
+     * @param $mode
+     * @param $input
+     * @param $expected
+     */
+    public function testSanitizeString($mode, $input, $expected)
+    {
+        self::assertSame($expected, Utils::sanitizeString($input, $mode));
+    }
+
+    /**
+     * Provides inputs
+     *
+     * @return array
+     */
+    public function provideInputs()
+    {
+        return [
+          'null' => [null, null, null],
+          'word' => ['word', '  <script>te st</script>@#]["!/?.,>><%  ', 'test'],
+          'extended' => ['extended', '  <script>"monkey worlds"</script>@#]["!/?.,>><%  ', 'monkey worlds.,>><%'],
+          'real' => ['extended', ' puriss., <99.5%', 'puriss., <99.5%'],
+        ];
+    }
+
+    /**
+     * Test ID sanitization
+     *
+     * @dataProvider provideID
+     *
+     * @param $input
+     * @param $expected
+     */
+    public function testSanitizeId($input, $expected)
+    {
+        self::assertSame($expected, Utils::sanitizeID($input));
+    }
+
+    /**
+     * Provides ID
+     *
+     * @return array
+     */
+    public function provideId()
+    {
+        return [
+          'null' => [null, null],
+          'string' => ['abc', null],
+          'negative' => ['-5', null],
+          'positive' => ['56', 56],
+          'mixed' => ['11abj', 11],
+        ];
+    }
 }

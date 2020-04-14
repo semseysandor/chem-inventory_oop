@@ -52,4 +52,63 @@ class Utils
 
         return $path;
     }
+
+    /**
+     * Cleans user input string
+     *
+     * @param string|null $input Input string
+     * @param string $mode Filtering mode (word|extended)
+     *
+     * @return string|null
+     */
+    public static function sanitizeString(?string $input, ?string $mode = 'extended')
+    {
+        if (is_null($input)) {
+            return null;
+        }
+
+        // Trim string
+        $input = trim($input);
+
+        // Strip tags
+        $input = preg_replace('/<.*>/U', '', $input);
+
+        // Filtering
+        switch ($mode) {
+            case 'word':
+                $pattern = '/\W/';
+                break;
+            case 'extended':
+                $pattern = '/[^\w <>.,\-+()%]/';
+                break;
+            default:
+                return null;
+        }
+        $input = preg_replace($pattern, '', $input);
+
+        return $input;
+    }
+
+    /**
+     * Sanitize ID
+     *
+     * @param string $id ID
+     *
+     * @return int|null
+     */
+    public static function sanitizeID(?string $id)
+    {
+        if (is_null($id)) {
+            return null;
+        }
+
+        // Convert to integer
+        $id = (int)$id;
+
+        if ($id <= 0) {
+            return null;
+        }
+
+        return $id;
+    }
 }
