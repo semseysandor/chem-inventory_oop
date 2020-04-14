@@ -14,13 +14,9 @@
 
 namespace Inventory\Test\Integration\Form;
 
-use Inventory\Core\Containers\Service;
 use Inventory\Core\Containers\Template;
-use Inventory\Core\DataBase\SQLDataBase;
-use Inventory\Core\Exception\ExceptionHandler;
 use Inventory\Form\Login;
-use Inventory\Test\Framework\BaseTestCase;
-use Inventory\Test\Framework\HeadlessDataBaseTrait;
+use Inventory\Test\Framework\IntegrationTestCase;
 
 /**
  * Login Form Integration Test Class
@@ -35,10 +31,8 @@ use Inventory\Test\Framework\HeadlessDataBaseTrait;
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class LoginTest extends BaseTestCase
+class LoginTest extends IntegrationTestCase
 {
-    use HeadlessDataBaseTrait;
-
     /**
      * Login form
      *
@@ -47,32 +41,18 @@ class LoginTest extends BaseTestCase
     protected Login $form;
 
     /**
-     * Service container
-     *
-     * @var \Inventory\Core\Containers\Service
-     */
-    protected Service $service;
-
-    /**
      * LoginTest constructor.
      *
      * @throws \Inventory\Core\Exception\SQLException
-     * @throws \ReflectionException
+     * @throws \Inventory\Core\Exception\BadArgument
      */
     public function __construct()
     {
         parent::__construct();
 
-        // Service container
-        $this->service = new Service();
+        $this->setUpServices();
 
-        // Test DataBase
-        $db = new SQLDataBase($this->host, $this->port, $this->name, $this->user, $this->pass);
-        $db->connect();
-        $this->truncateTestDB();
-
-        // Give test DB to services
-        $this->setProtectedProperty($this->service, 'dataBase', $db);
+        $this->service->database()->execute('TRUNCATE TABLE main_users');
     }
 
     /**
@@ -95,7 +75,7 @@ class LoginTest extends BaseTestCase
     public function runForm()
     {
         $template = $this->form->run();
-        $renderer = $this->service->factory()->createRenderer(new ExceptionHandler(), $template);
+        $renderer = $this->service->factory()->createRenderer($this->exHandler, $template);
         $renderer->run();
     }
 
@@ -129,6 +109,7 @@ class LoginTest extends BaseTestCase
      */
     public function testNonExistentUser()
     {
+        // Mock request data
         $request_data = [
           'user' => 'NON-EXISTENT',
           'pass' => 'test',
@@ -143,15 +124,7 @@ class LoginTest extends BaseTestCase
         $this->runForm();
     }
 
-    /**
-     * Test invalid password
-     *
-     * @throws \Inventory\Core\Exception\BadArgument
-     * @throws \Inventory\Core\Exception\RenderingError
-     * @throws \Inventory\Core\Exception\SQLException
-     * @throws \ReflectionException
-     */
-    public function testInvalidPassword()
+    public function createUser()
     {
         // Create user
         $user = 'user';
@@ -173,6 +146,19 @@ class LoginTest extends BaseTestCase
             'values' => [$user, $hash],
           ]
         );
+    }
+
+    /**
+     * Test invalid password
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
+     * @throws \Inventory\Core\Exception\RenderingError
+     * @throws \Inventory\Core\Exception\SQLException
+     * @throws \ReflectionException
+     */
+    public function testInvalidPassword()
+    {
+        $this->createUser();
 
         // Set form
         $request_data = [
@@ -192,34 +178,14 @@ class LoginTest extends BaseTestCase
     /**
      * Test valid password
      *
+     * @depends testInvalidPassword
+     *
      * @throws \Inventory\Core\Exception\BadArgument
      * @throws \Inventory\Core\Exception\RenderingError
-     * @throws \Inventory\Core\Exception\SQLException
      * @throws \ReflectionException
      */
     public function testValidPassword()
     {
-        // Create user
-        $user = 'user';
-        $pass = 'test';
-        $options = [
-          'memory_cost' => 512,
-          'time_cost' => 1,
-          'threads' => 1,
-        ];
-
-        // Generate hash & salt
-        $hash = password_hash($pass, PASSWORD_ARGON2ID, $options);
-
-        // Insert to DB
-        $this->service->database()->import(
-          [
-            'query' => 'INSERT INTO main_users (name, hash) VALUES (?,?)',
-            'bind' => 'ss',
-            'values' => [$user, $hash],
-          ]
-        );
-
         // Set form
         $request_data = [
           'user' => 'user',

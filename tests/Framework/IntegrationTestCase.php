@@ -97,4 +97,15 @@ class IntegrationTestCase extends BaseTestCase
      * @var string
      */
     protected string $testConfigFile = ROOT.'/../tests/integration/TestConfigFile.php';
+
+    public function setUpServices()
+    {
+        // Create Exception handler
+        $this->exHandler = new ExceptionHandler();
+        // Create Service container
+        $this->service = new Service();
+
+        // Init settings with test config file
+        $this->service->settings($this->testConfigFile);
+    }
 }
