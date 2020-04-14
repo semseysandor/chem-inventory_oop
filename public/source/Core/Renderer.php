@@ -195,7 +195,9 @@ class Renderer implements IComponent
     /**
      * Displays error
      *
-     * @param \Inventory\Core\Exception\BaseException $ex Exception to display*
+     * @param \Inventory\Core\Exception\BaseException $ex Exception to display
+     *
+     * @throws \Inventory\Core\Exception\RenderingError
      */
     public function displayError(BaseException $ex): void
     {
@@ -209,7 +211,7 @@ class Renderer implements IComponent
             // Display template
             $this->engine->display($base_template);
         } catch (Exception $ex) {
-            $this->exHandler->handleRenderingError($ex);
+            throw new RenderingError($ex->getMessage());
         }
     }
 }

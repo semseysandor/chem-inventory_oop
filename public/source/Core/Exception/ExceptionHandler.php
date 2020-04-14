@@ -14,7 +14,6 @@
 
 namespace Inventory\Core\Exception;
 
-use Exception;
 use Inventory\Core\Renderer;
 
 /**
@@ -58,9 +57,9 @@ class ExceptionHandler
     /**
      * Handles renderer error
      *
-     * @param \Exception $ex Exception to handle
+     * @param \Inventory\Core\Exception\BaseException $ex Exception to handle
      */
-    public function handleRenderingError(Exception $ex): void
+    public function handleRenderingError(BaseException $ex): void
     {
         $this->displayStaticError($ex);
         $this->exitWithFail($ex->getCode());
@@ -70,6 +69,8 @@ class ExceptionHandler
      * Handles fatal error
      *
      * @param \Inventory\Core\Exception\BaseException $ex
+     *
+     * @throws \Inventory\Core\Exception\RenderingError
      */
     public function handleFatalError(BaseException $ex): void
     {
@@ -96,7 +97,7 @@ class ExceptionHandler
         $message = $ex->getMessage();
         $context = $ex->getContext();
         $trace = $ex->getTrace();
-        include ROOT.'/templates/static/error.html';
+        include ROOT.'/templates/static/error.php';
     }
 
     /**
