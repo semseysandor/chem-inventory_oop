@@ -124,6 +124,12 @@ class LoginTest extends IntegrationTestCase
         $this->runForm();
     }
 
+    /**
+     * Creates a user in DB
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
+     * @throws \Inventory\Core\Exception\SQLException
+     */
     public function createUser()
     {
         // Create user
