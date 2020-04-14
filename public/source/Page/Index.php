@@ -16,7 +16,7 @@ namespace Inventory\Page;
 
 use Error;
 use Exception;
-use Inventory\Core\Controller\BaseController;
+use Inventory\Core\Controller\Page;
 use Inventory\Core\Exception\BaseException;
 use Inventory\Core\Utils;
 use Inventory\Entity\Compound\BAO\Compound;
@@ -30,7 +30,7 @@ use Inventory\Entity\Compound\BAO\Compound;
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class Index extends BaseController
+class Index extends Page
 {
     /**
      * Process input
