@@ -14,5 +14,6 @@
   <head>
     <meta charset="UTF-8">
     <title>Fankimanki</title>
+    <script src="js/inventory.js"></script>
   </head>
 {/strip}

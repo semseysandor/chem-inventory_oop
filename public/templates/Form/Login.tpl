@@ -14,9 +14,18 @@
 {block id}form.login{/block}
 {block action}log-in{/block}
 {block form_content}{strip}
-  <label>User Name&amp;%&quot;
-    <input type="text" name="user" autofocus/>
-  </label>
+  <div>
+    <label>
+      User Name
+      <input type="text" name="user" autofocus required/>
+    </label>
+  </div>
+  <div>
+    <label>
+      Password
+      <input type="password" name="pass" required/>
+    </label>
+  </div>
 {/strip}{/block}
 {block form_submit}
     {include #button_submit# name=Login}

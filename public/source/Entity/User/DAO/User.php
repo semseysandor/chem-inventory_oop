@@ -43,6 +43,13 @@ class User extends SQLDaO
     public ?string $name;
 
     /**
+     * Password hash
+     *
+     * @var string|null
+     */
+    public ?string $hash;
+
+    /**
      * User right level
      *
      * @var int|null
@@ -91,6 +98,7 @@ class User extends SQLDaO
         // Add metadata
         $this->addMetadata('id', 'i', 'user_id', 'User ID', true);
         $this->addMetadata('name', 's', 'name', 'User Name', true);
+        $this->addMetadata('hash', 's', 'hash', 'Password Hash', true);
         $this->addMetadata('rightLevel', 'i', 'right_level_leltar', 'Right Level', true);
         $this->addMetadata('lastModBy', 's', 'last_mod_by', 'Last Modification By');
         $this->addMetadata('lastModTime', 's', 'last_mod_time', 'Last Modification Time');
