@@ -12,6 +12,9 @@
  +-----------------------------------------------+
  */
 
+// Strict typing
+declare(strict_types=1);
+
 /**
  * Filesystem Path to root
  */
