@@ -55,8 +55,6 @@ class Index extends Page
     /**
      * Assemble page
      *
-     * @return void
-     *
      * @throws \Inventory\Core\Exception\BadArgument
      */
     protected function assemble(): void

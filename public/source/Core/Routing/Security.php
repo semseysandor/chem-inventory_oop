@@ -30,8 +30,6 @@ class Security
     /**
      * Initialize session
      *
-     * @return void
-     *
      * @throws \Inventory\Core\Exception\AuthorizationException
      */
     public function initSession(): void
@@ -53,7 +51,7 @@ class Security
      *
      * @return bool
      */
-    public function isAuthorized()
+    public function isAuthorized(): bool
     {
         // If no USER_ID -> user not logged in
         if (!isset($_SESSION['USER_ID']) || ((int)$_SESSION['USER_ID']) < 1) {
@@ -71,7 +69,7 @@ class Security
      *
      * @return bool
      */
-    public function authenticate(string $password, string $hash)
+    public function authenticate(string $password, string $hash): bool
     {
         return password_verify($password, $hash);
     }
@@ -79,17 +77,15 @@ class Security
     /**
      * Logs user in
      *
-     * @param int $user_id
+     * @param int $user_id User ID
      */
-    public function logIn(int $user_id)
+    public function logIn(int $user_id): void
     {
         $_SESSION['USER_ID'] = $user_id;
     }
 
     /**
      * Log out user
-     *
-     * @return void
      */
     public function logOut(): void
     {

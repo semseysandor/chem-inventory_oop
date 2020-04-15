@@ -37,14 +37,14 @@ class Router implements IComponent
      *
      * @var array
      */
-    private ?array $route;
+    private array $route;
 
     /**
      * Controller class name to handle request
      *
-     * @var string|null
+     * @var string
      */
-    private ?string $controllerClass;
+    private string $controllerClass;
 
     /**
      * Router constructor.
@@ -56,13 +56,13 @@ class Router implements IComponent
     {
         $this->route = $route;
         $this->security = $security;
-        $this->controllerClass = null;
+        $this->controllerClass = '';
     }
 
     /**
      * Login
      *
-     * @return string
+     * @return string Controller class
      */
     private function routeLogin(): string
     {
@@ -83,7 +83,7 @@ class Router implements IComponent
     /**
      * Routing
      *
-     * @return string
+     * @return string Controller class
      */
     private function route(): string
     {
@@ -103,9 +103,9 @@ class Router implements IComponent
     /**
      * Get controller class
      *
-     * @return string|null
+     * @return string
      */
-    public function getControllerClass(): ?string
+    public function getControllerClass(): string
     {
         return $this->controllerClass;
     }

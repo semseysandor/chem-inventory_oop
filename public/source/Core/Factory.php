@@ -43,7 +43,7 @@ class Factory
      * @param string $class Class to create
      * @param array|null $params Parameters pass to class
      *
-     * @return mixed
+     * @return mixed Object instantiated
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
@@ -62,7 +62,7 @@ class Factory
     /**
      * Creates new Request
      *
-     * @return \Inventory\Core\Routing\Request
+     * @return \Inventory\Core\Routing\Request Request
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
@@ -74,7 +74,7 @@ class Factory
     /**
      * Creates new Security Manager
      *
-     * @return \Inventory\Core\Routing\Security
+     * @return \Inventory\Core\Routing\Security Security Manager
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
@@ -88,7 +88,7 @@ class Factory
      *
      * @param string $default_config_file Default config file
      *
-     * @return \Inventory\Core\Settings
+     * @return \Inventory\Core\Settings Settings Manager
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
@@ -106,7 +106,7 @@ class Factory
      * @param array $route Parsed route
      * @param \Inventory\Core\Routing\Security $security Security Manager
      *
-     * @return \Inventory\Core\Routing\Router
+     * @return \Inventory\Core\Routing\Router Router
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
@@ -122,13 +122,13 @@ class Factory
      * @param \Inventory\Core\Containers\Service $service
      *
      * @param string $class Name of controller to create
-     * @param array|null $request_data Request Data
+     * @param array $request_data Request Data
      *
-     * @return \Inventory\Core\Controller\BaseController
+     * @return \Inventory\Core\Controller\BaseController Controller
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
-    public function createController(Service $service, string $class, array $request_data = null): BaseController
+    public function createController(Service $service, string $class, array $request_data = []): BaseController
     {
         // Check if argument is a controller class
         if (preg_match('/^Inventory\\\\(Page|Form)/', $class) != 1) {
@@ -145,10 +145,10 @@ class Factory
     /**
      * Creates new renderer
      *
-     * @param \Inventory\Core\Exception\ExceptionHandler $exHandler
+     * @param \Inventory\Core\Exception\ExceptionHandler $exHandler Exception handler
      * @param \Inventory\Core\Containers\Template $temp_cont Template container
      *
-     * @return \Inventory\Core\Renderer
+     * @return \Inventory\Core\Renderer Renderer
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
@@ -170,7 +170,7 @@ class Factory
      * @param string $user DB user
      * @param string $pass DB pass
      *
-     * @return \Inventory\Core\DataBase\SQLDataBase
+     * @return \Inventory\Core\DataBase\SQLDataBase DataBase Object
      *
      * @throws \Inventory\Core\Exception\BadArgument
      * @throws \Inventory\Core\Exception\SQLException
@@ -186,7 +186,7 @@ class Factory
     /**
      * Initializes DataBase
      *
-     * @param \Inventory\Core\DataBase\SQLDataBase $db
+     * @param \Inventory\Core\DataBase\SQLDataBase $db DataBase Object
      *
      * @throws \Inventory\Core\Exception\SQLException
      */
@@ -198,10 +198,11 @@ class Factory
     /**
      * Creates new Dao
      *
-     * @param \Inventory\Core\DataBase\SQLDataBase $database DataBase
+     * @param \Inventory\Core\DataBase\SQLDataBase $database DataBase Object
      * @param string $class Dao class name
      *
-     * @return \Inventory\Core\DataBase\SQLDaO
+     * @return \Inventory\Core\DataBase\SQLDaO DAO
+     *
      * @throws \Inventory\Core\Exception\BadArgument
      */
     public function createDaO(SQLDataBase $database, string $class): SQLDaO

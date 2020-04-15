@@ -38,7 +38,7 @@ class BaseException extends Exception
     /**
      * Inventory Exception constructor.
      *
-     * @param string|null $context Context of the exception
+     * @param string $context Context of the exception
      * @param string $message Exception message
      * @param int $code Exception code
      * @param Throwable $previous Previous exception
@@ -52,7 +52,7 @@ class BaseException extends Exception
     /**
      * Gets context
      *
-     * @return string|null
+     * @return string Context of exception
      */
     public function getContext(): string
     {

@@ -56,23 +56,23 @@ class SQLDataBase implements IDataBase
     /**
      * Query string.
      *
-     * @var string|null
+     * @var string
      */
-    private ?string $query;
+    private string $query;
 
     /**
      * Bind parameters.
      *
-     * @var string|null
+     * @var string
      */
-    private ?string $bind;
+    private string $bind;
 
     /**
      * Values to perform operation.
      *
      * @var array mixed
      */
-    private ?array $values;
+    private array $values;
 
     /**
      * DataBase host
@@ -141,9 +141,9 @@ class SQLDataBase implements IDataBase
      */
     private function initQuery(array $params): void
     {
-        $this->query = trim($params['query']) ?? null;
-        $this->bind = $params['bind'] ?? null;
-        $this->values = $params['values'] ?? null;
+        $this->query = trim($params['query']) ?? '';
+        $this->bind = $params['bind'] ?? '';
+        $this->values = $params['values'] ?? [];
     }
 
     /**
@@ -182,7 +182,7 @@ class SQLDataBase implements IDataBase
      *    values => [value_1, value_2, value_3]
      *   ]
      *
-     * @return int|null
+     * @return int|null Affected rows
      *
      * @throws SQLException
      */
@@ -228,7 +228,7 @@ class SQLDataBase implements IDataBase
      *    values => [value_1, value_2, value_3]
      *   ]
      *
-     * @return mixed
+     * @return mixed Query results
      *
      * @throws SQLException
      */
@@ -265,7 +265,8 @@ class SQLDataBase implements IDataBase
      *
      * @param string $command Command
      *
-     * @return mixed
+     * @return mixed Query results
+     *
      * @throws \Inventory\Core\Exception\SQLException
      * @throws \Inventory\Core\Exception\SQLException
      */
@@ -285,7 +286,7 @@ class SQLDataBase implements IDataBase
     /**
      * Gets auto-increment ID for last insertion
      *
-     * @return int
+     * @return int Last insert ID
      */
     public function getLastID(): int
     {

@@ -42,9 +42,9 @@ class Settings
     /**
      * Default config file
      *
-     * @var string|null
+     * @var string
      */
-    private ?string $configFile;
+    private string $configFile;
 
     /**
      * Settings constructor.
@@ -61,13 +61,11 @@ class Settings
     /**
      * Loads config file, if none given, fallback to default config file
      *
-     * @param string|null $config_file
-     *
-     * @return void
+     * @param string $config_file
      *
      * @throws \Inventory\Core\Exception\FileMissing
      */
-    public function loadConfigFile(string $config_file = null): void
+    public function loadConfigFile(string $config_file = ''): void
     {
         // Fallback to default config file
         if (empty($config_file)) {
@@ -96,7 +94,7 @@ class Settings
      * @param string $domain Domain of setting
      * @param string $key Name of setting to fetch
      *
-     * @return mixed|null
+     * @return mixed|null Value of setting
      */
     public function getSetting(string $domain, string $key)
     {
@@ -120,8 +118,6 @@ class Settings
      * @param string $domain Config domain
      * @param string $key Name of setting
      * @param mixed $value Value for setting
-     *
-     * @return void
      */
     public function addSetting(string $domain, string $key, $value): void
     {

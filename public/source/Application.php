@@ -62,7 +62,7 @@ class Application implements IComponent
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
-    private function boot()
+    private function boot(): void
     {
         // First the exception handler
         $this->exHandler = new ExceptionHandler();
@@ -105,7 +105,7 @@ class Application implements IComponent
      *
      * @param array $routingData Routing information & data
      *
-     * @return \Inventory\Core\Containers\Template
+     * @return \Inventory\Core\Containers\Template Template container
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
@@ -134,7 +134,7 @@ class Application implements IComponent
      * @throws \Inventory\Core\Exception\BadArgument
      * @throws \Inventory\Core\Exception\RenderingError
      */
-    private function rendering(Template $template)
+    private function rendering(Template $template): void
     {
         $renderer = $this->serviceContainer->factory()->createRenderer($this->exHandler, $template);
         $renderer->run();

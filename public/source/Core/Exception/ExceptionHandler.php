@@ -49,7 +49,7 @@ class ExceptionHandler
      *
      * @param \Inventory\Core\Renderer $renderer
      */
-    public function setRenderer(Renderer $renderer)
+    public function setRenderer(Renderer $renderer): void
     {
         $this->renderer = $renderer;
     }
@@ -69,18 +69,20 @@ class ExceptionHandler
      * Handles fatal error
      *
      * @param \Inventory\Core\Exception\BaseException $ex
-     *
-     * @throws \Inventory\Core\Exception\RenderingError
      */
     public function handleFatalError(BaseException $ex): void
     {
-        // There is a renderer --> use it
-        if ($this->renderer) {
-            // Display error
-            $this->renderer->displayError($ex);
-        } else {
-            // No renderer --> fallback to static error page
+        // No renderer --> fallback to static error page
+        if (is_null($this->renderer)) {
             $this->displayStaticError($ex);
+        } else {
+            // There is a renderer --> use it to display error
+            try {
+                $this->renderer->displayError($ex);
+            } catch (RenderingError $ex) {
+                // Rendering error --> static display
+                $this->displayStaticError($ex);
+            }
         }
 
         // Exit application
@@ -92,7 +94,7 @@ class ExceptionHandler
      *
      * @param \Inventory\Core\Exception\BaseException $ex
      */
-    protected function displayStaticError(BaseException $ex)
+    protected function displayStaticError(BaseException $ex): void
     {
         $message = $ex->getMessage();
         $context = $ex->getContext();

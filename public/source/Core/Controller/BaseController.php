@@ -33,9 +33,9 @@ class BaseController implements IComponent
     /**
      * HTTP request data
      *
-     * @var array|null
+     * @var array
      */
-    protected ?array $requestData;
+    protected array $requestData;
 
     /**
      * Container for template data
@@ -54,11 +54,11 @@ class BaseController implements IComponent
     /**
      * Core Controller constructor.
      *
-     * @param array|null $request_data Request data
+     * @param array $request_data Request data
      * @param \Inventory\Core\Containers\Template $temp_cont Template container
      * @param \Inventory\Core\Containers\Service $service Service container
      */
-    public function __construct(?array $request_data, Template $temp_cont, Service $service)
+    public function __construct(array $request_data, Template $temp_cont, Service $service)
     {
         $this->requestData = $request_data;
         $this->templateContainer = $temp_cont;
@@ -69,8 +69,6 @@ class BaseController implements IComponent
      * Set base template file
      *
      * @param string $base_template Base template file
-     *
-     * @return void
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
@@ -88,8 +86,6 @@ class BaseController implements IComponent
      * @param string $name Variable name
      * @param mixed $value Variable value
      *
-     * @return void
-     *
      * @throws \Inventory\Core\Exception\BadArgument
      */
     protected function setTemplateVar(string $name, $value): void
@@ -106,8 +102,6 @@ class BaseController implements IComponent
      * @param string $region Region name
      * @param string $template Template File
      *
-     * @return void
-     *
      * @throws \Inventory\Core\Exception\BadArgument
      */
     protected function setTemplateRegion(string $region, string $template): void
@@ -121,7 +115,7 @@ class BaseController implements IComponent
     /**
      * Gets Template container
      *
-     * @return \Inventory\Core\Containers\Template
+     * @return \Inventory\Core\Containers\Template Template container
      */
     public function getTemplateContainer(): Template
     {
@@ -152,7 +146,7 @@ class BaseController implements IComponent
     /**
      * Runs controller
      *
-     * @return Template
+     * @return Template Template container
      */
     public function run(): Template
     {

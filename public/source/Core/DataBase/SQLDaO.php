@@ -36,70 +36,70 @@ class SQLDaO
      *
      * @var string
      */
-    protected ?string $query;
+    protected string $query;
 
     /**
      * Type of query
      *
      * @var string (select|insert|update|delete)
      */
-    protected ?string $queryType;
+    protected string $queryType;
 
     /**
      * Prepared statement bind parameters.
      *
      * @var string
      */
-    protected ?string $bind;
+    protected string $bind;
 
     /**
      * Array holding the values to insert into prepared statements.
      *
      * @var array
      */
-    protected ?array $values;
+    protected array $values;
 
     /**
      * Where clause.
      *
      * @var string
      */
-    protected ?string $where;
+    protected string $where;
 
     /**
      * From clause.
      *
      * @var string
      */
-    protected ?string $from;
+    protected string $from;
 
     /**
      * Limit clause.
      *
      * @var string
      */
-    protected ?string $limit;
+    protected string $limit;
 
     /**
      * Offset clause.
      *
      * @var string
      */
-    protected ?string $offset;
+    protected string $offset;
 
     /**
      * Order by clause.
      *
      * @var string
      */
-    protected ?string $orderBy;
+    protected string $orderBy;
 
     /**
      * List of fields affecting the query.
      *
      * @var array
      */
-    protected ?array $fields;
+    protected array $fields;
 
     /**
      * Table name.
@@ -135,21 +135,19 @@ class SQLDaO
 
     /**
      * Initializes query
-     *
-     * @return void
      */
     protected function initQuery(): void
     {
-        $this->query = null;
-        $this->queryType = null;
-        $this->bind = null;
+        $this->query = '';
+        $this->queryType = '';
+        $this->bind = '';
         $this->values = [];
-        $this->where = null;
-        $this->from = null;
-        $this->limit = null;
-        $this->offset = null;
-        $this->orderBy = null;
-        $this->fields = null;
+        $this->where = '';
+        $this->from = '';
+        $this->limit = '';
+        $this->offset = '';
+        $this->orderBy = '';
+        $this->fields = [];
     }
 
     /**
@@ -193,7 +191,7 @@ class SQLDaO
      *    values   => [value_1, value_2]
      *   ]
      *
-     * @return $this
+     * @return $this Fluent interface
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
@@ -263,7 +261,7 @@ class SQLDaO
      *
      * @param string $type Field type
      *
-     * @return string
+     * @return string Bind type
      */
     protected static function typeToBind(string $type): string
     {
@@ -308,8 +306,6 @@ class SQLDaO
      * @param string $uniq Uniq name (SQL)
      * @param string $desc Description
      * @param bool $req Is required field
-     *
-     * @return void
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
@@ -359,7 +355,7 @@ class SQLDaO
      *
      * @param string $bind Bind string (int: i, string: s)
      *
-     * @return $this fluent interface
+     * @return $this Fluent interface
      */
     protected function bind(string $bind): SQLDaO
     {
@@ -385,7 +381,7 @@ class SQLDaO
      *    values   => [value_1, value_2]
      *   ]
      *
-     * @return mixed
+     * @return mixed Query results
      *
      * @throws \Inventory\Core\Exception\BadArgument
      * @throws \Inventory\Core\Exception\SQLException
@@ -414,7 +410,7 @@ class SQLDaO
      * @param int $id ID of the record
      * @param array|null $fields Fields to return
      *
-     * @return mixed
+     * @return mixed Query results
      *
      * @throws \Inventory\Core\Exception\BadArgument
      * @throws \Inventory\Core\Exception\SQLException
@@ -445,7 +441,7 @@ class SQLDaO
     /**
      * Creates a new record
      *
-     * @return mixed
+     * @return mixed Query results
      *
      * @throws \Inventory\Core\Exception\BadArgument
      * @throws \Inventory\Core\Exception\SQLException
@@ -480,7 +476,7 @@ class SQLDaO
      *             ]
      *   ]
      *
-     * @return mixed
+     * @return mixed Query results
      *
      * @throws \Inventory\Core\Exception\BadArgument
      * @throws \Inventory\Core\Exception\FieldMissing
@@ -518,7 +514,7 @@ class SQLDaO
      *             ]
      *   ]
      *
-     * @return mixed
+     * @return mixed Query results
      *
      * @throws \Inventory\Core\Exception\BadArgument
      * @throws \Inventory\Core\Exception\SQLException
@@ -543,7 +539,7 @@ class SQLDaO
     /**
      * Initialize a select query
      *
-     * @return $this fluent interface
+     * @return $this Fluent interface
      */
     public function initSelect(): SQLDaO
     {
@@ -558,14 +554,14 @@ class SQLDaO
     /**
      * Initialize an insert query
      *
-     * @return $this fluent interface
+     * @return $this Fluent interface
      */
     public function initInsert(): SQLDaO
     {
         // Init query
         $this->initQuery();
         $this->queryType = 'insert';
-        $this->query = 'INSERT INTO '.$this->tableName.' ';
+        $this->query = "INSERT INTO {$this->tableName} ";
 
         return $this;
     }
@@ -573,14 +569,14 @@ class SQLDaO
     /**
      * Initialize an update query
      *
-     * @return $this fluent interface
+     * @return $this Fluent interface
      */
     public function initUpdate(): SQLDaO
     {
         // Init query
         $this->initQuery();
         $this->queryType = 'update';
-        $this->query = 'UPDATE '.$this->tableName.' ';
+        $this->query = "UPDATE {$this->tableName} ";
 
         return $this;
     }
@@ -588,14 +584,14 @@ class SQLDaO
     /**
      * Initialize a delete query
      *
-     * @return $this fluent interface
+     * @return $this Fluent interface
      */
     public function initDelete(): SQLDaO
     {
         // Init query
         $this->initQuery();
         $this->queryType = 'delete';
-        $this->query = 'DELETE FROM '.$this->tableName;
+        $this->query = "DELETE FROM {$this->tableName}";
 
         return $this;
     }
@@ -605,7 +601,7 @@ class SQLDaO
      *
      * @param array $fields Fields to return
      *
-     * @return $this fluent interface
+     * @return $this Fluent interface
      */
     public function setSelect(array $fields = null)
     {
@@ -679,7 +675,7 @@ class SQLDaO
      *
      * @param array $fields Fields to update
      *
-     * @return $this fluent interface
+     * @return $this Fluent interface
      *
      * @throws \Inventory\Core\Exception\BadArgument
      * @throws \Inventory\Core\Exception\FieldMissing
@@ -711,7 +707,7 @@ class SQLDaO
         // Remove last comma
         $column_string = rtrim($column_string, ',');
 
-        $this->query .= 'SET '.$column_string;
+        $this->query .= "SET {$column_string}";
 
         return $this;
     }
@@ -723,7 +719,7 @@ class SQLDaO
      * @param string $operator Operator
      * @param mixed $value Value for field
      *
-     * @return $this fluent interface
+     * @return $this Fluent interface
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
@@ -785,7 +781,7 @@ class SQLDaO
      *
      * @param string $from From value
      *
-     * @return $this fluent interface
+     * @return $this Fluent interface
      */
     public function addFrom(string $from): SQLDaO
     {
@@ -795,7 +791,7 @@ class SQLDaO
         }
 
         // Add from clause
-        $this->from .= 'FROM '.$from;
+        $this->from .= "FROM {$from}";
 
         return $this;
     }
@@ -805,7 +801,7 @@ class SQLDaO
      *
      * @param array $params Fields to include in order by
      *
-     * @return $this fluent interface
+     * @return $this Fluent interface
      */
     public function addOrderBy(array $params): SQLDaO
     {
@@ -836,7 +832,7 @@ class SQLDaO
      *
      * @param string $limit Limit value
      *
-     * @return $this fluent interface
+     * @return $this Fluent interface
      */
     public function addLimit(string $limit): SQLDaO
     {
@@ -846,7 +842,7 @@ class SQLDaO
         }
 
         // Add limit
-        $this->limit .= 'LIMIT '.$limit;
+        $this->limit .= "LIMIT {$limit}";
 
         return $this;
     }
@@ -856,7 +852,7 @@ class SQLDaO
      *
      * @param string $offset Offset value
      *
-     * @return $this fluent interface
+     * @return $this Fluent interface
      */
     public function addOffset(string $offset): SQLDaO
     {
@@ -866,7 +862,7 @@ class SQLDaO
         }
 
         // Add offset
-        $this->offset .= 'OFFSET '.$offset;
+        $this->offset .= "OFFSET {$offset}";
 
         return $this;
     }
@@ -874,7 +870,7 @@ class SQLDaO
     /**
      * Executes query.
      *
-     * @return mixed
+     * @return mixed Query results
      *
      * @throws \Inventory\Core\Exception\SQLException
      */
@@ -927,7 +923,7 @@ class SQLDaO
      *
      * @param \mysqli_result $result Result from query
      *
-     * @return null|array
+     * @return null|array Results array
      *   Format:
      *     [ 0 =>
      *        'field_1 => row_1, field_2 => row_1,
@@ -951,7 +947,7 @@ class SQLDaO
      *
      * @param \mysqli_result $result Result from query
      *
-     * @return null|array
+     * @return null|array Results array
      *   Format:
      *     [ fields => [field_1, field_2],
      *       rows   => [row_1, row_2]
@@ -981,7 +977,7 @@ class SQLDaO
      *
      * @param \mysqli_result $result Result from query
      *
-     * @return null|array
+     * @return null|array Results array
      *   Format:
      *     [ field_1 => data_1,
      *       field_2 => data_2
@@ -1018,8 +1014,7 @@ class SQLDaO
     /**
      * Returns auto-increment ID for last insert query
      *
-     * @return int
-     *
+     * @return int Last insert ID
      */
     public function getInsertID(): int
     {

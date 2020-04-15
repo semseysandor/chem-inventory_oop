@@ -34,14 +34,14 @@ class Login extends Form
      *
      * @var string
      */
-    protected ?string $user;
+    protected string $user;
 
     /**
      * Password
      *
      * @var string
      */
-    protected ?string $pass;
+    protected string $pass;
 
     /**
      * Validate input
@@ -65,7 +65,6 @@ class Login extends Form
 
             return;
         }
-
         if ($this->pass == '') {
             $this->errorFlag = true;
             $this->response = ts('Missing password.');
@@ -84,6 +83,7 @@ class Login extends Form
     {
         parent::process();
 
+        // Error in validation
         if ($this->errorFlag) {
             return;
         }
@@ -112,8 +112,6 @@ class Login extends Form
             $this->errorFlag = true;
             $this->response = ts('Invalid user name or password.');
         }
-
-        return;
     }
 
     /**

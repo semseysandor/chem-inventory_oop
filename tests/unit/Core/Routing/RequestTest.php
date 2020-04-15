@@ -95,7 +95,7 @@ class RequestTest extends BaseTestCase
         self::assertSame(self::ARRAY, $this->sut->parseData());
 
         $_REQUEST = null;
-        self::assertNull($this->sut->parseData());
+        self::assertSame([], $this->sut->parseData());
     }
 
     /**

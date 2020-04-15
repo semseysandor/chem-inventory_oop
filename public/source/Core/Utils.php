@@ -30,7 +30,7 @@ class Utils
      *
      * @param string $class Class name
      *
-     * @return string
+     * @return string Path
      */
     public static function getPathFromClass(string $class): string
     {
@@ -59,9 +59,9 @@ class Utils
      * @param string $input Input string
      * @param string $mode Filtering mode (word|extended)
      *
-     * @return string
+     * @return string Sanitized string
      */
-    public static function sanitizeString(string $input, ?string $mode = 'extended')
+    public static function sanitizeString(string $input, string $mode = 'extended'): string
     {
         if ($input == "") {
             return "";
@@ -94,16 +94,16 @@ class Utils
      *
      * @param string $id ID
      *
-     * @return int|null
+     * @return int|null Sanitized ID
      */
-    public static function sanitizeID(string $id)
+    public static function sanitizeID(string $id): ?int
     {
-        if (is_null($id)) {
+        if (empty($id)) {
             return null;
         }
 
         // Convert to integer
-        $id = (int)$id;
+        $id = intval($id);
 
         if ($id <= 0) {
             return null;

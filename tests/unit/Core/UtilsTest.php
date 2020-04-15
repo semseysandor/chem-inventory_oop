@@ -82,7 +82,7 @@ class UtilsTest extends BaseTestCase
     public function provideInputs()
     {
         return [
-          'null' => [null, "", ""],
+          'null' => ["", "", ""],
           'word' => ['word', '  <script>alert(\'hello\')</script>@#]["!/?.,>><%  ', 'alerthello'],
           'extended' => ['extended', '  <script>"monkey worlds"</script>@#]["!/?.,>><%  ', 'monkey worlds.,>><%'],
           'real' => ['extended', ' puriss., <99.5%', 'puriss., <99.5%'],

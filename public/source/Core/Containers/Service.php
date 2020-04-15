@@ -72,14 +72,14 @@ class Service
     /**
      * Gets the security subsystem
      *
-     * @return \Inventory\Core\Routing\Security
+     * @return \Inventory\Core\Routing\Security Security Manager
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
     public function security()
     {
         // Pseudo-singleton
-        if ($this->security == null) {
+        if (is_null($this->security)) {
             $this->security = $this->factory()->createSecurity();
         }
 
@@ -91,7 +91,7 @@ class Service
      *
      * @param string $default_config_file Default config file
      *
-     * @return \Inventory\Core\Settings
+     * @return \Inventory\Core\Settings Setting Manager
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
@@ -103,7 +103,7 @@ class Service
         }
 
         // Pseudo-singleton
-        if ($this->settings == null) {
+        if (is_null($this->settings)) {
             $this->settings = $this->factory()->createSettings($default_config_file);
         }
 
@@ -113,7 +113,7 @@ class Service
     /**
      * Gets the DataBase handler
      *
-     * @return \Inventory\Core\DataBase\SQLDataBase
+     * @return \Inventory\Core\DataBase\SQLDataBase DataBase
      *
      * @throws \Inventory\Core\Exception\BadArgument
      * @throws \Inventory\Core\Exception\SQLException
@@ -121,7 +121,7 @@ class Service
     public function database()
     {
         // Pseudo-singleton
-        if ($this->dataBase == null) {
+        if (is_null($this->dataBase)) {
             // Get configs
             $host = $this->settings()->getSetting('db', 'host');
             $port = $this->settings()->getSetting('db', 'port');
@@ -138,12 +138,12 @@ class Service
     /**
      * Gets the factory
      *
-     * @return \Inventory\Core\Factory|null
+     * @return \Inventory\Core\Factory Factory
      */
     public function factory()
     {
         // Pseudo-singleton
-        if ($this->factory == null) {
+        if (is_null($this->factory)) {
             $this->factory = new Factory();
         }
 

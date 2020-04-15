@@ -28,40 +28,40 @@ class Template
     /**
      * Base template
      *
-     * @var string|null
+     * @var string
      */
-    private ?string $base;
+    private string $base;
 
     /**
      * Template regions
      *
-     * @var array|null
+     * @var array
      */
-    private ?array $regions;
+    private array $regions;
 
     /**
      * Template variables
      *
-     * @var array|null
+     * @var array
      */
-    private ?array $vars;
+    private array $vars;
 
     /**
      * Template Container constructor.
      */
     public function __construct()
     {
-        $this->base = null;
-        $this->regions = null;
-        $this->vars = null;
+        $this->base = '';
+        $this->regions = [];
+        $this->vars = [];
     }
 
     /**
      * Gets base template
      *
-     * @return string|null
+     * @return string Base template
      */
-    public function getBase(): ?string
+    public function getBase(): string
     {
         return $this->base;
     }
@@ -70,8 +70,6 @@ class Template
      * Sets base template
      *
      * @param string $base Name of base template file
-     *
-     * @return void
      */
     public function setBase(string $base): void
     {
@@ -84,9 +82,9 @@ class Template
     /**
      * Get template regions
      *
-     * @return array|null
+     * @return array Template regions
      */
-    public function getRegions(): ?array
+    public function getRegions(): array
     {
         return $this->regions;
     }
@@ -96,8 +94,6 @@ class Template
      *
      * @param string $region Name of region (header, body, form, etc...)
      * @param string $template Template file name
-     *
-     * @return void
      */
     public function setRegions(string $region, string $template): void
     {
@@ -110,9 +106,9 @@ class Template
     /**
      * Gets template variables
      *
-     * @return array|null
+     * @return array Template variables
      */
-    public function getVars(): ?array
+    public function getVars(): array
     {
         return $this->vars;
     }
@@ -122,8 +118,6 @@ class Template
      *
      * @param string $name Variable name
      * @param mixed $value Variable value
-     *
-     * @return void
      */
     public function setVars(string $name, $value): void
     {

@@ -30,7 +30,7 @@ class Request
     /**
      * Parse GET & POST data
      *
-     * @return array|null
+     * @return array Request data
      *
      * @throws \Inventory\Core\Exception\InvalidRequest
      */
@@ -47,13 +47,13 @@ class Request
         }
 
         // Return request data
-        return ($_REQUEST ?? null);
+        return ($_REQUEST ?? []);
     }
 
     /**
      * Parse route
      *
-     * @return array
+     * @return array Route
      *
      * @throws \Inventory\Core\Exception\InvalidRequest
      */

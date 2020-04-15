@@ -129,7 +129,7 @@ class Renderer implements IComponent
 
         // Load template files to engine
         foreach ($regions as $name => $value) {
-            $this->engine->assign('_template_'.$name, $value.self::FILE_EXT);
+            $this->engine->assign("_template_{$name}", $value.self::FILE_EXT);
         }
     }
 
@@ -168,8 +168,6 @@ class Renderer implements IComponent
 
     /**
      * Renders a template in HTML
-     *
-     * @return void
      *
      * @throws \Inventory\Core\Exception\RenderingError
      */
