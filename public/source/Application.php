@@ -16,12 +16,11 @@ namespace Inventory;
 
 use Inventory\Core\Containers\Service;
 use Inventory\Core\Containers\Template;
-use Inventory\Core\Exception\AuthorizationException;
-use Inventory\Core\Exception\BadArgument;
+use Inventory\Core\Exception\BaseException;
 use Inventory\Core\Exception\ExceptionHandler;
-use Inventory\Core\Exception\InvalidRequest;
 use Inventory\Core\Exception\RenderingError;
 use Inventory\Core\IComponent;
+use Throwable;
 
 /**
  * Application Class
@@ -163,10 +162,39 @@ class Application implements IComponent
 
             // Finish
             $this->exit();
-        } catch (AuthorizationException | BadArgument | InvalidRequest $ex) {
-            $this->exHandler->handleFatalError($ex);
         } catch (RenderingError $ex) {
+            // Rendering error
             $this->exHandler->handleRenderingError($ex);
+        } catch (BaseException $ex) {
+            // Other Inventory Errors
+            $this->exHandler->handleFatalError($ex);
+        } catch (Throwable $ex) {
+            // Other Errors & Exceptions
+            $this->topLevelExceptionHandler($ex);
+        }
+    }
+
+    /**
+     * Top level exception handler
+     *
+     * @param \Throwable $ex Exception to handle
+     */
+    private function topLevelExceptionHandler(Throwable $ex)
+    {
+        $message = $ex->getMessage();
+        $trace = $ex->getTraceAsString();
+
+        if (!headers_sent()) {
+            // Console type response
+            header('Content-Type: text; charset=UTF-8');
+            echo "FATAL ERROR!\n\n";
+            echo $message."\n\n";
+            echo $trace;
+        } else {
+            // HTML type response
+            echo "<div><h1>Fatal Error</h1>";
+            echo "<p>".$message."</p>";
+            echo "<p>".$trace."</p></div>";
         }
     }
 
@@ -175,6 +203,6 @@ class Application implements IComponent
      */
     public function exit(): void
     {
-        exit;
+        exit(0);
     }
 }

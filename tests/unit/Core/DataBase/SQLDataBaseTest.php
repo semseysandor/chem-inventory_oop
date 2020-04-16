@@ -68,9 +68,9 @@ class SQLDataBaseTest extends BaseTestCase
      */
     public function testConnectingToInvalidDbCredentialsError()
     {
-        $this->sut = new SQLDataBase('localhost', 1000, 'test', 'test', 'test');
+        $this->sut = new SQLDataBase('localhost', 1000, 'test', 'test', 'INVALID');
         self::expectException(SQLException::class);
-        $this->sut->connect();
+        @$this->sut->connect();
     }
 
     /**
@@ -93,7 +93,7 @@ class SQLDataBaseTest extends BaseTestCase
         ];
 
         self::expectException(SQLException::class);
-        $this->sut->import($params);
+        @$this->sut->import($params);
     }
 
     /**
@@ -116,7 +116,7 @@ class SQLDataBaseTest extends BaseTestCase
         ];
 
         self::expectException(SQLException::class);
-        $this->sut->export($params);
+        @$this->sut->export($params);
     }
 
     /**
@@ -169,22 +169,22 @@ class SQLDataBaseTest extends BaseTestCase
             [],
           ],
           'Missing bind parameters' => [
-            'SELECT * FROM test_table WHERE identity > ?',
+            'SELECT * FROM test_table WHERE id > ?',
             '',
             ['test'],
           ],
           'More bind parameters' => [
-            'SELECT * FROM test_table WHERE identity > ?',
+            'SELECT * FROM test_table WHERE id > ?',
             'is',
             ['test'],
           ],
           'Missing values' => [
-            'SELECT * FROM test_table WHERE identity > ?',
+            'SELECT * FROM test_table WHERE id > ?',
             'i',
             [],
           ],
           'More values' => [
-            'SELECT * FROM test_table WHERE identity > ?',
+            'SELECT * FROM test_table WHERE id > ?',
             'i',
             [5, 'test'],
           ],
@@ -356,7 +356,7 @@ class SQLDataBaseTest extends BaseTestCase
     public function testExecuteInvalidQuery()
     {
         self::expectException(SQLException::class);
-        $this->sut->execute('INVALID');
+        @$this->sut->execute('INVALID');
     }
 
     /**

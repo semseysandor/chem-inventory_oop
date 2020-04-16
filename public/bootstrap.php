@@ -18,21 +18,34 @@ declare(strict_types=1);
 /**
  * Filesystem Path to root
  */
-define('ROOT', __DIR__);
+// define('ROOT', __DIR__);
+const ROOT = __DIR__;
 
+const ENV_PRODUCTION = true;
 /**
  * Autoloader
  */
 include ROOT.'/../vendor/autoload.php';
 
-/**
- * Few global functions
- */
-include ROOT.'/global.php';
-
 // Set error reporting level
-error_reporting(E_ALL);
+error_reporting((ENV_PRODUCTION ? 0 : E_ALL));
 // error_reporting(0);
 
-// Setting top level exception handler for any uncaught exceptions
-set_exception_handler('inventory_top_level_exception_handler');
+/**
+ * Translate function
+ *
+ * @param string $string String to translate
+ * @param array $params Parameters
+ *
+ * @return string Translated string
+ */
+function ts(string $string, ...$params): string
+{
+    // If simple string
+    if (empty($params)) {
+        return $string;
+    }
+
+    // There are other params -> formatted
+    return sprintf($string, ...$params);
+}

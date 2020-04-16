@@ -14,7 +14,6 @@
 
 namespace Inventory\Core\DataBase;
 
-use Exception;
 use Inventory\Core\Exception\SQLException;
 use mysqli;
 use mysqli_driver;
@@ -32,26 +31,18 @@ use mysqli_stmt;
 class SQLDataBase implements IDataBase
 {
     /**
-     * Error reporting
-     *
-     * Development = true
-     * Production  = false
-     */
-    private const ERROR_REPORTING = true;
-
-    /**
      * Link to SQLDataBase.
      *
      * @var mysqli
      */
-    private ?mysqli $link;
+    private ?mysqli $link = null;
 
     /**
      * MySql driver.
      *
      * @var mysqli_driver
      */
-    private ?mysqli_driver $driver;
+    private ?mysqli_driver $driver = null;
 
     /**
      * Query string.
@@ -125,7 +116,13 @@ class SQLDataBase implements IDataBase
         $this->name = $name;
         $this->user = $user;
         $this->pass = $pass;
-        $this->link = null;
+    }
+
+    public function __destruct()
+    {
+        if (!is_null($this->link)) {
+            $this->link->close();
+        }
     }
 
     /**
@@ -157,15 +154,15 @@ class SQLDataBase implements IDataBase
         $this->link = mysqli_init();
         $this->driver = new mysqli_driver();
 
-        try {
-            // Connect to DB
-            $this->link->real_connect($this->host, $this->user, $this->pass, $this->name, $this->port);
-        } catch (Exception $ex) {
+        // Connect to DB
+        $this->link->real_connect($this->host, $this->user, $this->pass, $this->name, $this->port);
+
+        if ($this->link->connect_errno != 0) {
             throw new SQLException(ts('Error connecting to SQL Database: "%s"', $this->link->connect_error));
         }
 
         // Error reporting level
-        $this->driver->report_mode = self::ERROR_REPORTING ? MYSQLI_REPORT_ERROR : MYSQLI_REPORT_OFF;
+        $this->driver->report_mode = ENV_PRODUCTION ? MYSQLI_REPORT_OFF : MYSQLI_REPORT_ERROR;
 
         // Set character set
         $this->link->set_charset('utf8');
@@ -188,33 +185,36 @@ class SQLDataBase implements IDataBase
      */
     public function import(array $params)
     {
-        try {
-            // Init query
-            $this->initQuery($params);
+        // Init query
+        $this->initQuery($params);
 
-            // Check query
-            if (empty($this->query)) {
-                return null;
-            }
-
-            // No bind or values supplied -> simple query
-            if (empty($this->bind) || empty($this->values)) {
-                // Execute query
-                $this->link->query($this->query);
-            } else {
-                // Otherwise prepared statement
-                $stmt = new mysqli_stmt($this->link, $this->query);
-                $stmt->bind_param($this->bind, ...$this->values);
-
-                // Execute query
-                $stmt->execute();
-            }
-
-            // Return number of affected rows
-            return $this->link->affected_rows;
-        } catch (Exception $ex) {
-            throw new SQLException($ex->getMessage());
+        // Check query
+        if (empty($this->query)) {
+            return null;
         }
+
+        // No bind or values supplied -> simple query
+        if (empty($this->bind) || empty($this->values)) {
+            // Execute query
+            $this->link->query($this->query);
+        } else {
+            // Otherwise prepared statement
+            $stmt = new mysqli_stmt($this->link, $this->query);
+            $stmt->bind_param($this->bind, ...$this->values);
+
+            // Execute query
+            $stmt->execute();
+        }
+
+        $affected_rows = $this->link->affected_rows;
+
+        // Check for errors
+        if ($this->link->errno != 0 || $affected_rows < 0) {
+            throw new SQLException("{$this->link->error} at {$this->query}");
+        }
+
+        // Return number of affected rows
+        return $affected_rows;
     }
 
     /**
@@ -234,30 +234,31 @@ class SQLDataBase implements IDataBase
      */
     public function export(array $params)
     {
-        try {
-            // Init query
-            $this->initQuery($params);
+        // Init query
+        $this->initQuery($params);
 
-            // Check query
-            if (empty($this->query)) {
-                return null;
-            }
-
-            if (empty($this->bind) || empty($this->values)) {
-                // No bind or values supplied -> simple query
-                $result = $this->link->query($this->query);
-            } else {
-                // Otherwise prepared statement
-                $stmt = new mysqli_stmt($this->link, $this->query);
-                $stmt->bind_param($this->bind, ...$this->values);
-                $stmt->execute();
-                $result = $stmt->get_result();
-            }
-
-            return $result;
-        } catch (Exception $ex) {
-            throw new SQLException($this->query);
+        // Check query
+        if (empty($this->query)) {
+            return null;
         }
+
+        if (empty($this->bind) || empty($this->values)) {
+            // No bind or values supplied -> simple query
+            $result = $this->link->query($this->query);
+        } else {
+            // Otherwise prepared statement
+            $stmt = new mysqli_stmt($this->link, $this->query);
+            $stmt->bind_param($this->bind, ...$this->values);
+            $stmt->execute();
+            $result = $stmt->get_result();
+        }
+
+        // Check for errors
+        if ($this->link->errno != 0) {
+            throw new SQLException("{$this->link->error} at {$this->query}");
+        }
+
+        return $result;
     }
 
     /**
@@ -268,19 +269,21 @@ class SQLDataBase implements IDataBase
      * @return mixed Query results
      *
      * @throws \Inventory\Core\Exception\SQLException
-     * @throws \Inventory\Core\Exception\SQLException
      */
     public function execute(string $command)
     {
-        try {
-            if (empty($command)) {
-                return null;
-            }
-
-            return $this->link->query($command);
-        } catch (Exception $ex) {
-            throw new SQLException($ex->getMessage());
+        if (empty($command)) {
+            return null;
         }
+
+        $result = $this->link->query($command);
+
+        // Check for errors
+        if ($this->link->errno != 0) {
+            throw new SQLException("{$this->link->error} at {$command}");
+        }
+
+        return $result;
     }
 
     /**

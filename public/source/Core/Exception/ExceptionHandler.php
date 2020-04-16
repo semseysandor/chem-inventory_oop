@@ -28,6 +28,11 @@ use Inventory\Core\Renderer;
 class ExceptionHandler
 {
     /**
+     * Static error page path
+     */
+    public const STATIC_ERROR_PAGE = ROOT.'/templates/static/error.phtml';
+
+    /**
      * Renderer
      *
      * @var \Inventory\Core\Renderer
@@ -99,7 +104,8 @@ class ExceptionHandler
         $message = $ex->getMessage();
         $context = $ex->getContext();
         $trace = $ex->getTrace();
-        include ROOT.'/templates/static/error.php';
+
+        include self::STATIC_ERROR_PAGE;
     }
 
     /**

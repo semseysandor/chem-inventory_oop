@@ -34,7 +34,7 @@ return [
       // SQL server host name
     'host' => 'localhost',
       // SQL user name
-    'user' => 'leltar_ADMIN',
+    'user' => 'leltar_ADMIN2',
       // password
     'pass' => 'admin',
       // database name
