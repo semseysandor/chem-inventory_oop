@@ -10,8 +10,8 @@
  | https://choosealicense.com/licenses/mit/      |
  +-----------------------------------------------+
 *}
-{config_load "elements.conf"}
 {strip}
+{config_load "elements.conf"}
     <!DOCTYPE html>
     <html lang="en">
     <head>
