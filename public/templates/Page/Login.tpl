@@ -12,7 +12,7 @@
 *}
 {extends file='base/page.tpl'}
 {block body}{strip}
-  <h1>Login</h1>
+    <h1>Login</h1>
     {include file='Form/Login.tpl'}
 {/strip}{/block}
 

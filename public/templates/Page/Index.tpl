@@ -12,9 +12,9 @@
 *}
 {extends file='base/page.tpl'}
 {block body}{strip}
-  <h1>Inventory</h1>
-  <h2>Welcome {$user}</h2>
-  <a href="log-out">
-    <button>Logout</button>
-  </a>
+    <h1>Inventory</h1>
+    <h2>Welcome {$user}</h2>
+    <a href="log-out">
+        <button>Logout</button>
+    </a>
 {/strip}{/block}

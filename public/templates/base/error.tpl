@@ -12,7 +12,7 @@
 *}
 {extends "base/page.tpl"}
 {block body}
-  <h1>ERROR</h1>
-  <p>{$message}</p>
-  <p>{$context}</p>
+    <h1>ERROR</h1>
+    <p>{$message}</p>
+    <p>{$context}</p>
 {/block}

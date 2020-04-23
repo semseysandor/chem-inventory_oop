@@ -11,11 +11,9 @@
  +-----------------------------------------------+
 *}
 {strip}
-    <head>
-        <meta charset="UTF-8">
-        <title>Fankimanki</title>
-        <link rel="stylesheet" type="text/css" href="legacy/style/message.css" media="screen"/>
-        <script src="js/Inventory.js"></script>
-        <script src="js/AJAX.js"></script>
-    </head>
+    <meta charset="UTF-8">
+    <title>Fankimanki</title>
+    <link rel="stylesheet" type="text/css" href="legacy/style/message.css" media="screen"/>
+    <script src="js/Inventory.js"></script>
+    <script src="js/AJAX.js"></script>
 {/strip}
