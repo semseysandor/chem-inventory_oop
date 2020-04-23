@@ -11,22 +11,34 @@
  +-----------------------------------------------+
 *}
 {extends "base/form.tpl"}
-{block id}form.login{/block}
+{block id}inv-login-form{/block}
 {block action}log-in{/block}
-{block form_content}{strip}
-  <div>
-    <label>
-      User Name
-      <input type="text" name="user" autofocus required/>
-    </label>
-  </div>
-  <div>
-    <label>
-      Password
-      <input type="password" name="pass" required/>
-    </label>
-  </div>
-{/strip}{/block}
+{block form_content}
+    {strip}
+        <div>
+            <label>
+                User Name
+                <input type="text" name="user" autofocus required/>
+            </label>
+        </div>
+        <div>
+            <label>
+                Password
+                <input type="password" name="pass" required/>
+            </label>
+        </div>
+    {/strip}
+{/block}
 {block form_submit}
-    {include #button_submit# name=Login}
+    {include #button_submit# id="inv-login-form-submit" name="Login"}
+{/block}
+{block form_js}
+{literal}
+    <script>
+        Inventory.addClick('inv-login-form-submit', function (event) {
+            event.preventDefault();
+            Inventory.AJAX.submit('inv-login-form', 'inv-response', Inventory.redirect, ['/index']);
+        });
+    </script>
+{/literal}
 {/block}

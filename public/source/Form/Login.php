@@ -50,9 +50,12 @@ class Login extends Form
     {
         parent::validate();
 
+        // Parse JSON
+        $request_json = json_decode($this->requestData['data']);
+
         // Get request data
-        $user = $this->requestData['user'] ?? "";
-        $pass = $this->requestData['pass'] ?? "";
+        $user = $request_json->user ?? "";
+        $pass = $request_json->pass ?? "";
 
         // Sanitize
         $this->user = Utils::sanitizeString($user, 'word');
@@ -120,7 +123,7 @@ class Login extends Form
     protected function assemble(): void
     {
         parent::assemble();
-        $this->templateContainer->setBase('base/response');
+        $this->templateContainer->setBase('ajax');
         $this->templateContainer->setVars('flag', ($this->errorFlag ? 'neg' : 'pos'));
         $this->templateContainer->setVars('text', $this->response);
     }

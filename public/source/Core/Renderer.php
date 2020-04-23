@@ -159,11 +159,25 @@ class Renderer implements IComponent
      */
     private function render(): void
     {
-        // Set base template file
-        $base_template = ($this->templateContainer->getBase()).self::FILE_EXT;
+        $base_template = $this->templateContainer->getBase();
 
-        // Display template
-        $this->engine->display($base_template);
+        // Render as AJAX response
+        if ($base_template == 'ajax') {
+            $this->renderJSON();
+
+            return;
+        }
+
+        // Render as normal page
+        $this->engine->display($base_template.self::FILE_EXT);
+    }
+
+    /**
+     * Render JSON response
+     */
+    private function renderJSON(): void
+    {
+        echo json_encode($this->templateContainer->getVars(), JSON_UNESCAPED_UNICODE);
     }
 
     /**

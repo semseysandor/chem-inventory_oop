@@ -32,15 +32,15 @@
 return [
   'db' => [
       // SQL server host name
-    'host' => 'localhost',
+      'host' => 'localhost',
       // SQL user name
-    'user' => 'leltar_ADMIN2',
+      'user' => 'leltar_ADMIN',
       // password
-    'pass' => 'admin',
+      'pass' => 'admin',
       // database name
-    'name' => 'inventory',
+      'name' => 'inventory',
       // database port
-    'port' => 3306,
+      'port' => 3306,
   ],
   'general' => [
       // HTML title

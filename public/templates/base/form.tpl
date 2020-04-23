@@ -11,15 +11,18 @@
  +-----------------------------------------------+
 *}
 {strip}
-  <form id="{block id}{/block}" method="post" action="{block action}{/block}">
-    <div>
-        {block form_meta}{/block}
-    </div>
-    <div>
-        {block form_content}{/block}
-    </div>
-    <div>
-        {block form_submit}{/block}
-    </div>
-  </form>
+    <form id="{block id}{/block}" method="post" action="{block action}{/block}">
+        <div>
+            {block form_meta}{/block}
+        </div>
+        <div>
+            {block form_content}{/block}
+        </div>
+        <div>
+            {block form_submit}{/block}
+        </div>
+        <div>
+            {block form_js}{/block}
+        </div>
+    </form>
 {/strip}

@@ -11,9 +11,11 @@
  +-----------------------------------------------+
 *}
 {strip}
-  <head>
-    <meta charset="UTF-8">
-    <title>Fankimanki</title>
-    <script src="js/inventory.js"></script>
-  </head>
+    <head>
+        <meta charset="UTF-8">
+        <title>Fankimanki</title>
+        <link rel="stylesheet" type="text/css" href="legacy/style/message.css" media="screen"/>
+        <script src="js/Inventory.js"></script>
+        <script src="js/AJAX.js"></script>
+    </head>
 {/strip}

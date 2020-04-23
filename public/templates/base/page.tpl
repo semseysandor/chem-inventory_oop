@@ -14,10 +14,13 @@
 {config_load "elements.conf"}
   <!DOCTYPE html>
   <html lang="en">
+
   {* HTML Head *}
   {include file='base/head.tpl'}
   <body>
+  <div id="inv-response"></div>
   {block body}{/block}
+
   {* Footer *}
   {include file='base/footer.tpl'}
   </body>

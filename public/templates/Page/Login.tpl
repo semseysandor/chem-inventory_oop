@@ -13,6 +13,6 @@
 {extends file='base/page.tpl'}
 {block body}{strip}
   <h1>Login</h1>
-    {include file=$_template_form}
+    {include file='Form/Login.tpl'}
 {/strip}{/block}
 
