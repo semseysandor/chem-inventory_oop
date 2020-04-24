@@ -245,6 +245,9 @@
      */
     Inventory.AJAX.submit = function (formID, formResponseID, callBackFn, callBackParameters) {
 
+        // Set cursor for progress
+        setCursorProgress();
+
         // Init request
         initSubmit(formID, formResponseID, callBackFn, callBackParameters);
 
@@ -258,9 +261,6 @@
         request.open(form.method, form.action, true);
         request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
         request.send('data=' + data);
-
-        // Set cursor for progress
-        setCursorProgress();
 
         // When response ready
         request.onreadystatechange = requestJSONresults();
