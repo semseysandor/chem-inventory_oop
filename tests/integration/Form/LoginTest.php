@@ -89,8 +89,13 @@ class LoginTest extends IntegrationTestCase
     public function testMissingUserNameError()
     {
         // Mock request data
-        $request_data = ['other field' => 'test'];
-        $this->setProtectedProperty($this->form, 'requestData', $request_data);
+        $data = [
+            'other' => 'test',
+        ];
+        $data = json_encode($data, JSON_UNESCAPED_UNICODE);
+        $request = ['data' => $data];
+
+        $this->setProtectedProperty($this->form, 'requestData', $request);
 
         // Expect output
         $expected = '/.*neg.*'.ts('Missing user name.').'/Us';
@@ -110,11 +115,14 @@ class LoginTest extends IntegrationTestCase
     public function testNonExistentUser()
     {
         // Mock request data
-        $request_data = [
-          'user' => 'NON-EXISTENT',
-          'pass' => 'test',
+        $data = [
+            'user' => 'NON-EXISTENT',
+            'pass' => 'test',
         ];
-        $this->setProtectedProperty($this->form, 'requestData', $request_data);
+        $data = json_encode($data, JSON_UNESCAPED_UNICODE);
+        $request = ['data' => $data];
+
+        $this->setProtectedProperty($this->form, 'requestData', $request);
 
         // Expect output
         $expected = '/.*neg.*'.ts('Invalid user name or password.').'/Us';
@@ -167,11 +175,14 @@ class LoginTest extends IntegrationTestCase
         $this->createUser();
 
         // Set form
-        $request_data = [
-          'user' => 'user',
-          'pass' => 'INVALID',
+        $data = [
+            'user' => 'user',
+            'pass' => 'INVALID',
         ];
-        $this->setProtectedProperty($this->form, 'requestData', $request_data);
+        $data = json_encode($data, JSON_UNESCAPED_UNICODE);
+        $request = ['data' => $data];
+
+        $this->setProtectedProperty($this->form, 'requestData', $request);
 
         // Expect output
         $expected = '/.*neg.*'.ts('Invalid user name or password.').'/Us';
@@ -193,11 +204,14 @@ class LoginTest extends IntegrationTestCase
     public function testValidPassword()
     {
         // Set form
-        $request_data = [
-          'user' => 'user',
-          'pass' => 'test',
+        $data = [
+            'user' => 'user',
+            'pass' => 'test',
         ];
-        $this->setProtectedProperty($this->form, 'requestData', $request_data);
+        $data = json_encode($data, JSON_UNESCAPED_UNICODE);
+        $request = ['data' => $data];
+
+        $this->setProtectedProperty($this->form, 'requestData', $request);
 
         // Expect output
         $expected = '/.*pos.*'.ts('Logged in successfully.').'/Us';

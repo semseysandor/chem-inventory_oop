@@ -17,6 +17,7 @@ namespace Inventory\Test\Integration;
 use Inventory\Core\Routing\Request;
 use Inventory\Core\Routing\Router;
 use Inventory\Core\Routing\Security;
+use Inventory\Core\Routing\SessionManager;
 use Inventory\Page\Index;
 use Inventory\Page\Login;
 use Inventory\Test\Framework\IntegrationTestCase;
@@ -46,7 +47,9 @@ class RoutingTest extends IntegrationTestCase
         parent::setUp();
 
         $this->request = new Request();
-        $this->security = new Security();
+        $session_mng = $this->getMockBuilder(SessionManager::class)->onlyMethods(['isSessionStarted'])->getMock();
+        $session_mng->method('isSessionStarted')->willReturn(true);
+        $this->security = new Security($session_mng);
     }
 
     /**
@@ -77,7 +80,7 @@ class RoutingTest extends IntegrationTestCase
     public function testValidRequestFromLoggedInUser()
     {
         // Set up environment
-        $_SESSION['USER_ID'] = 1;
+        $_SESSION['AUTH'] = true;
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_SERVER['REQUEST_URI'] = '/';
 

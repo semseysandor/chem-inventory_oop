@@ -25,6 +25,7 @@ use Inventory\Core\Renderer;
 use Inventory\Core\Routing\Request;
 use Inventory\Core\Routing\Router;
 use Inventory\Core\Routing\Security;
+use Inventory\Core\Routing\SessionManager;
 use Inventory\Core\Settings;
 use Inventory\Entity\Compound\DAO\Compound;
 use Inventory\Page\Login;
@@ -78,7 +79,8 @@ class FactoryTest extends BaseTestCase
      */
     public function testCreateSecurityReturnsSecurity()
     {
-        self::assertInstanceOf(Security::class, $this->sut->createSecurity());
+        $session_mng = $this->getMockBuilder(SessionManager::class)->getMock();
+        self::assertInstanceOf(Security::class, $this->sut->createSecurity($session_mng));
     }
 
     /**
@@ -88,7 +90,7 @@ class FactoryTest extends BaseTestCase
      */
     public function testCreateRouterReturnsRouter()
     {
-        $security = $this->getMockBuilder(Security::class)->getMock();
+        $security = $this->getMockBuilder(Security::class)->disableOriginalConstructor()->getMock();
         self::assertInstanceOf(Router::class, $this->sut->createRouter([], $security));
     }
 

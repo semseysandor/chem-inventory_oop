@@ -57,7 +57,11 @@ class RouterTest extends BaseTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->security = $this->getMockBuilder(Security::class)->onlyMethods(['isAuthorized'])->getMock();
+        $this->security = $this
+            ->getMockBuilder(Security::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['isAuthenticated'])
+            ->getMock();
     }
 
     /**
@@ -76,7 +80,7 @@ class RouterTest extends BaseTestCase
     public function testNotLoggedInUserIsRedirectedWhenTryToAccessPage()
     {
         $route = ['index', 'node'];
-        $this->security->method('isAuthorized')->willReturn(false);
+        $this->security->method('isAuthenticated')->willReturn(false);
         $this->sut = new Router($route, $this->security);
 
         $this->sut->run();
@@ -89,7 +93,7 @@ class RouterTest extends BaseTestCase
     public function testNotLoggedInUserIsLoggingInNow()
     {
         $route = ['log-in'];
-        $this->security->method('isAuthorized')->willReturn(false);
+        $this->security->method('isAuthenticated')->willReturn(false);
         $this->sut = new Router($route, $this->security);
 
         $this->sut->run();
@@ -106,7 +110,7 @@ class RouterTest extends BaseTestCase
      */
     public function testLoggedInUserTryToAccessValidPage(array $route, string $class)
     {
-        $this->security->method('isAuthorized')->willReturn(true);
+        $this->security->method('isAuthenticated')->willReturn(true);
         $this->sut = new Router($route, $this->security);
 
         $this->sut->run();
@@ -133,7 +137,7 @@ class RouterTest extends BaseTestCase
     public function testLoggedInUserTryToAccessInvalidPage()
     {
         $route = ['invalid', 'page'];
-        $this->security->method('isAuthorized')->willReturn(true);
+        $this->security->method('isAuthenticated')->willReturn(true);
         $this->sut = new Router($route, $this->security);
 
         $this->sut->run();

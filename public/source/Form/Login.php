@@ -109,7 +109,7 @@ class Login extends Form
 
         // Log in
         if ($authorized) {
-            $security->logIn($result['id']);
+            $security->logIn($result['id'], $result['name']);
             $this->response = ts('Logged in successfully.');
         } else {
             $this->errorFlag = true;

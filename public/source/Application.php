@@ -148,9 +148,6 @@ class Application implements IComponent
             // Boot
             $this->boot();
 
-            // Init session
-            $this->serviceContainer->security()->initSession();
-
             // Routing
             $router = $this->routing();
 
@@ -203,6 +200,7 @@ class Application implements IComponent
      */
     public function exit(): void
     {
+        session_write_close();
         exit(0);
     }
 }

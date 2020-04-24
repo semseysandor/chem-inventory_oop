@@ -15,6 +15,7 @@
 namespace Inventory\Test\Unit\Core\Routing;
 
 use Inventory\Core\Routing\Security;
+use Inventory\Core\Routing\SessionManager;
 use Inventory\Test\Framework\BaseTestCase;
 
 /**
@@ -39,30 +40,39 @@ class SecurityTest extends BaseTestCase
      */
     protected Security $sut;
 
+
     /**
      * Set up
      */
     public function setUp(): void
     {
         parent::setUp();
-        $this->sut = new Security();
+        $session_manager = $this->getMockBuilder(SessionManager::class)->getMock();
+        $this->sut = new Security($session_manager);
     }
 
     /**
      * Test if user is not logged in
+     *
+     * @throws \Inventory\Core\Exception\AuthorizationException
      */
     public function testUserIsNotAuthorized()
     {
         unset($_SESSION);
-        self::assertFalse($this->sut->isAuthorized());
+        self::assertFalse($this->sut->isAuthenticated());
+
+        $_SESSION['AUTH'] = false;
+        self::assertFalse($this->sut->isAuthenticated());
     }
 
     /**
      * Test if user is logged in
+     *
+     * @throws \Inventory\Core\Exception\AuthorizationException
      */
     public function testUserIsAuthorized()
     {
-        $_SESSION['USER_ID'] = 1;
-        self::assertTrue($this->sut->isAuthorized());
+        $_SESSION['AUTH'] = true;
+        self::assertTrue($this->sut->isAuthenticated());
     }
 }

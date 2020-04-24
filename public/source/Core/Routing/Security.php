@@ -14,8 +14,6 @@
 
 namespace Inventory\Core\Routing;
 
-use Inventory\Core\Exception\AuthorizationException;
-
 /**
  * Security Class
  *
@@ -28,35 +26,41 @@ use Inventory\Core\Exception\AuthorizationException;
 class Security
 {
     /**
-     * Initialize session
+     * Session Manager
      *
-     * @throws \Inventory\Core\Exception\AuthorizationException
+     * @var \Inventory\Core\Routing\SessionManager
      */
-    public function initSession(): void
+    protected SessionManager $sessionManager;
+
+    /**
+     * Security constructor.
+     *
+     * @param \Inventory\Core\Routing\SessionManager $session_manager
+     */
+    public function __construct(SessionManager $session_manager)
     {
-        // Session name
-        session_name('id');
-
-        // Start session
-        session_start();
-
-        // Abort script if session not loaded
-        if (session_status() != PHP_SESSION_ACTIVE) {
-            throw new AuthorizationException(ts('Session start failed.'));
-        }
+        $this->sessionManager = $session_manager;
     }
 
     /**
      * Is user logged in
      *
      * @return bool
+     *
+     * @throws \Inventory\Core\Exception\AuthorizationException
      */
-    public function isAuthorized(): bool
+    public function isAuthenticated(): bool
     {
-        // If no USER_ID -> user not logged in
-        if (!isset($_SESSION['USER_ID']) || ((int)$_SESSION['USER_ID']) < 1) {
+        // Start session
+        $this->sessionManager->startSession();
+
+        // If no USER_ID -> user logged in
+        if (!isset($_SESSION['AUTH']) || $_SESSION['AUTH'] !== true) {
             return false;
         }
+
+        // User authenticated -> give more time
+        $_SESSION['expired'] = time() + 300;
 
         return true;
     }
@@ -78,10 +82,17 @@ class Security
      * Logs user in
      *
      * @param int $user_id User ID
+     * @param string $user_name User name
      */
-    public function logIn(int $user_id): void
+    public function logIn(int $user_id, string $user_name): void
     {
+        // Regenerate session
+        $this->sessionManager->regenerateSession();
+
+        // Set authentication flag & user name
+        $_SESSION['AUTH'] = true;
         $_SESSION['USER_ID'] = $user_id;
+        $_SESSION['USER_NAME'] = $user_name;
     }
 
     /**
@@ -89,10 +100,9 @@ class Security
      */
     public function logOut(): void
     {
-        // Unset session variables
-        session_unset();
-
-        // Destroy session
-        session_destroy();
+        unset($_SESSION['AUTH']);
+        unset($_SESSION['USER_ID']);
+        unset($_SESSION['USER_NAME']);
+        $this->sessionManager->regenerateSession();
     }
 }

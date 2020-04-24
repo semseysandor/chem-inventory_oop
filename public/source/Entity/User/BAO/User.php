@@ -45,12 +45,12 @@ class User extends BaseBaO
         // Retrieve user info
         $result = $dao->retrieve(
             [
-            'fields' => ['id', 'hash'],
-            'where' => [
-              ['name', 'like', '?'],
-            ],
-            'limit' => 1,
-            'values' => [$user],
+                'fields' => ['id', 'hash', 'name'],
+                'where' => [
+                    ['name', 'like', '?'],
+                ],
+                'limit' => 1,
+                'values' => [$user],
             ]
         );
 
@@ -62,6 +62,7 @@ class User extends BaseBaO
 
         $data['id'] = $result['user_id'];
         $data['hash'] = $result['hash'];
+        $data['name'] = $result['name'];
 
         return $data;
     }

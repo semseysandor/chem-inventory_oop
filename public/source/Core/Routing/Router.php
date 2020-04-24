@@ -63,11 +63,13 @@ class Router implements IComponent
      * Login
      *
      * @return string Controller class
+     *
+     * @throws \Inventory\Core\Exception\AuthorizationException
      */
     private function routeLogin(): string
     {
         // User logged in, proceed
-        if ($this->security->isAuthorized()) {
+        if ($this->security->isAuthenticated()) {
             return '';
         }
 
@@ -112,6 +114,8 @@ class Router implements IComponent
 
     /**
      * Runs router
+     *
+     * @throws \Inventory\Core\Exception\AuthorizationException
      */
     public function run(): void
     {

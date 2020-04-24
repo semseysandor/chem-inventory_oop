@@ -13,7 +13,7 @@
 {extends file='base/page.tpl'}
 {block body}{strip}
     <h1>Inventory</h1>
-    <h2>Welcome {$user}</h2>
+    <h2>Welcome {$user_name}</h2>
     <a href="log-out">
         <button>Logout</button>
     </a>

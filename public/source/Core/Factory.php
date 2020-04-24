@@ -24,6 +24,7 @@ use Inventory\Core\Exception\ExceptionHandler;
 use Inventory\Core\Routing\Request;
 use Inventory\Core\Routing\Router;
 use Inventory\Core\Routing\Security;
+use Inventory\Core\Routing\SessionManager;
 use Smarty;
 
 /**
@@ -72,15 +73,29 @@ class Factory
     }
 
     /**
+     * Creates new Session Manager
+     *
+     * @return \Inventory\Core\Routing\SessionManager Session Manager
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
+     */
+    public function createSessionManager(): SessionManager
+    {
+        return $this->create(SessionManager::class);
+    }
+
+    /**
      * Creates new Security Manager
+     *
+     * @param \Inventory\Core\Routing\SessionManager $session_manager
      *
      * @return \Inventory\Core\Routing\Security Security Manager
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
-    public function createSecurity(): Security
+    public function createSecurity(SessionManager $session_manager): Security
     {
-        return $this->create(Security::class);
+        return $this->create(Security::class, [$session_manager]);
     }
 
     /**

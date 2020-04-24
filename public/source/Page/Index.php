@@ -62,6 +62,7 @@ class Index extends Page
         parent::assemble();
 
         $this->setBaseTemplate(Utils::getPathFromClass(self::class));
-        $this->setTemplateVar('user', $_SESSION['USER_ID']);
+        $this->setTemplateVar('user_id', $_SESSION['USER_ID']);
+        $this->setTemplateVar('user_name', $_SESSION['USER_NAME']);
     }
 }

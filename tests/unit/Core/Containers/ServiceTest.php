@@ -18,6 +18,7 @@ use Inventory\Core\Containers\Service;
 use Inventory\Core\DataBase\SQLDataBase;
 use Inventory\Core\Factory;
 use Inventory\Core\Routing\Security;
+use Inventory\Core\Routing\SessionManager;
 use Inventory\Core\Settings;
 use Inventory\Test\Framework\BaseTestCase;
 
@@ -50,6 +51,21 @@ class ServiceTest extends BaseTestCase
     {
         parent::setUp();
         $this->sut = new Service();
+    }
+
+    /**
+     * Return Session Manager Object and same object every time
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
+     */
+    public function testReturnSessionManagerAndAlwaysSameObject()
+    {
+        $session_man = $this->sut->sessionManager();
+        self::assertInstanceOf(SessionManager::class, $session_man);
+
+        // Modify object and test if same object returned
+        $session_man->test = 'test';
+        self::assertEquals($session_man, $this->sut->sessionManager());
     }
 
     /**

@@ -30,7 +30,7 @@
     {/strip}
 {/block}
 {block form_submit}
-    {include #button_submit# id="inv-login-form-submit" name="Login"}
+    {include #button_submit# id="inv-login-form-submit" title="Login"}
 {/block}
 {block form_js}
 {literal}

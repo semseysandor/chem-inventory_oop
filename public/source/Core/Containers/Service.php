@@ -17,6 +17,7 @@ namespace Inventory\Core\Containers;
 use Inventory\Core\DataBase\SQLDataBase;
 use Inventory\Core\Factory;
 use Inventory\Core\Routing\Security;
+use Inventory\Core\Routing\SessionManager;
 use Inventory\Core\Settings;
 
 /**
@@ -52,6 +53,13 @@ class Service
     private ?Security $security;
 
     /**
+     * Session Manager
+     *
+     * @var \Inventory\Core\Routing\SessionManager|null
+     */
+    private ?SessionManager $sessions;
+
+    /**
      * DataBase
      *
      * @var \Inventory\Core\DataBase\SQLDataBase|null
@@ -65,8 +73,26 @@ class Service
     {
         $this->factory = null;
         $this->settings = null;
+        $this->sessions = null;
         $this->security = null;
         $this->dataBase = null;
+    }
+
+    /**
+     * Gets the Session Manager
+     *
+     * @return \Inventory\Core\Routing\SessionManager Session Manager
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
+     */
+    public function sessionManager(): SessionManager
+    {
+        // Pseudo-singleton
+        if (is_null($this->sessions)) {
+            $this->sessions = $this->factory()->createSessionManager();
+        }
+
+        return $this->sessions;
     }
 
     /**
@@ -76,11 +102,11 @@ class Service
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
-    public function security()
+    public function security(): Security
     {
         // Pseudo-singleton
         if (is_null($this->security)) {
-            $this->security = $this->factory()->createSecurity();
+            $this->security = $this->factory()->createSecurity($this->sessionManager());
         }
 
         return $this->security;
@@ -95,7 +121,7 @@ class Service
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
-    public function settings(string $default_config_file = null)
+    public function settings(string $default_config_file = null): Settings
     {
         // If no default config file specified fallback to default
         if (is_null($default_config_file)) {
@@ -118,7 +144,7 @@ class Service
      * @throws \Inventory\Core\Exception\BadArgument
      * @throws \Inventory\Core\Exception\SQLException
      */
-    public function database()
+    public function database(): SQLDataBase
     {
         // Pseudo-singleton
         if (is_null($this->dataBase)) {
@@ -140,7 +166,7 @@ class Service
      *
      * @return \Inventory\Core\Factory Factory
      */
-    public function factory()
+    public function factory(): Factory
     {
         // Pseudo-singleton
         if (is_null($this->factory)) {
