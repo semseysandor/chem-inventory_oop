@@ -99,7 +99,7 @@ class Login extends Form
         $_SESSION['LOGIN_FAILED_ATTEMPT'] = $_SESSION['LOGIN_FAILED_ATTEMPT'] ?? 0;
 
         // Increase waiting time with login attempts to slow down brute force attacks
-        sleep((2 ** $_SESSION['LOGIN_FAILED_ATTEMPT']));
+        sleep(2 ** $_SESSION['LOGIN_FAILED_ATTEMPT']);
 
         // User not exist
         if (is_null($result)) {
@@ -116,6 +116,7 @@ class Login extends Form
 
         // Log in
         if ($authorized) {
+            unset($_SESSION['LOGIN_FAILED_ATTEMPT']);
             $security->logIn($result['id'], $result['name']);
             $this->response = ts('Logged in successfully.');
         } else {

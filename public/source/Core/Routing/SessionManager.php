@@ -63,15 +63,22 @@ class SessionManager
         $this->tolerateTimeOut = $tolerate ?? self::TOLERATE_EXPIRATION;
     }
 
+    /**
+     * Is session started
+     *
+     * @return bool
+     */
     public function isSessionStarted(): bool
     {
         return (session_status() === PHP_SESSION_ACTIVE);
     }
 
     /**
+     * Extends expiration
+     *
      * @param int $extension
      */
-    public function extendExpiration(int $extension = null)
+    public function extendExpiration(int $extension = null): void
     {
         $_SESSION['expire'] = time() + ($extension ?? self::IDLE_TIMEOUT);
     }
