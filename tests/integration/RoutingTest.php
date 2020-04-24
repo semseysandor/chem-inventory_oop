@@ -28,6 +28,7 @@ use Inventory\Test\Framework\IntegrationTestCase;
  * @covers \Inventory\Core\Routing\Request
  * @covers \Inventory\Core\Routing\Router
  * @covers \Inventory\Core\Routing\Security
+ * @covers \Inventory\Core\Routing\SessionManager
  *
  * @group backend
  *

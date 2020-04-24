@@ -24,6 +24,8 @@ use Inventory\Test\Framework\IntegrationTestCase;
  * @covers \Inventory\Form\Login
  * @covers \Inventory\Entity\User\BAO\User
  * @covers \Inventory\Entity\User\DAO\User
+ * @covers \Inventory\Core\Routing\Security
+ * @covers \Inventory\Core\Routing\SessionManager
  *
  * @category
  * @package  chem-inventory_oop

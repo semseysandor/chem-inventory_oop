@@ -31,6 +31,8 @@ use PHPUnit\Framework\MockObject\MockObject;
  * BaseControllerTest Class
  *
  * @covers \Inventory\Core\Controller\BaseController
+ * @covers \Inventory\Core\Controller\Page
+ * @covers \Inventory\Core\Controller\Form
  * @covers \Inventory\Page\Login
  * @covers \Inventory\Page\Logout
  * @covers \Inventory\Page\Index
