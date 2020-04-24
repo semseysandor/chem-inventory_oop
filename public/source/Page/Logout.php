@@ -36,7 +36,7 @@ class Logout extends Page
     {
         parent::process();
 
-        $this->service->factory()->createSecurity()->logOut();
+        $this->service->security()->logOut();
         header('Location: /');
     }
 }

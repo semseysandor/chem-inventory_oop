@@ -95,8 +95,15 @@ class Login extends Form
         $bao = new User($this->service);
         $result = $bao->searchUser($this->user);
 
+        // Get number of failed login attempt in this session
+        $_SESSION['LOGIN_FAILED_ATTEMPT'] = $_SESSION['LOGIN_FAILED_ATTEMPT'] ?? 0;
+
+        // Increase waiting time with login attempts to slow down brute force attacks
+        sleep((2 ** $_SESSION['LOGIN_FAILED_ATTEMPT']));
+
         // User not exist
         if (is_null($result)) {
+            $_SESSION['LOGIN_FAILED_ATTEMPT'] += 1;
             $this->errorFlag = true;
             $this->response = ts('Invalid user name or password.');
 
@@ -112,6 +119,7 @@ class Login extends Form
             $security->logIn($result['id'], $result['name']);
             $this->response = ts('Logged in successfully.');
         } else {
+            $_SESSION['LOGIN_FAILED_ATTEMPT'] += 1;
             $this->errorFlag = true;
             $this->response = ts('Invalid user name or password.');
         }
