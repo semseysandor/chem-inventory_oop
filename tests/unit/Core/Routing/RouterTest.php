@@ -16,9 +16,9 @@ namespace Inventory\Test\Unit\Core\Routing;
 
 use Inventory\Core\Routing\Router;
 use Inventory\Core\Routing\Security;
+use Inventory\Form\Logout;
 use Inventory\Page\Index;
 use Inventory\Page\Login;
-use Inventory\Page\Logout;
 use Inventory\Test\Framework\BaseTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 

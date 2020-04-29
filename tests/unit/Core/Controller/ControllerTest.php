@@ -21,9 +21,9 @@ use Inventory\Core\Controller\Form;
 use Inventory\Core\Controller\Page;
 use Inventory\Core\Exception\BadArgument;
 use Inventory\Core\Factory;
+use Inventory\Form\Logout;
 use Inventory\Page\Index;
 use Inventory\Page\Login;
-use Inventory\Page\Logout;
 use Inventory\Test\Framework\BaseTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -34,7 +34,7 @@ use PHPUnit\Framework\MockObject\MockObject;
  * @covers \Inventory\Core\Controller\Page
  * @covers \Inventory\Core\Controller\Form
  * @covers \Inventory\Page\Login
- * @covers \Inventory\Page\Logout
+ * @covers \Inventory\Form\Logout
  * @covers \Inventory\Page\Index
  * @covers \Inventory\Form\Login
  *
