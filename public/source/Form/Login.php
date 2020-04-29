@@ -56,10 +56,19 @@ class Login extends Form
         // Get request data
         $user = $request_json->user ?? "";
         $pass = $request_json->pass ?? "";
+        $token = $request_json->token ?? "";
 
         // Sanitize
         $this->user = Utils::sanitizeString($user, 'word');
         $this->pass = trim($pass);
+
+        // Check token
+        if (!$this->validateToken($token)) {
+            $this->errorFlag = true;
+            $this->response = ts('Token mismatch.');
+
+            return;
+        }
 
         // Check missing
         if ($this->user == '') {
@@ -80,7 +89,6 @@ class Login extends Form
      * Process input
      *
      * @throws \Inventory\Core\Exception\BadArgument
-     * @throws \Inventory\Core\Exception\SQLException
      */
     protected function process(): void
     {
@@ -92,7 +100,7 @@ class Login extends Form
         }
 
         // Search user in DB
-        $bao = new User($this->service);
+        $bao = $this->getBaO(User::class);
         $result = $bao->searchUser($this->user);
 
         // Get number of failed login attempt in this session

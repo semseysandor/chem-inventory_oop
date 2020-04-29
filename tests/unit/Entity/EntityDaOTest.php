@@ -156,16 +156,16 @@ class EntityDaOTest extends BaseTestCase
           'no params' => [null, 'SELECT * FROM leltar_compound'],
 
           'standard' => [
-            [
-              'fields' => ['id', 'name'],
-              'where' => [['id', '=', '?']],
-              'order_by' => ['name', 'id'],
-              'limit' => 10,
-              'offset' => 2,
-              'values' => [5],
+              [
+                  'fields' => ['id', 'name'],
+                  'where' => [['compound_id', '=', '56']],
+                  'order_by' => ['name', 'compound_id'],
+                  'limit' => 10,
+                  'offset' => 2,
+                  'values' => [5],
 
-            ],
-            'SELECT compound_id,name FROM leltar_compound WHERE compound_id = ? ORDER BY name,compound_id LIMIT 10 OFFSET 2',
+              ],
+              'SELECT compound_id,name FROM leltar_compound WHERE compound_id = 56 ORDER BY name,compound_id LIMIT 10 OFFSET 2',
           ],
 
           'empty or missing fields' => [
@@ -190,7 +190,11 @@ class EntityDaOTest extends BaseTestCase
      */
     public function testRetrieveOneRecord()
     {
-        $actual = $this->sut->retrieveRecord(1);
+        $actual = $this->sut->retrieve(
+            [
+                'where' => [['compound_id', '=', 1]],
+            ]
+        );
         $expected = 'SELECT * FROM leltar_compound WHERE compound_id = 1';
 
         self::assertSame($expected, $actual['query']);
@@ -285,9 +289,12 @@ class EntityDaOTest extends BaseTestCase
     {
         $this->sut->name = 'test';
         $this->sut->subCategory = 5;
-        $this->sut->id = 1;
 
-        $actual = $this->sut->update();
+        $actual = $this->sut->update(
+            [
+                'where' => [['compound_id', '=', 1]],
+            ]
+        );
         $expected = 'UPDATE leltar_compound SET name=?,sub_category_id=? WHERE compound_id = 1';
 
         self::assertSame($expected, $actual['query']);
@@ -347,7 +354,11 @@ class EntityDaOTest extends BaseTestCase
     {
         $this->sut->id = 1;
 
-        $actual = $this->sut->delete();
+        $actual = $this->sut->delete(
+            [
+                'where' => [['compound_id', '=', 1]],
+            ]
+        );
         $expected = 'DELETE FROM leltar_compound WHERE compound_id = 1';
 
         self::assertSame($expected, $actual['query']);
@@ -361,9 +372,7 @@ class EntityDaOTest extends BaseTestCase
      */
     public function testAddWhere()
     {
-        $this->sut->id = 1;
-
-        $this->sut->addWhere('id', 'like', 5);
+        $this->sut->addWhere('compound_id', 'like', 5);
         $where = $this->getProtectedProperty($this->sut, 'where');
 
         self::assertSame('WHERE compound_id LIKE 5', $where);

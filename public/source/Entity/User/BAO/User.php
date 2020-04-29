@@ -47,10 +47,9 @@ class User extends BaseBaO
             [
                 'fields' => ['id', 'hash', 'name'],
                 'where' => [
-                    ['name', 'like', '?'],
+                    ['name', 'like', "'{$user}'"],
                 ],
                 'limit' => 1,
-                'values' => [$user],
             ]
         );
 

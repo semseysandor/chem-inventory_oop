@@ -106,17 +106,6 @@ class SQLDaOTest extends BaseTestCase
     }
 
     /**
-     * Test add where no fields error
-     *
-     * @throws \Inventory\Core\Exception\BadArgument
-     */
-    public function testAddWhereNoFieldsInMetadataError()
-    {
-        self::expectException(BadArgument::class);
-        $this->sut->addWhere('id', '>=', 1);
-    }
-
-    /**
      * Test add metadata no fields error
      *
      * @throws \ReflectionException

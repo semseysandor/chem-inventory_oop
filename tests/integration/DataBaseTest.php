@@ -87,23 +87,39 @@ class DataBaseTest extends IntegrationTestCase
         self::assertSame(1, $id);
 
         // Retrieve
-        $actual = $this->dao->retrieveRecord($id, ['name', 'subCategory']);
+        $actual = $this->dao->retrieve(
+            [
+                'fields' => ['name', 'subCategory'],
+                'where' => [['compound_id', '=', $id]],
+            ]
+        );
+
         $actual_assoc = $this->dao->fetchResults($actual);
 
-        $actual = $this->dao->retrieveRecord($id, ['name', 'subCategory']);
+        $actual = $this->dao->retrieve(
+            [
+                'fields' => ['name', 'subCategory'],
+                'where' => [['compound_id', '=', $id]],
+            ]
+        );
         $actual_one = $this->dao->fetchResultsOne($actual);
 
-        $actual = $this->dao->retrieveRecord($id, ['name', 'subCategory']);
+        $actual = $this->dao->retrieve(
+            [
+                'fields' => ['name', 'subCategory'],
+                'where' => [['compound_id', '=', $id]],
+            ]
+        );
         $actual_table = $this->dao->fetchResultsTable($actual);
 
         $expected_assoc = [
-          0 => [
-            'name' => 'testCompound',
-            'sub_category_id' => '1',
-          ],
+            0 => [
+                'name' => 'testCompound',
+                'sub_category_id' => '1',
+            ],
         ];
         $expected_one = [
-          'name' => 'testCompound',
+            'name' => 'testCompound',
           'sub_category_id' => '1',
         ];
         $expected_table = [
@@ -146,7 +162,7 @@ class DataBaseTest extends IntegrationTestCase
 
         // Update
         $this->dao->name = 'Methane';
-        $affected_rows = $this->dao->update(['where' => [['id', '>=', '2'], ['id', '<', 3]]]);
+        $affected_rows = $this->dao->update(['where' => [['compound_id', '>=', '2'], ['compound_id', '<', 3]]]);
         self::assertSame(1, $affected_rows);
 
         // Delete all

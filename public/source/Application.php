@@ -79,6 +79,7 @@ class Application implements IComponent
      *
      * @throws \Inventory\Core\Exception\BadArgument
      * @throws \Inventory\Core\Exception\InvalidRequest
+     * @throws \Inventory\Core\Exception\AuthorizationException
      */
     private function routing(): array
     {
@@ -94,8 +95,9 @@ class Application implements IComponent
         $router->run();
 
         return [
-          'controller' => $router->getControllerClass(),
-          'request_data' => $request->parseData(),
+            'controller' => $router->getControllerClass(),
+            'route_parameters' => $router->getRouteParams(),
+            'request_data' => $request->parseData(),
         ];
     }
 
@@ -110,6 +112,9 @@ class Application implements IComponent
      */
     private function controlling(array $routingData): Template
     {
+        // Get route parameters
+        $route_params = $routingData['route_parameters'];
+
         // Get request data
         $request_data = $routingData['request_data'];
 
@@ -118,9 +123,9 @@ class Application implements IComponent
 
         // Create & run controller
         $controller = $this
-          ->serviceContainer
-          ->factory()
-          ->createController($this->serviceContainer, $class, $request_data);
+            ->serviceContainer
+            ->factory()
+            ->createController($this->serviceContainer, $class, $request_data, $route_params);
 
         return $controller->run();
     }

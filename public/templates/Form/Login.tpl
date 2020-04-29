@@ -37,7 +37,7 @@
     <script>
         Inventory.addClick('inv-login-form-submit', function (event) {
             event.preventDefault();
-            Inventory.AJAX.submit('inv-login-form', 'inv-response', Inventory.redirect, ['/index']);
+            Inventory.AJAX.submit('inv-login-form', 'inv-response', Inventory.redirect, ['/']);
         });
     </script>
 {/literal}

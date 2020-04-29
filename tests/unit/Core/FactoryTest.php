@@ -102,7 +102,7 @@ class FactoryTest extends BaseTestCase
     public function testCreateControllerReturnsController()
     {
         $service = $this->getMockBuilder(Service::class)->getMock();
-        $controller = $this->sut->createController($service, Login::class, []);
+        $controller = $this->sut->createController($service, Login::class, [], []);
 
         self::assertInstanceOf(Login::class, $controller);
     }
@@ -117,7 +117,7 @@ class FactoryTest extends BaseTestCase
         $service = $this->getMockBuilder(Service::class)->getMock();
         self::expectException(BadArgument::class);
 
-        $this->sut->createController($service, BaseController::class, []);
+        $this->sut->createController($service, BaseController::class, [], []);
     }
 
     /**
@@ -201,5 +201,32 @@ class FactoryTest extends BaseTestCase
         self::expectException(BadArgument::class);
 
         $this->sut->createDaO($database, \Inventory\Entity\Compound\BAO\Compound::class);
+    }
+
+    /**
+     * Test creating BaO
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
+     */
+    public function testCreateDaoReturnsBao()
+    {
+        $service = $this->getMockBuilder(Service::class)->disableOriginalConstructor()->getMock();
+        $dao = $this->sut->createBaO($service, \Inventory\Entity\Compound\BAO\Compound::class);
+
+        self::assertInstanceOf(\Inventory\Entity\Compound\BAO\Compound::class, $dao);
+    }
+
+    /**
+     * Test non-existent BaO throws error
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
+     */
+    public function testCreateNonExistentBaoThrowsException()
+    {
+        $service = $this->getMockBuilder(Service::class)->disableOriginalConstructor()->getMock();
+
+        self::expectException(BadArgument::class);
+
+        $this->sut->createBaO($service, 'NON-EXIST');
     }
 }

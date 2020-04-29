@@ -72,6 +72,13 @@ class ControllerTest extends BaseTestCase
     protected array $requestData;
 
     /**
+     * Route parameters
+     *
+     * @var array
+     */
+    protected array $routeParams;
+
+    /**
      * Mock factory
      *
      * @var \PHPUnit\Framework\MockObject\MockObject
@@ -98,13 +105,16 @@ class ControllerTest extends BaseTestCase
         // Mock request
         $this->requestData = self::ARRAY;
 
+        // Mock route parameters
+        $this->routeParams = self::ARRAY;
+
         // Mock template
         $this->template = new Template();
 
         // Mock factory
         $this->factory = $this->getMockBuilder(Factory::class)->getMock();
 
-        $this->sut = new BaseController($this->requestData, $this->template, $this->service);
+        $this->sut = new BaseController([], $this->requestData, $this->template, $this->service);
     }
 
     /**
@@ -117,7 +127,7 @@ class ControllerTest extends BaseTestCase
     public function testObjectIsInitialized(string $class)
     {
         // Mock test class
-        $this->sut = new $class($this->requestData, $this->template, $this->service);
+        $this->sut = new $class($this->routeParams, $this->requestData, $this->template, $this->service);
 
         self::assertInstanceOf($class, $this->sut);
     }

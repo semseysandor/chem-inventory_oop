@@ -12,35 +12,26 @@
  +-----------------------------------------------+
  */
 
-namespace Inventory\Page;
-
-use Inventory\Core\Controller\Page;
-use Inventory\Core\Utils;
+namespace Inventory\Entity\Category\BAO;
 
 /**
- * Login Class
+ * Category BAO Class
  *
- * @category Controller
+ * @category Business Layer
  * @package  chem-inventory_oop
  * @author   Sandor Semsey <semseysandor@gmail.com>
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class Login extends Page
+class Category extends \Inventory\Core\BaseBaO
 {
-    /**
-     * Assemble page
-     *
-     * @throws \Inventory\Core\Exception\BadArgument
-     */
-    protected function assemble(): void
+    public function getCategories(): ?array
     {
-        parent::assemble();
+        $dao = $this->getDaO(\Inventory\Entity\Category\DAO\Category::class);
 
-        $this->setBaseTemplate(Utils::getPathFromClass(self::class));
+        $result = $dao->retrieve();
 
-        // Login form
-        $this->setTemplateRegion('form', Utils::getPathFromClass(\Inventory\Form\Login::class));
-        $this->setTemplateVar('token', $_SESSION['TOKEN']);
+        return $dao->fetchResults($result);
     }
+
 }

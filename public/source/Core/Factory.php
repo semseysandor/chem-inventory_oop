@@ -137,14 +137,19 @@ class Factory
      * @param \Inventory\Core\Containers\Service $service
      *
      * @param string $class Name of controller to create
-     * @param array $request_data Request Data
+     * @param array $req_data Request Data
+     * @param array $route_params Route parameters
      *
      * @return \Inventory\Core\Controller\BaseController Controller
      *
      * @throws \Inventory\Core\Exception\BadArgument
      */
-    public function createController(Service $service, string $class, array $request_data = []): BaseController
-    {
+    public function createController(
+        Service $service,
+        string $class,
+        array $req_data = [],
+        array $route_params = []
+    ): BaseController {
         // Check if argument is a controller class
         if (preg_match('/^Inventory\\\\(Page|Form)/', $class) != 1) {
             throw new BadArgument(ts('Tried to create non-existent controller "%s"\'', $class));
@@ -154,7 +159,7 @@ class Factory
         $template_container = $this->create(Template::class);
 
         // Creates controller and pass dependencies
-        return $this->create($class, [$request_data, $template_container, $service]);
+        return $this->create($class, [$route_params, $req_data, $template_container, $service]);
     }
 
     /**
@@ -229,5 +234,26 @@ class Factory
 
         // Creates DaO and pass dependencies
         return $this->create($class, [$database]);
+    }
+
+    /**
+     * Creates new BaO
+     *
+     * @param \Inventory\Core\Containers\Service $service Service container
+     * @param string $class BaO class name
+     *
+     * @return \Inventory\Core\BaseBaO BAO
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
+     */
+    public function createBaO(Service $service, string $class): BaseBaO
+    {
+        // Check if argument is a BaO class
+        if (preg_match('/^Inventory\\\\Entity\\\\.*\\\\BAO/', $class) != 1) {
+            throw new BadArgument(ts('Tried to create non-existent BaO "%s"\'', $class));
+        }
+
+        // Creates DaO and pass dependencies
+        return $this->create($class, [$service]);
     }
 }

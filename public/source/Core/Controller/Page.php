@@ -31,12 +31,13 @@ class Page extends BaseController
     /**
      * Page constructor.
      *
+     * @param array $route_params Route parameters
      * @param array $request_data Request data
      * @param \Inventory\Core\Containers\Template $temp_cont Template container
      * @param \Inventory\Core\Containers\Service $service Service container
      */
-    public function __construct(array $request_data, Template $temp_cont, Service $service)
+    public function __construct(array $route_params, array $request_data, Template $temp_cont, Service $service)
     {
-        parent::__construct($request_data, $temp_cont, $service);
+        parent::__construct($route_params, $request_data, $temp_cont, $service);
     }
 }

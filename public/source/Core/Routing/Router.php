@@ -15,6 +15,7 @@
 namespace Inventory\Core\Routing;
 
 use Inventory\Core\IComponent;
+use Inventory\Page\Categories;
 use Inventory\Page\Index;
 use Inventory\Page\Login;
 use Inventory\Page\Logout;
@@ -30,6 +31,11 @@ use Inventory\Page\Logout;
  */
 class Router implements IComponent
 {
+    /**
+     * Security Manager
+     *
+     * @var \Inventory\Core\Routing\Security
+     */
     private Security $security;
 
     /**
@@ -47,6 +53,13 @@ class Router implements IComponent
     private string $controllerClass;
 
     /**
+     * Route parameters
+     *
+     * @var array
+     */
+    private array $routeParameters;
+
+    /**
      * Router constructor.
      *
      * @param array $route Parsed route from URI
@@ -57,6 +70,7 @@ class Router implements IComponent
         $this->route = $route;
         $this->security = $security;
         $this->controllerClass = '';
+        $this->routeParameters = [];
     }
 
     /**
@@ -97,9 +111,23 @@ class Router implements IComponent
                 return Logout::class;
             case 'login':
                 return Login::class;
+            case 'category':
+                $this->routeParameters['id'] = array_shift($this->route);
+
+                return Categories::class;
             default:
                 return Index::class;
         }
+    }
+
+    /**
+     * Get route parameters
+     *
+     * @return array
+     */
+    public function getRouteParams(): array
+    {
+        return $this->routeParameters;
     }
 
     /**

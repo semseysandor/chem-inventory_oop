@@ -17,4 +17,25 @@
     <a href="log-out">
         <button>Logout</button>
     </a>
+    <section id="inv-menu">
+    </section>
+    <section id="inv-popup">
+    </section>
+    <section id="inv-category-selector">
+        {foreach $categories as $item}
+            <button id="inv-category-button_{$item.category_id}">{$item.name}</button>
+            <script>
+                Inventory.addClick('inv-category-button_{$item.category_id}', function () {
+                    Inventory.AJAX.retrieve('/category/{$item.category_id}', 'main');
+                });
+            </script>
+        {/foreach}
+    </section>
+    <section id="main">
+    </section>
+    <script>
+        window.addEventListener('load', function () {
+            Inventory.AJAX.retrieve('/category/0', 'main');
+        });
+    </script>
 {/strip}{/block}

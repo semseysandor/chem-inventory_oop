@@ -29,6 +29,11 @@ use mysqli_result;
  */
 class SQLDaO
 {
+    /**
+     * DataBase Object
+     *
+     * @var \Inventory\Core\DataBase\SQLDataBase
+     */
     protected SQLDataBase $dataBase;
 
     /**
@@ -72,6 +77,13 @@ class SQLDaO
      * @var string
      */
     protected string $from;
+
+    /**
+     * Join clause
+     *
+     * @var string
+     */
+    protected string $join;
 
     /**
      * Limit clause.
@@ -144,6 +156,7 @@ class SQLDaO
         $this->values = [];
         $this->where = '';
         $this->from = '';
+        $this->join = '';
         $this->limit = '';
         $this->offset = '';
         $this->orderBy = '';
@@ -172,6 +185,16 @@ class SQLDaO
         }
 
         return $fields_set;
+    }
+
+    /**
+     * Gets table name
+     *
+     * @return string
+     */
+    public function getTableName(): string
+    {
+        return $this->tableName;
     }
 
     /**
@@ -207,6 +230,13 @@ class SQLDaO
             $this->fields = $params['fields'];
         }
 
+        // Joins
+        if (array_key_exists('join', $params) && is_array($params['join'])) {
+            foreach ($params['join'] as $joins) {
+                $this->addJoin($joins[0], $joins[1]);
+            }
+        }
+
         // Where clause
         if (array_key_exists('where', $params) && is_array($params['where'])) {
             // Loop through where clauses
@@ -220,11 +250,6 @@ class SQLDaO
                 $field = $where_array[0];
                 $operator = $where_array[1];
                 $value = $where_array[2];
-
-                // Prepared statement
-                if ($value === '?') {
-                    $this->bind(self::typeToBind($this->metadata[$field]['type']));
-                }
 
                 // Add where clause
                 $this->addWhere($field, $operator, $value);
@@ -490,11 +515,6 @@ class SQLDaO
         // Select fields to update
         $this->setUpdate($this->getFields());
 
-        // If ID is set --> add where clause
-        if (!empty($this->id) && $this->id > 0) {
-            $this->addWhere('id', '=', $this->id);
-        }
-
         // Parse additional parameters
         $this->parseParams($params);
 
@@ -523,11 +543,6 @@ class SQLDaO
     {
         // Init delete query
         $this->initDelete();
-
-        // If ID is set --> add where clause
-        if (!empty($this->id) && $this->id > 0) {
-            $this->addWhere('id', '=', $this->id);
-        }
 
         // Parse additional parameters
         $this->parseParams($params);
@@ -734,10 +749,7 @@ class SQLDaO
         $where_string = empty($this->where) ? 'WHERE ' : ' AND ';
 
         // Add field
-        if (!array_key_exists($field, $this->metadata)) {
-            throw new BadArgument(ts('No such field "%s".', $field));
-        }
-        $where_string .= ($this->metadata[$field])['uniq_name'];
+        $where_string .= $field;
 
         // Add operator
         switch ($operator) {
@@ -797,6 +809,25 @@ class SQLDaO
     }
 
     /**
+     * Adds join clause
+     *
+     * @param string $table Joined table
+     * @param string $using Join on
+     *
+     * @return $this
+     */
+    public function addJoin(string $table, string $using): SQLDaO
+    {
+        if (empty($table) || empty($using)) {
+            return $this;
+        }
+
+        $this->join = "INNER JOIN {$table} USING ({$using})";
+
+        return $this;
+    }
+
+    /**
      * Adds order by clause.
      *
      * @param array $params Fields to include in order by
@@ -815,7 +846,7 @@ class SQLDaO
 
         // Add clauses
         foreach ($params as $order) {
-            $order_by .= ($this->metadata[$order])['uniq_name'].',';
+            $order_by .= $order.',';
         }
 
         // Remove last comma
@@ -881,6 +912,9 @@ class SQLDaO
             case 'select':
                 if ($this->from) {
                     $this->query .= ' '.$this->from;
+                }
+                if ($this->join) {
+                    $this->query .= ' '.$this->join;
                 }
                 if ($this->where) {
                     $this->query .= ' '.$this->where;

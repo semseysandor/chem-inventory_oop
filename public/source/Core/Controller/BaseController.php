@@ -14,6 +14,7 @@
 
 namespace Inventory\Core\Controller;
 
+use Inventory\Core\BaseBaO;
 use Inventory\Core\Containers\Service;
 use Inventory\Core\Containers\Template;
 use Inventory\Core\Exception\BadArgument;
@@ -52,17 +53,34 @@ class BaseController implements IComponent
     protected Service $service;
 
     /**
+     * Route Parameters
+     *
+     * @var array
+     */
+    protected array $routeParams;
+
+    /**
+     * Error flag
+     *
+     * @var bool
+     */
+    protected bool $errorFlag;
+
+    /**
      * Core Controller constructor.
      *
+     * @param array $route_params
      * @param array $request_data Request data
      * @param \Inventory\Core\Containers\Template $temp_cont Template container
      * @param \Inventory\Core\Containers\Service $service Service container
      */
-    public function __construct(array $request_data, Template $temp_cont, Service $service)
+    public function __construct(array $route_params, array $request_data, Template $temp_cont, Service $service)
     {
         $this->requestData = $request_data;
         $this->templateContainer = $temp_cont;
         $this->service = $service;
+        $this->routeParams = $route_params;
+        $this->errorFlag = false;
     }
 
     /**
@@ -120,6 +138,20 @@ class BaseController implements IComponent
     public function getTemplateContainer(): Template
     {
         return $this->templateContainer;
+    }
+
+    /**
+     * Returns new BaO
+     *
+     * @param string $class Class name
+     *
+     * @return \Inventory\Core\BaseBaO
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
+     */
+    public function getBaO(string $class): BaseBaO
+    {
+        return $this->service->factory()->createBaO($this->service, $class);
     }
 
     /**

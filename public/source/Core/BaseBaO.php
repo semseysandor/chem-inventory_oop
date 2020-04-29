@@ -36,6 +36,13 @@ class BaseBaO
     protected Service $service;
 
     /**
+     * Associated DaO
+     *
+     * @var string
+     */
+    protected string $daoClass;
+
+    /**
      * BaseBAO constructor.
      *
      * @param \Inventory\Core\Containers\Service $service
@@ -43,6 +50,7 @@ class BaseBaO
     public function __construct(Service $service)
     {
         $this->service = $service;
+        $this->daoClass = '';
     }
 
     /**
@@ -57,8 +65,26 @@ class BaseBaO
     protected function getDaO(string $dao_class): SQLDaO
     {
         return $this
-          ->service
-          ->factory()
-          ->createDaO($this->service->database(), $dao_class);
+            ->service
+            ->factory()
+            ->createDaO($this->service->database(), $dao_class);
+    }
+
+    /**
+     * Retrieve from DaO
+     *
+     * @param array $params Query parameters
+     *
+     * @return array|null
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
+     * @throws \Inventory\Core\Exception\SQLException
+     */
+    protected function retrieve(array $params)
+    {
+        $dao = $this->getDaO($this->daoClass);
+        $result = $dao->retrieve($params);
+
+        return $dao->fetchResults($result);
     }
 }

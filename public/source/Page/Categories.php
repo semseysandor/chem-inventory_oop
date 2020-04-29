@@ -14,11 +14,11 @@
 
 namespace Inventory\Page;
 
-use Inventory\Core\Controller\Page;
 use Inventory\Core\Utils;
+use Inventory\Entity\Compound\BAO\Compound;
 
 /**
- * Login Class
+ * Categories Page
  *
  * @category Controller
  * @package  chem-inventory_oop
@@ -26,21 +26,47 @@ use Inventory\Core\Utils;
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class Login extends Page
+class Categories extends \Inventory\Core\Controller\Page
 {
+    private ?int $id;
+
+    /**
+     * Validate input
+     */
+    protected function validate(): void
+    {
+        parent::validate();
+
+        $id = $this->routeParams['id'] ?? 0;
+
+        $this->id = Utils::sanitizeID($id);
+    }
+
+    /**
+     * Process input
+     */
+    protected function process(): void
+    {
+        parent::process();
+
+        $bao = $this->getBaO(Compound::class);
+
+        if ($this->id >= 1) {
+            $compounds = $bao->getCategoryCompound($this->id);
+        } else {
+            $compounds = $bao->getAll();
+        }
+
+        $this->setTemplateVar('compounds', $compounds);
+    }
+
     /**
      * Assemble page
-     *
-     * @throws \Inventory\Core\Exception\BadArgument
      */
     protected function assemble(): void
     {
         parent::assemble();
 
         $this->setBaseTemplate(Utils::getPathFromClass(self::class));
-
-        // Login form
-        $this->setTemplateRegion('form', Utils::getPathFromClass(\Inventory\Form\Login::class));
-        $this->setTemplateVar('token', $_SESSION['TOKEN']);
     }
 }

@@ -57,7 +57,7 @@ class Utils
      * Cleans user input string
      *
      * @param string $input Input string
-     * @param string $mode Filtering mode (word|extended)
+     * @param string $mode Filtering mode (word|extended|hex)
      *
      * @return string Sanitized string
      */
@@ -80,6 +80,9 @@ class Utils
                 break;
             case 'extended':
                 $pattern = '/[^\w <>.,\-+()%]/';
+                break;
+            case 'hex':
+                $pattern = '/[^\da-f]/';
                 break;
             default:
                 return "";

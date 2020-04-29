@@ -65,7 +65,8 @@ class LoginTest extends IntegrationTestCase
         parent::setUp();
 
         // Create form
-        $this->form = new Login([], new Template(), $this->service);
+        $this->form = new Login([], [], new Template(), $this->service);
+        $_SESSION['TOKEN'] = '12fe';
     }
 
     /**
@@ -82,6 +83,35 @@ class LoginTest extends IntegrationTestCase
     }
 
     /**
+     * Test Token mismatch
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
+     * @throws \Inventory\Core\Exception\RenderingError
+     * @throws \ReflectionException
+     */
+    public function testTokenMismatch()
+    {
+        $_SESSION['TOKEN'] = 'invalid';
+
+        // Mock request data
+        $data = [
+            'other' => 'test',
+            'token' => '12fe',
+        ];
+        $data = json_encode($data, JSON_UNESCAPED_UNICODE);
+        $request = ['data' => $data];
+
+        $this->setProtectedProperty($this->form, 'requestData', $request);
+
+        // Expect output
+        $expected = '/.*neg.*'.ts('Token mismatch.').'/Us';
+        self::expectOutputRegex($expected);
+
+        // Control
+        $this->runForm();
+    }
+
+    /**
      * Test missing user name
      *
      * @throws \Inventory\Core\Exception\BadArgument
@@ -93,6 +123,7 @@ class LoginTest extends IntegrationTestCase
         // Mock request data
         $data = [
             'other' => 'test',
+            'token' => '12fe',
         ];
         $data = json_encode($data, JSON_UNESCAPED_UNICODE);
         $request = ['data' => $data];
@@ -120,6 +151,7 @@ class LoginTest extends IntegrationTestCase
         $data = [
             'user' => 'NON-EXISTENT',
             'pass' => 'test',
+            'token' => '12fe',
         ];
         $data = json_encode($data, JSON_UNESCAPED_UNICODE);
         $request = ['data' => $data];
@@ -180,6 +212,7 @@ class LoginTest extends IntegrationTestCase
         $data = [
             'user' => 'user',
             'pass' => 'INVALID',
+            'token' => '12fe',
         ];
         $data = json_encode($data, JSON_UNESCAPED_UNICODE);
         $request = ['data' => $data];
@@ -209,6 +242,7 @@ class LoginTest extends IntegrationTestCase
         $data = [
             'user' => 'user',
             'pass' => 'test',
+            'token' => '12fe',
         ];
         $data = json_encode($data, JSON_UNESCAPED_UNICODE);
         $request = ['data' => $data];

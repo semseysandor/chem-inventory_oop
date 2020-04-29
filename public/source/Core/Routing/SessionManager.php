@@ -30,7 +30,7 @@ class SessionManager
     /**
      * Default Timeout
      */
-    protected const IDLE_TIMEOUT = 300;
+    protected const IDLE_TIMEOUT = 1800;
 
     /**
      * Default Toleration Time frame for unstable networks
@@ -87,6 +87,7 @@ class SessionManager
      * Start session
      *
      * @throws \Inventory\Core\Exception\AuthorizationException
+     * @throws \Exception
      */
     public function startSession(): void
     {
@@ -126,10 +127,17 @@ class SessionManager
                 session_start();
             }
         }
+
+        // Generate session token if not available
+        if (!isset($_SESSION['TOKEN'])) {
+            $this->generateSessionToken();
+        }
     }
 
     /**
      * Regenerate session
+     *
+     * @throws \Exception
      */
     public function regenerateSession(): void
     {
@@ -154,5 +162,20 @@ class SessionManager
 
         // Set expire time
         $this->extendExpiration();
+
+        // Generate new token
+        $this->generateSessionToken();
+    }
+
+    /**
+     * Generate session token
+     *
+     * @throws \Exception
+     */
+    public function generateSessionToken(): void
+    {
+        $token = random_bytes(16);
+        $token = bin2hex($token);
+        $_SESSION['TOKEN'] = $token;
     }
 }
