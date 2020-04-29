@@ -12,9 +12,9 @@
  +-----------------------------------------------+
  */
 
-namespace Inventory\Page;
+namespace Inventory\Form;
 
-use Inventory\Core\Controller\Page;
+use Inventory\Core\Controller\Form;
 
 /**
  * Logout Class
@@ -25,7 +25,7 @@ use Inventory\Core\Controller\Page;
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class Logout extends Page
+class Logout extends Form
 {
     /**
      * Process input
@@ -37,6 +37,17 @@ class Logout extends Page
         parent::process();
 
         $this->service->security()->logOut();
-        header('Location: /');
+    }
+
+    /**
+     * Assemble page
+     */
+    protected function assemble(): void
+    {
+        parent::assemble();
+
+        $this->templateContainer->setBase('ajax');
+        $this->templateContainer->setVars('flag', ($this->errorFlag ? 'neg' : 'pos'));
+        $this->templateContainer->setVars('text', $this->response);
     }
 }

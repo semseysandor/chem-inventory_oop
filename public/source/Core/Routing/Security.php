@@ -83,6 +83,8 @@ class Security
      *
      * @param int $user_id User ID
      * @param string $user_name User name
+     *
+     * @throws \Exception
      */
     public function logIn(int $user_id, string $user_name): void
     {
@@ -97,6 +99,8 @@ class Security
 
     /**
      * Log out user
+     *
+     * @throws \Exception
      */
     public function logOut(): void
     {

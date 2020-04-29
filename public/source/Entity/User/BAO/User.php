@@ -53,12 +53,14 @@ class User extends BaseBaO
             ]
         );
 
+        // Fetch results
         $result = $dao->fetchResultsOne($result);
 
         if (is_null($result)) {
             return null;
         }
 
+        // Format & return results
         $data['id'] = $result['user_id'];
         $data['hash'] = $result['hash'];
         $data['name'] = $result['name'];

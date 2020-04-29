@@ -207,34 +207,6 @@
         responseText = null;
     }
 
-    function requestJSONresults()
-    {
-        return function () {
-
-            // Set cursor back to default
-            setCursorDefault();
-
-            // When response is ready from server
-            if ((request.readyState === 4) && (request.status === 200)) {
-                // Clear responseContainer
-                responseContainer.innerHTML = '';
-
-                // Parse response
-                parseResponse();
-                // If successful
-                if (responseFlag === 'pos') {
-                    resetForm();
-
-                    // Perform callback
-                    performCallBack();
-                }
-
-                // Show response
-                responseContainer.innerHTML = Inventory.messageHTML(responseText, responseFlag);
-            }
-        };
-    }
-
     /**
      * Submit form using AJAX with JSON response
      *
@@ -263,7 +235,30 @@
         request.send('data=' + data);
 
         // When response ready
-        request.onreadystatechange = requestJSONresults();
+        request.onreadystatechange = function () {
+
+            // Set cursor back to default
+            setCursorDefault();
+
+            // When response is ready from server
+            if ((request.readyState === 4) && (request.status === 200)) {
+                // Clear responseContainer
+                responseContainer.innerHTML = '';
+
+                // Parse response
+                parseResponse();
+                // If successful
+                if (responseFlag === 'pos') {
+                    resetForm();
+
+                    // Perform callback
+                    performCallBack();
+                }
+
+                // Show response
+                responseContainer.innerHTML = Inventory.messageHTML(responseText, responseFlag);
+            }
+        };
     };
 
     /**
@@ -320,7 +315,29 @@
         setCursorProgress();
 
         // When response ready
-        request.onreadystatechange = requestJSONresults();
+        request.onreadystatechange = function () {
+
+            // Set cursor back to default
+            setCursorDefault();
+
+            // When response is ready from server
+            if ((request.readyState === 4) && (request.status === 200)) {
+                // Clear responseContainer
+                responseContainer.innerHTML = '';
+
+                // Parse response
+                parseResponse();
+
+                // If successful
+                if (responseFlag === 'pos') {
+                    // Perform callback
+                    performCallBack();
+                }
+
+                // Show response
+                responseContainer.innerHTML = Inventory.messageHTML(responseText, responseFlag);
+            }
+        };
     };
 
     return Inventory;

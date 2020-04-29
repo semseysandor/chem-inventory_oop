@@ -92,8 +92,10 @@ class Application implements IComponent
         $security = $this->serviceContainer->security();
         $router = $factory->createRouter($route, $security);
 
+        // Run router
         $router->run();
 
+        // Return data from routing
         return [
             'controller' => $router->getControllerClass(),
             'route_parameters' => $router->getRouteParams(),
@@ -140,6 +142,7 @@ class Application implements IComponent
      */
     private function rendering(Template $template): void
     {
+        // Create & run renderer
         $renderer = $this->serviceContainer->factory()->createRenderer($this->exHandler, $template);
         $renderer->run();
     }

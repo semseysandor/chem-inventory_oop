@@ -14,6 +14,7 @@
 
 namespace Inventory\Page;
 
+use Inventory\Core\Controller\Page;
 use Inventory\Core\Utils;
 use Inventory\Entity\Compound\BAO\Compound;
 
@@ -26,8 +27,13 @@ use Inventory\Entity\Compound\BAO\Compound;
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class Categories extends \Inventory\Core\Controller\Page
+class Categories extends Page
 {
+    /**
+     * Category id
+     *
+     * @var int|null
+     */
     private ?int $id;
 
     /**
@@ -37,13 +43,17 @@ class Categories extends \Inventory\Core\Controller\Page
     {
         parent::validate();
 
+        // Get id from route
         $id = $this->routeParams['id'] ?? 0;
 
+        // Sanitize ID
         $this->id = Utils::sanitizeID($id);
     }
 
     /**
      * Process input
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
      */
     protected function process(): void
     {
@@ -51,9 +61,11 @@ class Categories extends \Inventory\Core\Controller\Page
 
         $bao = $this->getBaO(Compound::class);
 
+        // If id supplied --> list compounds in category
         if ($this->id >= 1) {
             $compounds = $bao->getCategoryCompound($this->id);
         } else {
+            // No id --> list all
             $compounds = $bao->getAll();
         }
 
@@ -62,6 +74,8 @@ class Categories extends \Inventory\Core\Controller\Page
 
     /**
      * Assemble page
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
      */
     protected function assemble(): void
     {

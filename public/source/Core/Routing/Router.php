@@ -15,10 +15,10 @@
 namespace Inventory\Core\Routing;
 
 use Inventory\Core\IComponent;
+use Inventory\Form\Logout;
 use Inventory\Page\Categories;
 use Inventory\Page\Index;
 use Inventory\Page\Login;
-use Inventory\Page\Logout;
 
 /**
  * Router
@@ -113,7 +113,6 @@ class Router implements IComponent
                 return Login::class;
             case 'category':
                 $this->routeParameters['id'] = array_shift($this->route);
-
                 return Categories::class;
             default:
                 return Index::class;

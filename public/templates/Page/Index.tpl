@@ -14,9 +14,12 @@
 {block body}{strip}
     <h1>Inventory</h1>
     <h2>Welcome {$user_name}</h2>
-    <a href="log-out">
-        <button>Logout</button>
-    </a>
+    <button id="inv-logout">Logout</button>
+    <script>
+        Inventory.addClick('inv-logout', function () {
+            Inventory.AJAX.execute('/log-out', 'inv-response', Inventory.redirect, ['/']);
+        });
+    </script>
     <section id="inv-menu">
     </section>
     <section id="inv-popup">

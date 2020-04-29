@@ -14,6 +14,8 @@
 
 namespace Inventory\Entity\Category\BAO;
 
+use Inventory\Core\BaseBaO;
+
 /**
  * Category BAO Class
  *
@@ -23,8 +25,16 @@ namespace Inventory\Entity\Category\BAO;
  * @license  MIT https://choosealicense.com/licenses/mit/
  * php version 7.4
  */
-class Category extends \Inventory\Core\BaseBaO
+class Category extends BaseBaO
 {
+    /**
+     * Get all categories from DB
+     *
+     * @return array|null
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
+     * @throws \Inventory\Core\Exception\SQLException
+     */
     public function getCategories(): ?array
     {
         $dao = $this->getDaO(\Inventory\Entity\Category\DAO\Category::class);
@@ -33,5 +43,4 @@ class Category extends \Inventory\Core\BaseBaO
 
         return $dao->fetchResults($result);
     }
-
 }

@@ -64,9 +64,6 @@ class Login extends Form
 
         // Check token
         if (!$this->validateToken($token)) {
-            $this->errorFlag = true;
-            $this->response = ts('Token mismatch.');
-
             return;
         }
 
@@ -89,6 +86,7 @@ class Login extends Form
      * Process input
      *
      * @throws \Inventory\Core\Exception\BadArgument
+     * @throws \Exception
      */
     protected function process(): void
     {

@@ -73,6 +73,10 @@ class Form extends BaseController
             return true;
         }
 
+        // Token not valid
+        $this->errorFlag = true;
+        $this->response = ts('Token mismatch.');
+
         return false;
     }
 }
