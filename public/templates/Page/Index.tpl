@@ -16,7 +16,7 @@
     <h2>Welcome {$user_name}</h2>
     <button id="inv-logout">Logout</button>
     <script>
-        Inventory.addClick('inv-logout', function () {
+        $('#inv-logout').click(function () {
             Inventory.AJAX.execute('/log-out', 'inv-response', Inventory.redirect, ['/']);
         });
     </script>
@@ -29,7 +29,7 @@
             {foreach $categories as $item}
                 <button id="inv-category-button_{$item.category_id}">{$item.name}</button>
                 <script>
-                    Inventory.addClick('inv-category-button_{$item.category_id}', function () {
+                    $('#inv-category-button_{$item.category_id}').click(function () {
                         Inventory.AJAX.retrieve('/category/{$item.category_id}', 'main');
                     });
                 </script>
@@ -40,7 +40,7 @@
             {foreach $sub_categories as $item}
                 <button id="inv-sub_category-button_{$item.sub_category_id}">{$item.name}</button>
                 <script>
-                    Inventory.addClick('inv-sub_category-button_{$item.sub_category_id}', function () {
+                    $('#inv-sub_category-button_{$item.sub_category_id}').click(function () {
                         Inventory.AJAX.retrieve('/subcategory/{$item.sub_category_id}', 'main');
                     });
                 </script>
@@ -50,7 +50,7 @@
     <section id="main">
     </section>
     <script>
-        window.addEventListener('load', function () {
+        $(document).ready(function () {
             Inventory.AJAX.retrieve('/category/0', 'main');
         });
     </script>

@@ -35,7 +35,7 @@
 {block form_js}
 {literal}
     <script>
-        Inventory.addClick('inv-login-form-submit', function (event) {
+        $('#inv-login-form-submit').click(function (event) {
             event.preventDefault();
             Inventory.AJAX.submit('inv-login-form', 'inv-response', Inventory.redirect, ['/']);
         });

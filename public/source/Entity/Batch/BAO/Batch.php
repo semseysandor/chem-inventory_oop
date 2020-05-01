@@ -60,7 +60,7 @@ class Batch extends BaseBaO
             [
                 'fields' => [
                     "{$batch_table}.batch_id AS bid",
-                    "{$batch_table}.name AS manfac_name",
+                    "{$manfac_table}.name AS manfac_name",
                     "{$batch_table}.name",
                     "{$batch_table}.lot",
                     "{$batch_table}.date_arr",
