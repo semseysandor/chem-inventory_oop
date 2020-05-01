@@ -61,7 +61,7 @@ class Laboratory extends SQLDaO
      *
      * @var string
      */
-    protected string $tableName = "leltar_loc_lab";
+    public const TABLE_NAME = "leltar_loc_lab";
 
     /**
      * Laboratory constructor.
@@ -79,6 +79,7 @@ class Laboratory extends SQLDaO
         $this->name = null;
         $this->lastModBy = null;
         $this->lastModTime = null;
+        $this->tableName = self::TABLE_NAME;
 
         // Add metadata
         $this->addMetadata('id', 'i', 'loc_lab_id', 'Laboratory ID', true);

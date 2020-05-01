@@ -68,7 +68,7 @@ class Manufacturer extends SQLDaO
      *
      * @var string
      */
-    protected string $tableName = "leltar_manfac";
+    public const TABLE_NAME = 'leltar_manfac';
 
     /**
      * Manufacturer constructor.
@@ -87,6 +87,7 @@ class Manufacturer extends SQLDaO
         $this->isFrequent = null;
         $this->lastModBy = null;
         $this->lastModTime = null;
+        $this->tableName = self::TABLE_NAME;
 
         // Add metadata
         $this->addMetadata('id', 'i', 'manfac_id', 'Manufacturer ID', true);

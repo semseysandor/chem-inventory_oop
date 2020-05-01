@@ -145,7 +145,7 @@ class Compound extends SQLDaO
      *
      * @var string
      */
-    protected string $tableName = "leltar_compound";
+    public const TABLE_NAME = "leltar_compound";
 
     /**
      * Compound constructor.
@@ -174,6 +174,7 @@ class Compound extends SQLDaO
         $this->meltPoint = null;
         $this->lastModBy = null;
         $this->lastModTime = null;
+        $this->tableName = self::TABLE_NAME;
 
         // Add metadata
         $this->addMetadata('id', 'i', 'compound_id', 'Compound ID');

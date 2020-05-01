@@ -157,7 +157,7 @@ class EntityDaOTest extends BaseTestCase
 
           'standard' => [
               [
-                  'fields' => ['id', 'name'],
+                  'fields' => ['compound_id', 'name'],
                   'where' => [['compound_id', '=', '56']],
                   'order_by' => ['name', 'compound_id'],
                   'limit' => 10,
@@ -169,14 +169,14 @@ class EntityDaOTest extends BaseTestCase
           ],
 
           'empty or missing fields' => [
-            [
-              'fields' => ['id', 'name'],
-              'where' => [['id', '=']],
-              'from' => '',
-              'order_by' => [],
-              'limit' => '',
-              'offset' => '',
-            ],
+              [
+                  'fields' => ['compound_id', 'name'],
+                  'where' => [['compound_id', '=']],
+                  'from' => '',
+                  'order_by' => [],
+                  'limit' => '',
+                  'offset' => '',
+              ],
             'SELECT compound_id,name FROM leltar_compound',
           ],
         ];

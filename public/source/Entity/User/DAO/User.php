@@ -75,7 +75,7 @@ class User extends SQLDaO
      *
      * @var string
      */
-    protected string $tableName = "main_users";
+    public const TABLE_NAME = "main_users";
 
     /**
      * User constructor.
@@ -94,6 +94,7 @@ class User extends SQLDaO
         $this->rightLevel = null;
         $this->lastModBy = null;
         $this->lastModTime = null;
+        $this->tableName = self::TABLE_NAME;
 
         // Add metadata
         $this->addMetadata('id', 'i', 'user_id', 'User ID', true);

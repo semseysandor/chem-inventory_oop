@@ -68,7 +68,7 @@ class SubCategory extends SQLDaO
      *
      * @var string
      */
-    protected string $tableName = "leltar_sub_category";
+    public const TABLE_NAME = "leltar_sub_category";
 
     /**
      * SubCategory constructor.
@@ -87,6 +87,7 @@ class SubCategory extends SQLDaO
         $this->name = null;
         $this->lastModBy = null;
         $this->lastModTime = null;
+        $this->tableName = self::TABLE_NAME;
 
         // Add metadata
         $this->addMetadata('id', 'i', 'sub_category_id', 'SubCategory ID', true);

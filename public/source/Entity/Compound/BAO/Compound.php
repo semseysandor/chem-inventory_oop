@@ -43,18 +43,25 @@ class Compound extends BaseBaO
     /**
      * Gets all compounds from DataBase
      *
-     * @param array|null $fields Fields to return
-     *
      * @return array|null
      *
      * @throws \Inventory\Core\Exception\BadArgument
      * @throws \Inventory\Core\Exception\SQLException
      */
-    public function getAll(array $fields = null): ?array
+    public function getAll(): ?array
     {
+        // Table name
+        $compound_table = \Inventory\Entity\Compound\DAO\Compound::TABLE_NAME;
+
         $params =
             [
-                'fields' => $fields,
+                'fields' => [
+                    "{$compound_table}.compound_id",
+                    "{$compound_table}.name",
+                    "{$compound_table}.name_alt",
+                    "{$compound_table}.abbrev",
+                    "{$compound_table}.note",
+                ],
                 'order_by' => ['name'],
             ];
 
@@ -64,27 +71,64 @@ class Compound extends BaseBaO
     /**
      * Get all compound in given category
      *
-     * @param int $category_id
-     * @param array|null $fields
+     * @param int $category_id Category ID
      *
      * @return array|null
      *
      * @throws \Inventory\Core\Exception\BadArgument
      * @throws \Inventory\Core\Exception\SQLException
      */
-    public function getCategoryCompound(int $category_id, array $fields = null): ?array
+    public function getCategoryCompound(int $category_id): ?array
     {
-        // Get related DaO
-        $subcategory = $this->getDaO(SubCategory::class);
-        $compound = $this->getDaO(\Inventory\Entity\Compound\DAO\Compound::class);
+        // Table name
+        $compound_table = \Inventory\Entity\Compound\DAO\Compound::TABLE_NAME;
+        $subcategory_table = SubCategory::TABLE_NAME;
 
         // Query parameters
         $params =
             [
-                'fields' => $fields,
-                'join' => [[$subcategory->getTableName(), 'sub_category_id']],
+                'fields' => [
+                    "{$compound_table}.compound_id",
+                    "{$compound_table}.name",
+                    "{$compound_table}.name_alt",
+                    "{$compound_table}.abbrev",
+                    "{$compound_table}.note",
+                ],
+                'join' => [[$subcategory_table, 'sub_category_id']],
                 'where' => [['category_id', '=', $category_id]],
-                'order_by' => ["{$compound->getTableName()}.name"],
+                'order_by' => ["'{$subcategory_table}.name'"],
+            ];
+
+        return $this->retrieve($params);
+    }
+
+    /**
+     * Get all compound in given subcategory
+     *
+     * @param int $sub_category_id Sub-category ID
+     *
+     * @return array|null
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
+     * @throws \Inventory\Core\Exception\SQLException
+     */
+    public function getSubCategoryCompound(int $sub_category_id): ?array
+    {
+        // Table name
+        $compound_table = \Inventory\Entity\Compound\DAO\Compound::TABLE_NAME;
+
+        // Query parameters
+        $params =
+            [
+                'fields' => [
+                    "{$compound_table}.compound_id",
+                    "{$compound_table}.name",
+                    "{$compound_table}.name_alt",
+                    "{$compound_table}.abbrev",
+                    "{$compound_table}.note",
+                ],
+                'where' => [['sub_category_id', '=', $sub_category_id]],
+                'order_by' => ["{$compound_table}.name"],
             ];
 
         return $this->retrieve($params);

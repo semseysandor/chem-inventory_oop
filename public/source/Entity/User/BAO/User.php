@@ -45,7 +45,7 @@ class User extends BaseBaO
         // Retrieve user info
         $result = $dao->retrieve(
             [
-                'fields' => ['id', 'hash', 'name'],
+                'fields' => ['user_id', 'hash', 'name'],
                 'where' => [
                     ['name', 'like', "'{$user}'"],
                 ],

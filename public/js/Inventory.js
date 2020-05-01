@@ -24,6 +24,7 @@ Inventory.debug = function (message) {
     'use strict';
     console.log(message);
 };
+
 /**
  * Add an event listener on click
  *
@@ -34,6 +35,22 @@ Inventory.addClick = function (elementID, func) {
     'use strict';
     document.getElementById(elementID).addEventListener('click', func);
 };
+
+/**
+ * Add an event listener on click
+ *
+ * @param className Class of element to attach listener
+ * @param func Listener function
+ */
+Inventory.addClickClass = function (className, func) {
+    'use strict';
+    let elements;
+    elements = document.getElementsByClassName(className);
+    Array.from(elements).forEach(function (value) {
+        value.addEventListener('click', func);
+    });
+};
+
 /**
  * Translates response message to HTML
  *
@@ -62,6 +79,7 @@ Inventory.messageHTML = function (message, flag) {
 
     return response;
 };
+
 /**
  * Redirect to URL
  *

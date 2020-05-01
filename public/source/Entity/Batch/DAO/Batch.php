@@ -124,7 +124,7 @@ class Batch extends SQLDaO
      *
      * @var string
      */
-    protected string $tableName = "leltar_batch";
+    public const TABLE_NAME = "leltar_batch";
 
     /**
      * Batch constructor.
@@ -151,6 +151,7 @@ class Batch extends SQLDaO
         $this->note = null;
         $this->lastModBy = null;
         $this->lastModTime = null;
+        $this->tableName = self::TABLE_NAME;
 
         // Add metadata
         $this->addMetadata('id', 'i', 'batch_id', 'Batch ID', true);

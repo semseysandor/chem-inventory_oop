@@ -89,7 +89,7 @@ class DataBaseTest extends IntegrationTestCase
         // Retrieve
         $actual = $this->dao->retrieve(
             [
-                'fields' => ['name', 'subCategory'],
+                'fields' => ['name', 'sub_category_id'],
                 'where' => [['compound_id', '=', $id]],
             ]
         );
@@ -98,7 +98,7 @@ class DataBaseTest extends IntegrationTestCase
 
         $actual = $this->dao->retrieve(
             [
-                'fields' => ['name', 'subCategory'],
+                'fields' => ['name', 'sub_category_id'],
                 'where' => [['compound_id', '=', $id]],
             ]
         );
@@ -106,7 +106,7 @@ class DataBaseTest extends IntegrationTestCase
 
         $actual = $this->dao->retrieve(
             [
-                'fields' => ['name', 'subCategory'],
+                'fields' => ['name', 'sub_category_id'],
                 'where' => [['compound_id', '=', $id]],
             ]
         );

@@ -110,7 +110,7 @@ class Pack extends SQLDaO
      *
      * @var string
      */
-    protected string $tableName = "leltar_pack";
+    public const TABLE_NAME = "leltar_pack";
 
     /**
      * Pack constructor.
@@ -135,6 +135,7 @@ class Pack extends SQLDaO
         $this->note = null;
         $this->lastModBy = null;
         $this->lastModTime = null;
+        $this->tableName = self::TABLE_NAME;
 
         // Add metadata
         $this->addMetadata('id', 'i', 'pack_id', 'Pack ID', true);

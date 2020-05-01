@@ -80,7 +80,7 @@ class BaseBaO
      * @throws \Inventory\Core\Exception\BadArgument
      * @throws \Inventory\Core\Exception\SQLException
      */
-    protected function retrieve(array $params)
+    protected function retrieve(array $params = null)
     {
         $dao = $this->getDaO($this->daoClass);
         $result = $dao->retrieve($params);

@@ -188,16 +188,6 @@ class SQLDaO
     }
 
     /**
-     * Gets table name
-     *
-     * @return string
-     */
-    public function getTableName(): string
-    {
-        return $this->tableName;
-    }
-
-    /**
      * Parse parameter array
      *
      * @param array $params Parameter array
@@ -628,7 +618,7 @@ class SQLDaO
         } else {
             // Parse fields
             foreach ($fields as $field) {
-                $field_string .= ($this->metadata[$field])['uniq_name'].',';
+                $field_string .= $field.',';
             }
         }
 

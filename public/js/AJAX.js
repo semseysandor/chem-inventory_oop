@@ -290,6 +290,21 @@
                 responseContainer.innerHTML = request.responseText;
 
                 performCallBack();
+
+                // Eval JS in response;
+                let text = responseContainer.innerHTML;
+
+                // Search for scripts
+                text = text.match(/<script>.*<\/script>/g);
+
+                text.forEach(function (value) {
+                    // Remove tags
+                    value = value.replace('<script>', '');
+                    value = value.replace('</script>', '');
+
+                    // Execute code
+                    eval(value);
+                });
             }
         };
     };

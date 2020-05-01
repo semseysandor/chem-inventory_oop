@@ -61,7 +61,7 @@ class Category extends SQLDaO
      *
      * @var string
      */
-    protected string $tableName = "leltar_category";
+    public const TABLE_NAME = "leltar_category";
 
     /**
      * Category constructor.
@@ -79,6 +79,7 @@ class Category extends SQLDaO
         $this->name = null;
         $this->lastModBy = null;
         $this->lastModTime = null;
+        $this->tableName = self::TABLE_NAME;
 
         // Add metadata
         $this->addMetadata('id', 'i', 'category_id', 'Category ID', true);

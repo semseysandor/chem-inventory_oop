@@ -75,7 +75,7 @@ class Location extends SQLDaO
      *
      * @var string
      */
-    protected string $tableName = "leltar_location";
+    public const TABLE_NAME = "leltar_location";
 
     /**
      * Location constructor.
@@ -95,6 +95,7 @@ class Location extends SQLDaO
         $this->subID = null;
         $this->lastModBy = null;
         $this->lastModTime = null;
+        $this->tableName = self::TABLE_NAME;
 
         // Add metadata
         $this->addMetadata('id', 'i', 'location_id', 'Location ID', true);

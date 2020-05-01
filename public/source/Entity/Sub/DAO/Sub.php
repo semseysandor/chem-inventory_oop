@@ -61,7 +61,7 @@ class Sub extends SQLDaO
      *
      * @var string
      */
-    protected string $tableName = "leltar_loc_sub";
+    public const TABLE_NAME = "leltar_loc_sub";
 
     /**
      * Sub constructor.
@@ -79,6 +79,7 @@ class Sub extends SQLDaO
         $this->name = null;
         $this->lastModBy = null;
         $this->lastModTime = null;
+        $this->tableName = self::TABLE_NAME;
 
         // Add metadata
         $this->addMetadata('id', 'i', 'loc_sub_id', 'Sub ID', true);
