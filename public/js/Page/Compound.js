@@ -10,13 +10,23 @@
  | https://choosealicense.com/licenses/mit/      |
  +-----------------------------------------------+
  */
-$(function () {
+
+/**
+ * Load batches
+ */
+$(document).ready(function () {
     'use strict';
-    $('#compound-list').on('click', 'tr', function () {
+
+    // Click on compounds
+    $('#compound-list').on('click', 'tr[level=compound]', function () {
         let compoundID = $(this).attr('compound');
-        $('#batch-row-' + compoundID).toggle();
-        $('#batch-' + compoundID).toggle();
-        Inventory.AJAX.retrieve('/batch/' + compoundID, 'batch-' + compoundID);
+        let batchRow = $(this).find('div[level=batch]');
+
+        // If batch row empty --> fetch
+        if (!$.trim(batchRow.html())) {
+            Inventory.AJAX.retrieve('/batch/' + compoundID, batchRow);
+        }
+        batchRow.toggle();
     });
 });
 

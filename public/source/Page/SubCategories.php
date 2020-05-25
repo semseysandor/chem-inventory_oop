@@ -81,6 +81,6 @@ class SubCategories extends Page
     {
         parent::assemble();
 
-        $this->setBaseTemplate(Utils::getPathFromClass(Categories::class));
+        $this->setBaseTemplate('Page/Compound');
     }
 }

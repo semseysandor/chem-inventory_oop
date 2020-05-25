@@ -29,7 +29,7 @@
     "shadow": false,
     "singleGroups": true,
     "strict": true,
-    "trailingcomma": true,
+    "trailingcomma": false,
     "undef": true,
     "unused": true,
     "varstmt": true,

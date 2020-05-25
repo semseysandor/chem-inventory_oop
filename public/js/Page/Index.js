@@ -16,7 +16,7 @@
  */
 $(document).ready(function () {
     'use strict';
-    Inventory.AJAX.retrieve('/category/0', 'main');
+    Inventory.AJAX.retrieve('/category/0', Inventory.main);
 });
 
 /**
@@ -24,13 +24,18 @@ $(document).ready(function () {
  */
 $(document).ready(function () {
     'use strict';
+    let categoryID, buttons;
+
     $('#category-selector').on('click', 'button', function () {
-        let categoryID = $(this).attr('category');
-        Inventory.AJAX.retrieve('/category/' + categoryID, 'main');
+        // Get compounds of category
+        categoryID = $(this).attr('category');
+        Inventory.AJAX.retrieve('/category/' + categoryID, Inventory.main);
+
         // Hide all sub category buttons
         $('button.sub-category-buttons').hide();
+
         // Show only related subcategories only if there is more than one
-        let buttons = $('button[parent="' + categoryID + '"]');
+        buttons = $('button[parent="' + categoryID + '"]');
         if (buttons.length > 1) {
             buttons.show();
         }
@@ -44,7 +49,7 @@ $(document).ready(function () {
     'use strict';
     $('#sub-category-selector').on('click', 'button', function () {
         let subCategoryID = $(this).attr('sub-category');
-        Inventory.AJAX.retrieve('/subcategory/' + subCategoryID, 'main');
+        Inventory.AJAX.retrieve('/subcategory/' + subCategoryID, Inventory.main);
     });
 });
 
@@ -54,7 +59,7 @@ $(document).ready(function () {
 $(document).ready(function () {
     'use strict';
     $('#logout').click(function () {
-        Inventory.AJAX.execute('/log-out', 'inv-response', Inventory.redirect, ['/']);
+        Inventory.AJAX.execute('/log-out', Inventory.responseContainer, Inventory.redirect, ['/']);
     });
 });
 

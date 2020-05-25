@@ -15,8 +15,10 @@
             <tbody>
             {foreach $compounds as $item}
                 {$id=$item.compound_id}
-                <tr compound="{$id}">
-                    <td></td>
+                <tr compound="{$id}" level="compound">
+                    <td style="position: relative">
+                        <div style="position: absolute;background-color: white" level="batch" class="no-show"></div>
+                    </td>
                     <td></td>
                     <td class="compound-{$id}">{$id}</td>
                     <td class="compound-{$id}">{$item.name}</td>
@@ -24,17 +26,11 @@
                     <td>{$item.abbrev}</td>
                     <td>{$item.note}</td>
                 </tr>
-                <tr id="batch-row-{$id}" class="no-show">
-                    <td colspan="2" style="padding:0; border:none"></td>
-                    <td colspan="5" style="padding:0; border:none">
-                        <div id="batch-{$id}" class="no-show"></div>
-                    </td>
-                </tr>
             {/foreach}
             </tbody>
         </table>
     </div>
-    <script src="js/Page/Categories.js"></script>
+    <script src="js/Page/Compound.js"></script>
 {else}
     <div>No such compound</div>
 {/if}

@@ -81,6 +81,6 @@ class Categories extends Page
     {
         parent::assemble();
 
-        $this->setBaseTemplate(Utils::getPathFromClass(self::class));
+        $this->setBaseTemplate('Page/Compound');
     }
 }

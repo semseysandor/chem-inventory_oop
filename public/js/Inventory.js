@@ -69,3 +69,13 @@ Inventory.setCursorDefault = function () {
     'use strict';
     document.body.style.cursor = 'auto';
 };
+
+/**
+ * Container shortcuts
+ */
+$(document).ready(function () {
+    'use strict';
+
+    Inventory.responseContainer = $('#response');
+    Inventory.main = $('#main');
+});
