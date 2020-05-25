@@ -11,47 +11,30 @@
  +-----------------------------------------------+
 *}
 {extends file='base/page.tpl'}
-{block body}{strip}
+{block body}
     <h1>Inventory</h1>
     <h2>Welcome {$user_name}</h2>
-    <button id="inv-logout">Logout</button>
-    <script>
-        $('#inv-logout').click(function () {
-            Inventory.AJAX.execute('/log-out', 'inv-response', Inventory.redirect, ['/']);
-        });
-    </script>
+    <button id="logout">Logout</button>
     <section id="inv-menu">
     </section>
     <section id="inv-popup">
     </section>
     <section id="inv-category-selector">
-        <div>
+        <div id="category-selector">
             {foreach $categories as $item}
-                <button id="inv-category-button_{$item.category_id}">{$item.name}</button>
-                <script>
-                    $('#inv-category-button_{$item.category_id}').click(function () {
-                        Inventory.AJAX.retrieve('/category/{$item.category_id}', 'main');
-                    });
-                </script>
+                <button category="{$item.category_id}">{$item.name}</button>
             {/foreach}
             <button>Add compound</button>
         </div>
-        <div>
+        <div id="sub-category-selector">
             {foreach $sub_categories as $item}
-                <button id="inv-sub_category-button_{$item.sub_category_id}">{$item.name}</button>
-                <script>
-                    $('#inv-sub_category-button_{$item.sub_category_id}').click(function () {
-                        Inventory.AJAX.retrieve('/subcategory/{$item.sub_category_id}', 'main');
-                    });
-                </script>
+                <button sub-category="{$item.sub_category_id}" parent="{$item.category_id}" class="no-show sub-category-buttons">
+                    {$item.name}
+                </button>
             {/foreach}
         </div>
     </section>
     <section id="main">
     </section>
-    <script>
-        $(document).ready(function () {
-            Inventory.AJAX.retrieve('/category/0', 'main');
-        });
-    </script>
-{/strip}{/block}
+    <script src="js/Page/Index.js"></script>
+{/block}

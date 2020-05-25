@@ -16,42 +16,6 @@
 let Inventory = {};
 
 /**
- * Debug function
- *
- * @param message Message to log
- */
-Inventory.debug = function (message) {
-    'use strict';
-    console.log(message);
-};
-
-/**
- * Add an event listener on click
- *
- * @param elementID ID of element to attach listener
- * @param func Listener function
- */
-Inventory.addClick = function (elementID, func) {
-    'use strict';
-    document.getElementById(elementID).addEventListener('click', func);
-};
-
-/**
- * Add an event listener on click
- *
- * @param className Class of element to attach listener
- * @param func Listener function
- */
-Inventory.addClickClass = function (className, func) {
-    'use strict';
-    let elements;
-    elements = document.getElementsByClassName(className);
-    Array.from(elements).forEach(function (value) {
-        value.addEventListener('click', func);
-    });
-};
-
-/**
  * Translates response message to HTML
  *
  * @param message Message text
@@ -88,4 +52,20 @@ Inventory.messageHTML = function (message, flag) {
 Inventory.redirect = function (url) {
     'use strict';
     window.location.replace(url);
+};
+
+/**
+ * Set cursor to progress indicator
+ */
+Inventory.setCursorProgress = function () {
+    'use strict';
+    document.body.style.cursor = 'progress';
+};
+
+/**
+ * Set cursor to default
+ */
+Inventory.setCursorDefault = function () {
+    'use strict';
+    document.body.style.cursor = 'auto';
 };
