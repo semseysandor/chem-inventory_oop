@@ -10,22 +10,20 @@
  | https://choosealicense.com/licenses/mit/      |
  +-----------------------------------------------+
 *}
-{strip}
-    <div>
-        <form id="{block id}{/block}" method="post" action="{block action}{/block}">
-            <div>
-                <input type="hidden" name="token" value="{$token}">
-                {block form_meta}{/block}
-            </div>
-            <div>
-                {block form_content}{/block}
-            </div>
-            <div>
-                {block form_submit}{/block}
-            </div>
-        </form>
+<div>
+    <form id="{block id}{/block}" method="post" action="{block action}{/block}">
         <div>
-            {block form_js}{/block}
+            <input type="hidden" name="token" value="{$token}">
+            {block form_meta}{/block}
         </div>
+        <div>
+            {block form_content}{/block}
+        </div>
+        <div>
+            {block form_submit}{/block}
+        </div>
+    </form>
+    <div>
+        {block form_js}{/block}
     </div>
-{/strip}
+</div>

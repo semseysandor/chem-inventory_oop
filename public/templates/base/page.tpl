@@ -10,19 +10,17 @@
  | https://choosealicense.com/licenses/mit/      |
  +-----------------------------------------------+
 *}
-{strip}
 {config_load "elements.conf"}
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        {include file='base/head.tpl'}
-    </head>
-    <body>
-    <div id="inv-response"></div>
-    {block body}{/block}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {include file='base/head.tpl'}
+</head>
+<body>
+<div id="response"></div>
+{block body}{/block}
 
-    {* Footer *}
-    {include file='base/footer.tpl'}
-    </body>
-    </html>
-{/strip}
+{* Footer *}
+{include file='base/footer.tpl'}
+</body>
+</html>

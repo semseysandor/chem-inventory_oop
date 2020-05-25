@@ -1,6 +1,6 @@
 {if $compounds}
     <div class="pad-s of-auto">
-        <table class="list">
+        <table id="compound-list" class="list">
             <thead>
             <tr>
                 <th></th>
@@ -15,7 +15,7 @@
             <tbody>
             {foreach $compounds as $item}
                 {$id=$item.compound_id}
-                <tr id="inv-compound-row-{$id}">
+                <tr compound="{$id}">
                     <td></td>
                     <td></td>
                     <td class="compound-{$id}">{$id}</td>
@@ -24,25 +24,17 @@
                     <td>{$item.abbrev}</td>
                     <td>{$item.note}</td>
                 </tr>
-                <tr id="inv-batch-row-{$id}" class="no-show">
+                <tr id="batch-row-{$id}" class="no-show">
                     <td colspan="2" style="padding:0; border:none"></td>
                     <td colspan="5" style="padding:0; border:none">
-                        <div id="inv-batch-{$id}" class="no-show"></div>
+                        <div id="batch-{$id}" class="no-show"></div>
                     </td>
                 </tr>
-            {strip}
-                <script>
-                    $('.compound-{$id}').click(function () {
-                        $('#inv-batch-row-{$id}').toggle();
-                        $('#inv-batch-{$id}').toggle();
-                        Inventory.AJAX.retrieve('/batch/{$id}', 'inv-batch-{$id}');
-                    });
-                </script>
-            {/strip}
             {/foreach}
             </tbody>
         </table>
     </div>
+    <script src="js/Page/Categories.js"></script>
 {else}
     <div>No such compound</div>
 {/if}

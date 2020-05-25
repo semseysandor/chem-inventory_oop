@@ -11,34 +11,25 @@
  +-----------------------------------------------+
 *}
 {extends "base/form.tpl"}
-{block id}inv-login-form{/block}
+{block id}login-form{/block}
 {block action}log-in{/block}
 {block form_content}
-    {strip}
-        <div>
-            <label>
-                User Name
-                <input type="text" name="user" autofocus required/>
-            </label>
-        </div>
-        <div>
-            <label>
-                Password
-                <input type="password" name="pass" required/>
-            </label>
-        </div>
-    {/strip}
+    <div>
+        <label>
+            User Name
+            <input type="text" name="user" autofocus required/>
+        </label>
+    </div>
+    <div>
+        <label>
+            Password
+            <input type="password" name="pass" required/>
+        </label>
+    </div>
 {/block}
 {block form_submit}
-    {include #button_submit# id="inv-login-form-submit" title="Login"}
+    {include #button_submit# id="login-form-submit" title="Login"}
 {/block}
 {block form_js}
-{literal}
-    <script>
-        $('#inv-login-form-submit').click(function (event) {
-            event.preventDefault();
-            Inventory.AJAX.submit('inv-login-form', 'inv-response', Inventory.redirect, ['/']);
-        });
-    </script>
-{/literal}
+    <script src="js/Form/Login.js"></script>
 {/block}
