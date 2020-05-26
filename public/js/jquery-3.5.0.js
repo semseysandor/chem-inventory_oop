@@ -1,14 +1,15 @@
-/*
- +-----------------------------------------------+
- | This file is part of chem-inventory.          |
- |                                               |
- | Copyright 2020                                |
- | Sandor Semsey <semseysandor@gmail.com>        |
- | All rights reserved.                          |
- |                                               |
- | This work is published under the MIT License. |
- | https://choosealicense.com/licenses/mit/      |
- +-----------------------------------------------+
+/*!
+ * jQuery JavaScript Library v3.5.0
+ * https://jquery.com/
+ *
+ * Includes Sizzle.js
+ * https://sizzlejs.com/
+ *
+ * Copyright JS Foundation and other contributors
+ * Released under the MIT license
+ * https://jquery.org/license
+ *
+ * Date: 2020-04-10T15:07Z
  */
 (function (global, factory) {
 
