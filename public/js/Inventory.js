@@ -59,22 +59,6 @@ Inventory.redirect = function (url) {
 };
 
 /**
- * Set cursor to progress indicator
- */
-Inventory.setCursorProgress = function () {
-    'use strict';
-    document.body.style.cursor = 'progress';
-};
-
-/**
- * Set cursor to default
- */
-Inventory.setCursorDefault = function () {
-    'use strict';
-    document.body.style.cursor = 'auto';
-};
-
-/**
  * Container shortcuts
  */
 $(document).ready(function () {
@@ -84,16 +68,19 @@ $(document).ready(function () {
     Inventory.main = $('#main');
 });
 
+/**
+ * Set cursor to progress on AJAX
+ */
 $(function () {
     'use strict';
     // Setting up a loading indicator using Ajax Events
-    $('body')
+    $(document)
         .ajaxStart(function () {
-            console.log('start');
-            $(this).show();
+            $('body').css('cursor', 'progress');
+
         })
         .ajaxStop(function () {
             console.log('end');
-            $(this).hide();
+            $('body').css('cursor', 'auto');
         });
 });
