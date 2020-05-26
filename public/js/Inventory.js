@@ -73,14 +73,12 @@ $(document).ready(function () {
  */
 $(function () {
     'use strict';
-    // Setting up a loading indicator using Ajax Events
     $(document)
         .ajaxStart(function () {
             $('body').css('cursor', 'progress');
 
         })
         .ajaxStop(function () {
-            console.log('end');
             $('body').css('cursor', 'auto');
         });
 });
