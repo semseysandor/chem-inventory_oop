@@ -14,30 +14,13 @@
 /**
  * AJAX handling
  */
-(function (Inventory) {
+(function (Inventory, $) {
     'use strict';
-
-    /**
-     * HTTP request
-     *
-     * @type {XMLHttpRequest}
-     */
-    let request = new XMLHttpRequest();
-
-    /**
-     * Form
-     */
-    let form;
 
     /**
      * Container for response from AJAX
      */
-    let responseContainer;
-
-    /**
-     * Form data
-     */
-    let data;
+    let $responseContainer;
 
     /**
      * Call back function after successful AJAX
@@ -59,89 +42,47 @@
      */
     let responseText;
 
+    /**
+     * AJAX functions
+     */
     Inventory.AJAX = {};
 
     /**
-     * Set cursor to default
+     * Init request
+     *
+     * @param responseContainer Response container
+     * @param callBackFn Callback function
+     * @param callBackParameters Callback fn parameters
      */
-    function setCursorDefault()
+    function initRequest(responseContainer, callBackFn, callBackParameters)
     {
-        // Set cursor back to default
-        if (request.readyState === 4) {
-            document.body.style.cursor = 'auto';
+        $responseContainer = $(responseContainer);
+        callBack = null;
+        callBackParams = [];
+        responseFlag = null;
+        responseText = null;
+
+        if ($.isFunction(callBackFn)) {
+            // Set callback
+            callBack = callBackFn;
+            // Put callback arguments
+            callBackParams = callBackParameters;
         }
-    }
-
-    /**
-     * Set cursor to progress indicator
-     */
-    function setCursorProgress()
-    {
-        document.body.style.cursor = 'progress';
-    }
-
-    /**
-     * Collect data from form
-     */
-    function collectData()
-    {
-        // Collect the form data while iterating over form elements
-        Object.keys(form).forEach(function (i) {
-            // Only if element has name
-            if (form[i].name !== '') {
-                // If checkbox
-                if (form[i].type === 'checkbox') {
-                    if (form[i].checked) {
-                        data[form[i].name] = form[i].value;
-                    }
-                } else {
-                    data[form[i].name] = form[i].value;
-                }
-            }
-        });
     }
 
     /**
      * Reset form fields
+     *
+     * @param $form Form JQuery Object
      */
-    function resetForm()
+    function resetForm($form)
     {
-        Object.keys(form).forEach(function (i) {
+        $form.find('input').each(function (index, element) {
             // Don't clear hidden inputs
-            if (form[i].type !== 'hidden') {
-                form[i].value = '';
+            if (element.type !== 'hidden') {
+                element.value = '';
             }
         });
-    }
-
-    /**
-     * Parse JSON response
-     */
-    function parseResponse()
-    {
-        let responseObj;
-
-        // Parse JSON
-        try {
-            responseObj = JSON.parse(request.responseText);
-        } catch (ex) {
-            responseText = request.responseText;
-            return;
-        }
-
-        // Set response flag
-        if (responseObj.hasOwnProperty('flag')) {
-            responseFlag = responseObj.flag;
-        } else {
-            responseFlag = null;
-        }
-
-        // Set response text
-        if (responseObj.hasOwnProperty('text')) {
-            responseText = responseObj.text;
-        } else {
-            responseText = null;
-        }
     }
 
     /**
@@ -149,155 +90,78 @@
      */
     function performCallBack()
     {
-        if (typeof callBack === 'function') {
+        if ($.isFunction(callBack)) {
             callBack(...callBackParams);
         }
     }
 
     /**
-     * Encode data to JSON
-     */
-    function encodeJSON()
-    {
-        // Data object to JSON
-        data = JSON.stringify(data);
-        // URL encode
-        data = encodeURI(data);
-    }
-
-    /**
-     * Init request
-     *
-     * @param responseID Response container ID
-     * @param callBackFn Callback function
-     * @param callBackParameters Callback fn parameters
-     */
-    function initRequest(responseID, callBackFn, callBackParameters)
-    {
-        responseContainer = document.getElementById(responseID);
-        callBack = null;
-        callBackParams = [];
-
-        // Put all parameters for callback in an array (if available)
-        if (typeof callBackFn === 'function') {
-            callBack = callBackFn;
-            callBackParameters.forEach(function (value, index) {
-                callBackParams[index] = value;
-            });
-        }
-    }
-
-    /**
-     * Init AJAX form submit request
-     *
-     * @param formID Form ID
-     * @param formResponseID Form response ID
-     * @param callBackFn Callback function
-     * @param callBackParameters Callback function parameters
-     */
-    function initSubmit(formID, formResponseID, callBackFn, callBackParameters)
-    {
-        // Init request
-        initRequest(formResponseID, callBackFn, callBackParameters);
-
-        // Init submit properties
-        form = document.getElementById(formID);
-        data = {};
-        responseFlag = null;
-        responseText = null;
-    }
-
-    /**
      * Submit form using AJAX with JSON response
      *
-     * @param formID Form ID
-     * @param formResponseID Form response ID
+     * @param form Form element
+     * @param responseContainer Form response container
      * @param callBackFn Callback function
      * @param callBackParameters Callback fn parameters
      */
-    Inventory.AJAX.submit = function (formID, formResponseID, callBackFn, callBackParameters) {
+    Inventory.AJAX.submit = function (form, responseContainer, callBackFn, callBackParameters) {
 
-        // Set cursor for progress
-        setCursorProgress();
+        let $form = $(form);
 
         // Init request
-        initSubmit(formID, formResponseID, callBackFn, callBackParameters);
+        initRequest(responseContainer, callBackFn, callBackParameters);
 
-        // Collect data from form
-        collectData();
-
-        // Encode data to JSON
-        encodeJSON();
-
-        // Send request
-        request.open(form.method, form.action, true);
-        request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        request.send('data=' + data);
-
-        // When response ready
-        request.onreadystatechange = function () {
-
-            // Set cursor back to default
-            setCursorDefault();
-
-            // When response is ready from server
-            if ((request.readyState === 4) && (request.status === 200)) {
+        $.ajax({
+            url: $form.attr('action'),
+            data: $form.serialize(),
+            type: $form.attr('method'),
+            dataType: 'json',
+        }).done(
+            function (response) {
                 // Clear responseContainer
-                responseContainer.innerHTML = '';
+                $responseContainer.html('');
 
                 // Parse response
-                parseResponse();
-                // If successful
-                if (responseFlag === 'pos') {
-                    resetForm();
-
-                    // Perform callback
-                    performCallBack();
-                }
+                responseFlag = response.flag;
+                responseText = response.text;
 
                 // Show response
-                responseContainer.innerHTML = Inventory.messageHTML(responseText, responseFlag);
-            }
-        };
+                $responseContainer.html(Inventory.messageHTML(responseText, responseFlag));
+
+                // If positive response
+                if (responseFlag === 'pos') {
+                    resetForm($form);
+                    performCallBack();
+                }
+            },
+        );
     };
 
     /**
      * HTTP GET using AJAX with HTML response
      *
      * @param url URL
-     * @param responseID Response container ID
+     * @param responseContainer Response container
      * @param callBackFn Callback function
      * @param callBackParameters Callback fn parameters
      */
-    Inventory.AJAX.retrieve = function (url, responseID, callBackFn, callBackParameters) {
+    Inventory.AJAX.retrieve = function (url, responseContainer, callBackFn, callBackParameters) {
 
         // Init request
-        initRequest(responseID, callBackFn, callBackParameters);
+        initRequest(responseContainer, callBackFn, callBackParameters);
 
-        // Send request
-        request.open('GET', url, true);
-        request.send();
+        $.ajax({
+            url: url,
+        }).done(function (response) {
+            // Show response
+            $responseContainer.html(response);
 
-        setCursorProgress();
+            performCallBack();
 
-        // When request ready
-        request.onreadystatechange = function () {
+            // Eval JS in response
+            let text = response.match(/<script>.*<\/script>/gu);
 
-            setCursorDefault();
-
-            if ((request.readyState === 4) && (request.status === 200)) {
-                // Show response
-                responseContainer.innerHTML = request.responseText;
-
-                performCallBack();
-
-                // Eval JS in response;
-                let text = responseContainer.innerHTML;
-
-                // Search for scripts
-                text = text.match(/<script>.*<\/script>/g);
-
-                text.forEach(function (value) {
+            if (text) {
+                $.each(text, function (index, value) {
                     // Remove tags
                     value = value.replace('<script>', '');
                     value = value.replace('</script>', '');
@@ -306,7 +170,7 @@
                     eval(value);
                 });
             }
-        };
+        });
     };
 
     /**
@@ -322,38 +186,25 @@
         // Init request
         initRequest(responseID, callBackFn, callBackParameters);
 
-        // Send request
-        request.open('GET', url, true);
-        request.send();
+        $.ajax({
+            url: url,
+        }).done(function (response) {
+            // Clear responseContainer
+            $responseContainer.html('');
 
-        // Set cursor for progress
-        setCursorProgress();
+            // Parse response
+            responseFlag = response.flag;
+            responseText = response.text;
 
-        // When response ready
-        request.onreadystatechange = function () {
+            // Show response
+            $responseContainer.html(Inventory.messageHTML(responseText, responseFlag));
 
-            // Set cursor back to default
-            setCursorDefault();
-
-            // When response is ready from server
-            if ((request.readyState === 4) && (request.status === 200)) {
-                // Clear responseContainer
-                responseContainer.innerHTML = '';
-
-                // Parse response
-                parseResponse();
-
-                // If successful
-                if (responseFlag === 'pos') {
-                    // Perform callback
-                    performCallBack();
-                }
-
-                // Show response
-                responseContainer.innerHTML = Inventory.messageHTML(responseText, responseFlag);
+            // If positive response
+            if (responseFlag === 'pos') {
+                performCallBack();
             }
-        };
+        });
     };
 
     return Inventory;
-}(Inventory || {}));
+}(Inventory || {}, $));

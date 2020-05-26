@@ -39,7 +39,11 @@ Inventory.messageHTML = function (message, flag) {
         }
     }
 
-    response += ' ' + message.toString() + '</div>';
+    if (message) {
+        response += message.toString() + '</div>';
+    } else {
+        response += '</div>';
+    }
 
     return response;
 };
@@ -78,4 +82,18 @@ $(document).ready(function () {
 
     Inventory.responseContainer = $('#response');
     Inventory.main = $('#main');
+});
+
+$(function () {
+    'use strict';
+    // Setting up a loading indicator using Ajax Events
+    $('body')
+        .ajaxStart(function () {
+            console.log('start');
+            $(this).show();
+        })
+        .ajaxStop(function () {
+            console.log('end');
+            $(this).hide();
+        });
 });

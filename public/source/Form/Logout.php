@@ -31,6 +31,7 @@ class Logout extends Form
      * Process input
      *
      * @throws \Inventory\Core\Exception\BadArgument
+     * @throws \Exception
      */
     protected function process(): void
     {
@@ -45,6 +46,8 @@ class Logout extends Form
     protected function assemble(): void
     {
         parent::assemble();
+
+        header('Content-Type: application/json');
 
         $this->templateContainer->setBase('ajax');
         $this->templateContainer->setVars('flag', ($this->errorFlag ? 'neg' : 'pos'));
