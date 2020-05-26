@@ -26,6 +26,7 @@ $(document).ready(function () {
     'use strict';
     let categoryID, buttons;
 
+    // Click on a category selector button
     $('#category-selector').on('click', 'button', function () {
         // Get compounds of category
         categoryID = $(this).attr('category');
@@ -47,6 +48,7 @@ $(document).ready(function () {
  */
 $(document).ready(function () {
     'use strict';
+    // Click on a sub-category selector button
     $('#sub-category-selector').on('click', 'button', function () {
         Inventory.AJAX.retrieve('/subcategory/' + $(this).attr('sub-category'), Inventory.main);
     });
@@ -58,9 +60,7 @@ $(document).ready(function () {
 $(document).ready(function () {
     'use strict';
     $('#logout').click(function () {
-        Inventory.AJAX.execute('/log-out', Inventory.responseContainer, function () {
-            Inventory.redirect('/');
-        });
+        Inventory.AJAX.execute('/log-out', Inventory.responseContainer, Inventory.reload);
     });
 });
 

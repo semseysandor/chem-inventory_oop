@@ -55,7 +55,15 @@ Inventory.messageHTML = function (message, flag) {
  */
 Inventory.redirect = function (url) {
     'use strict';
-    window.location.replace(url);
+    window.location.assign(url);
+};
+
+/**
+ * Reload page
+ */
+Inventory.reload = function () {
+    'use strict';
+    window.location.reload();
 };
 
 /**

@@ -19,13 +19,15 @@ $(document).ready(function () {
 
     // Click on compounds
     $('#compound-list').on('click', 'tr[level=compound]', function () {
-        let batchRow = this.find('div[level=batch]');
+
+        let $compoundRow = $(this);
+        let $batchRow = $compoundRow.find('div[level=batch]');
 
         // If batch row empty --> fetch
-        if (!$.trim(batchRow.html())) {
-            Inventory.AJAX.retrieve('/batch/' + this.attr('compound'), batchRow);
+        if (!$.trim($batchRow.html())) {
+            Inventory.AJAX.retrieve('/batch/' + $compoundRow.attr('compound'), $batchRow);
         }
-        batchRow.toggle();
+        $batchRow.toggle();
     });
 });
 
