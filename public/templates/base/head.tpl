@@ -17,3 +17,4 @@
 <script src="js/jquery-3.5.0.js"></script>
 <script src="js/Inventory.js"></script>
 <script src="js/AJAX.js"></script>
+<script src="js/Publish.js"></script>

@@ -48,8 +48,7 @@ $(document).ready(function () {
 $(document).ready(function () {
     'use strict';
     $('#sub-category-selector').on('click', 'button', function () {
-        let subCategoryID = $(this).attr('sub-category');
-        Inventory.AJAX.retrieve('/subcategory/' + subCategoryID, Inventory.main);
+        Inventory.AJAX.retrieve('/subcategory/' + $(this).attr('sub-category'), Inventory.main);
     });
 });
 
@@ -59,7 +58,9 @@ $(document).ready(function () {
 $(document).ready(function () {
     'use strict';
     $('#logout').click(function () {
-        Inventory.AJAX.execute('/log-out', Inventory.responseContainer, Inventory.redirect, ['/']);
+        Inventory.AJAX.execute('/log-out', Inventory.responseContainer, function () {
+            Inventory.redirect('/');
+        });
     });
 });
 

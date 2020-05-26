@@ -18,16 +18,16 @@ $(document).ready(function () {
     'use strict';
 
     let $form = $('#login-form');
-    let $button = $('#login-form-submit');
 
-    // Click on submit button
-    $button.click(function (event) {
-        event.preventDefault();
-        $form.trigger('submit:form');
-    });
-
-    // Submit form event
-    $form.on('submit:form', function () {
-        Inventory.AJAX.submit(this, Inventory.responseContainer, Inventory.redirect, ['/']);
+    $.pubsub.connect({
+        publisher: $('#login-form-submit'),
+        subscriber: $form,
+        browserEvent: 'click',
+        publishEvent: 'publish:submit',
+        callBack: function () {
+            Inventory.AJAX.submit($form, Inventory.responseContainer, function () {
+                Inventory.redirect('/');
+            });
+        },
     });
 });

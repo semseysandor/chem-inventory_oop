@@ -19,12 +19,11 @@ $(document).ready(function () {
 
     // Click on compounds
     $('#compound-list').on('click', 'tr[level=compound]', function () {
-        let compoundID = $(this).attr('compound');
-        let batchRow = $(this).find('div[level=batch]');
+        let batchRow = this.find('div[level=batch]');
 
         // If batch row empty --> fetch
         if (!$.trim(batchRow.html())) {
-            Inventory.AJAX.retrieve('/batch/' + compoundID, batchRow);
+            Inventory.AJAX.retrieve('/batch/' + this.attr('compound'), batchRow);
         }
         batchRow.toggle();
     });

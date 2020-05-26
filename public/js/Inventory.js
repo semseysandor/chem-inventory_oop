@@ -76,7 +76,6 @@ $(function () {
     $(document)
         .ajaxStart(function () {
             $('body').css('cursor', 'progress');
-
         })
         .ajaxStop(function () {
             $('body').css('cursor', 'auto');

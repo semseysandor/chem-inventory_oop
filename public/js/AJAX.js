@@ -28,11 +28,6 @@
     let callBack;
 
     /**
-     * Params for callback function
-     */
-    let callBackParams;
-
-    /**
      * Response flag
      */
     let responseFlag;
@@ -52,22 +47,14 @@
      *
      * @param responseContainer Response container
      * @param callBackFn Callback function
-     * @param callBackParameters Callback fn parameters
      */
-    function initRequest(responseContainer, callBackFn, callBackParameters)
+    function initRequest(responseContainer, callBackFn)
     {
-        $responseContainer = $(responseContainer);
-        callBack = null;
-        callBackParams = [];
+        $responseContainer = responseContainer;
+        callBack = $.isFunction(callBackFn) ? callBackFn : function () {
+        };
         responseFlag = null;
         responseText = null;
-
-        if ($.isFunction(callBackFn)) {
-            // Set callback
-            callBack = callBackFn;
-            // Put callback arguments
-            callBackParams = callBackParameters;
-        }
     }
 
     /**
@@ -86,29 +73,34 @@
     }
 
     /**
-     * Performs callback
+     * Parse JSON response
+     *
+     * @param response AJAX response
      */
-    function performCallBack()
+    function parseResponse(response)
     {
-        if ($.isFunction(callBack)) {
-            callBack(...callBackParams);
-        }
+        // Clear responseContainer
+        $responseContainer.html('');
+
+        // Parse response
+        responseFlag = response.flag;
+        responseText = response.text;
+
+        // Show response
+        $responseContainer.html(Inventory.messageHTML(responseText, responseFlag));
     }
 
     /**
      * Submit form using AJAX with JSON response
      *
-     * @param form Form element
-     * @param responseContainer Form response container
+     * @param $form Form jQuery object
+     * @param $responseCont Form response container jQuery object
      * @param callBackFn Callback function
-     * @param callBackParameters Callback fn parameters
      */
-    Inventory.AJAX.submit = function (form, responseContainer, callBackFn, callBackParameters) {
-
-        let $form = $(form);
+    Inventory.AJAX.submit = function ($form, $responseCont, callBackFn) {
 
         // Init request
-        initRequest(responseContainer, callBackFn, callBackParameters);
+        initRequest($responseCont, callBackFn);
 
         $.ajax({
             url: $form.attr('action'),
@@ -117,22 +109,14 @@
             dataType: 'json',
         }).done(
             function (response) {
-                // Clear responseContainer
-                $responseContainer.html('');
+                parseResponse(response);
 
-                // Parse response
-                responseFlag = response.flag;
-                responseText = response.text;
-
-                // Show response
-                $responseContainer.html(Inventory.messageHTML(responseText, responseFlag));
-
-                // If positive response
+                // If positive response --> perform callback
                 if (responseFlag === 'pos') {
                     resetForm($form);
-                    performCallBack();
+                    callBack();
                 }
-            },
+            }
         );
     };
 
@@ -140,14 +124,13 @@
      * HTTP GET using AJAX with HTML response
      *
      * @param url URL
-     * @param responseContainer Response container
+     * @param $responseCont Response container jQuery object
      * @param callBackFn Callback function
-     * @param callBackParameters Callback fn parameters
      */
-    Inventory.AJAX.retrieve = function (url, responseContainer, callBackFn, callBackParameters) {
+    Inventory.AJAX.retrieve = function (url, $responseCont, callBackFn) {
 
         // Init request
-        initRequest(responseContainer, callBackFn, callBackParameters);
+        initRequest($responseCont, callBackFn);
 
         $.ajax({
             url: url,
@@ -155,7 +138,8 @@
             // Show response
             $responseContainer.html(response);
 
-            performCallBack();
+            // Perform callback
+            callBack();
 
             // Eval JS in response
             let text = response.match(/<script>.*<\/script>/gu);
@@ -177,34 +161,25 @@
      * HTTP GET using AJAX with JSON response
      *
      * @param url URL
-     * @param responseID Response container ID
+     * @param $responseCont Response container ID
      * @param callBackFn Callback function
-     * @param callBackParameters Callback fn parameters
      */
-    Inventory.AJAX.execute = function (url, responseID, callBackFn, callBackParameters) {
+    Inventory.AJAX.execute = function (url, $responseCont, callBackFn) {
 
         // Init request
-        initRequest(responseID, callBackFn, callBackParameters);
+        initRequest($responseCont, callBackFn);
 
         $.ajax({
             url: url,
         }).done(function (response) {
-            // Clear responseContainer
-            $responseContainer.html('');
+            parseResponse(response);
 
-            // Parse response
-            responseFlag = response.flag;
-            responseText = response.text;
-
-            // Show response
-            $responseContainer.html(Inventory.messageHTML(responseText, responseFlag));
-
-            // If positive response
+            // If positive response --> perform callback
             if (responseFlag === 'pos') {
-                performCallBack();
+                callBack();
             }
         });
     };
 
     return Inventory;
-}(Inventory || {}, $));
+}(Inventory || {}, jQuery));
