@@ -14,7 +14,6 @@
 
 namespace Inventory\Page;
 
-use Inventory\Application;
 use Inventory\Core\Controller\Page;
 
 /**
