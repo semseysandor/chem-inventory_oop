@@ -15,6 +15,7 @@
 namespace Inventory\Core\Routing;
 
 use Inventory\Core\IComponent;
+use Inventory\Form\Compound;
 use Inventory\Form\Logout;
 use Inventory\Page\Batch;
 use Inventory\Page\Categories;
@@ -119,7 +120,6 @@ class Router implements IComponent
 
             case 'category':
                 $this->routeParameters['id'] = array_shift($this->route);
-
                 return Categories::class;
 
             case 'subcategory':
@@ -137,6 +137,11 @@ class Router implements IComponent
                 $this->routeParameters['entity'] = array_shift($this->route);
 
                 return Forms::class;
+
+            case 'compound':
+                $this->routeParameters['action'] = array_shift($this->route);
+
+                return Compound::class;
 
             default:
                 return Index::class;

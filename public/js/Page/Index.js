@@ -14,15 +14,15 @@
 /**
  * Load all compounds as default
  */
-$(document).ready(function () {
+$(function () {
     'use strict';
-    Inventory.AJAX.retrieve('/category/0', Inventory.main);
+    $.ajaxWrap.retrieve('/category/0', Inventory.$main);
 });
 
 /**
  * Category selector
  */
-$(document).ready(function () {
+$(function () {
     'use strict';
     let categoryID, buttons;
 
@@ -30,7 +30,7 @@ $(document).ready(function () {
     $('#category-selector').on('click', 'button', function () {
         // Get compounds of category
         categoryID = $(this).attr('category');
-        Inventory.AJAX.retrieve('/category/' + categoryID, Inventory.main);
+        $.ajaxWrap.retrieve('/category/' + categoryID, Inventory.$main);
 
         // Hide all sub category buttons
         $('button.sub-category-buttons').hide();
@@ -46,21 +46,31 @@ $(document).ready(function () {
 /**
  * Sub-category selector
  */
-$(document).ready(function () {
+$(function () {
     'use strict';
     // Click on a sub-category selector button
     $('#sub-category-selector').on('click', 'button', function () {
-        Inventory.AJAX.retrieve('/subcategory/' + $(this).attr('sub-category'), Inventory.main);
+        $.ajaxWrap.retrieve('/subcategory/' + $(this).attr('sub-category'), Inventory.$main);
     });
 });
 
 /**
  * Logout button
  */
-$(document).ready(function () {
+$(function () {
     'use strict';
     $('#logout').click(function () {
-        Inventory.AJAX.execute('/log-out', Inventory.responseContainer, Inventory.reload);
+        $.ajaxWrap.execute('/log-out', Inventory.$responseContainer, Inventory.reload);
     });
 });
 
+/**
+ * Add compound
+ */
+$(function () {
+    'use strict';
+    $('#add-compound-btn').click(function () {
+        Inventory.$popup.clear();
+        $.ajaxWrap.retrieve('/form/add/compound', Inventory.$popup);
+    });
+});

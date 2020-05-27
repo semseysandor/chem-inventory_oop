@@ -211,4 +211,13 @@ class Application implements IComponent
         session_write_close();
         exit(0);
     }
+
+    /**
+     * Exit application (static function)
+     */
+    public static function staticExit()
+    {
+        session_write_close();
+        exit(0);
+    }
 }

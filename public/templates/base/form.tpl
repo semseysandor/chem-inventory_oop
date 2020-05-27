@@ -10,6 +10,7 @@
  | https://choosealicense.com/licenses/mit/      |
  +-----------------------------------------------+
 *}
+{config_load "elements.conf"}
 <div>
     <form id="{block id}{/block}" method="post" action="{block action}{/block}">
         <div>
