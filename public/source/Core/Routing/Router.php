@@ -18,6 +18,7 @@ use Inventory\Core\IComponent;
 use Inventory\Form\Logout;
 use Inventory\Page\Batch;
 use Inventory\Page\Categories;
+use Inventory\Page\Forms;
 use Inventory\Page\Index;
 use Inventory\Page\Login;
 use Inventory\Page\SubCategories;
@@ -109,22 +110,34 @@ class Router implements IComponent
         switch (array_shift($this->route)) {
             case 'log-in':
                 return \Inventory\Form\Login::class;
+
             case 'log-out':
                 return Logout::class;
+
             case 'login':
                 return Login::class;
+
             case 'category':
                 $this->routeParameters['id'] = array_shift($this->route);
 
                 return Categories::class;
+
             case 'subcategory':
                 $this->routeParameters['id'] = array_shift($this->route);
 
                 return SubCategories::class;
+
             case 'batch':
                 $this->routeParameters['id'] = array_shift($this->route);
 
                 return Batch::class;
+
+            case 'form':
+                $this->routeParameters['type'] = array_shift($this->route);
+                $this->routeParameters['entity'] = array_shift($this->route);
+
+                return Forms::class;
+
             default:
                 return Index::class;
         }

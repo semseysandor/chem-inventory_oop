@@ -15,16 +15,18 @@
     <h1>Inventory</h1>
     <h2>Welcome {$user_name}</h2>
     <button id="logout">Logout</button>
-    <section id="inv-menu">
+    <section id="menu">
     </section>
-    <section id="inv-popup">
+    <section id="popup">
     </section>
-    <section id="inv-category-selector">
+    <section>
+        <div>
+            <button id="add-compound-btn">Add compound</button>
+        </div>
         <div id="category-selector">
             {foreach $categories as $item}
                 <button category="{$item.category_id}">{$item.name}</button>
             {/foreach}
-            <button>Add compound</button>
         </div>
         <div id="sub-category-selector">
             {foreach $sub_categories as $item}

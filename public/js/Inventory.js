@@ -13,67 +13,73 @@
 /**
  * Inventory object
  */
-let Inventory = {};
+let Inventory = {
 
-/**
- * Translates response message to HTML
- *
- * @param message Message text
- * @param flag Message flag
- *
- * @returns {string}
- */
-Inventory.messageHTML = function (message, flag) {
-    'use strict';
+    /**
+     * Translates response message to HTML
+     *
+     * @param message Message text
+     * @param flag Message flag
+     *
+     * @returns {string}
+     */
+    messageHTML: function (message, flag) {
+        'use strict';
+        // Put response in container
+        let response = '';
 
-    // Put response in container
-    let response = '';
-
-    if (flag === 'pos') { // Positive response
-        response += '<div class="message positive"><i class="fas fa-smile fa-lg"></i>';
-    } else {
-        if (flag === 'neg') { // Negative response
-            response += '<div class="message negative"><i class="far fa-frown fa-lg"></i>';
+        if (flag === 'pos') { // Positive response
+            response += '<div class="message positive"><i class="fas fa-smile fa-lg"></i>';
         } else {
-            response += '<div class="message">';
+            if (flag === 'neg') { // Negative response
+                response += '<div class="message negative"><i class="far fa-frown fa-lg"></i>';
+            } else {
+                response += '<div class="message">';
+            }
         }
-    }
 
-    if (message) {
-        response += message.toString() + '</div>';
-    } else {
-        response += '</div>';
-    }
+        if (message) {
+            response += message.toString() + '</div>';
+        } else {
+            response += '</div>';
+        }
 
-    return response;
-};
+        return response;
+    },
 
-/**
- * Redirect to URL
- *
- * @param url URL to redirect to
- */
-Inventory.redirect = function (url) {
-    'use strict';
-    window.location.assign(url);
-};
+    /**
+     * Redirect to URL
+     *
+     * @param url URL to redirect to
+     */
+    redirect: function (url) {
+        'use strict';
+        window.location.assign(url);
+    },
 
-/**
- * Reload page
- */
-Inventory.reload = function () {
-    'use strict';
-    window.location.reload();
+    /**
+     * Reload page
+     */
+    reload: function () {
+        'use strict';
+        window.location.reload();
+    },
 };
 
 /**
  * Container shortcuts
  */
-$(document).ready(function () {
+$(function () {
     'use strict';
 
-    Inventory.responseContainer = $('#response');
-    Inventory.main = $('#main');
+    /** Response container */
+    Inventory.$responseContainer = $('#response');
+
+    /** Main section */
+    Inventory.$main = $('#main');
+
+    /** Pop-up section */
+    Inventory.$popup = $('#popup');
 });
 
 /**
@@ -81,11 +87,12 @@ $(document).ready(function () {
  */
 $(function () {
     'use strict';
+    let $body = $('body');
     $(document)
         .ajaxStart(function () {
-            $('body').css('cursor', 'progress');
+            $body.css('cursor', 'progress');
         })
         .ajaxStop(function () {
-            $('body').css('cursor', 'auto');
+            $body.css('cursor', 'auto');
         });
 });

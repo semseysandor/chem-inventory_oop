@@ -37,7 +37,7 @@
     "boss": false,
     "elision": false,
     "eqnull": true,
-    "evil": true,
+    "evil": false,
     "expr": false,
     "funcscope": false,
     "iterator": false,

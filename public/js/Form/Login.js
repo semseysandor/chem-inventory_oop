@@ -14,7 +14,7 @@
 /**
  * Login form
  */
-$(document).ready(function () {
+$(function () {
     'use strict';
 
     let $form = $('#login-form');
@@ -25,7 +25,7 @@ $(document).ready(function () {
         browserEvent: 'click',
         publishEvent: 'publish:submit',
         callBack: function () {
-            Inventory.AJAX.submit($form, Inventory.responseContainer, Inventory.reload);
+            $.ajaxWrap.submit($form, Inventory.$responseContainer, Inventory.reload);
         },
     });
 });

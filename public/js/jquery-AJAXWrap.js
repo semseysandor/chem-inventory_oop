@@ -12,9 +12,9 @@
  */
 
 /**
- * AJAX handling
+ * jQuery plugin for wrapping AJAX functions
  */
-(function (Inventory, $) {
+(function ($) {
     'use strict';
 
     /**
@@ -40,7 +40,7 @@
     /**
      * AJAX functions
      */
-    Inventory.AJAX = {};
+    $.ajaxWrap = {};
 
     /**
      * Init request
@@ -51,8 +51,7 @@
     function initRequest(responseContainer, callBackFn)
     {
         $responseContainer = responseContainer;
-        callBack = $.isFunction(callBackFn) ? callBackFn : function () {
-        };
+        callBack = $.isFunction(callBackFn) ? callBackFn : $.noop;
         responseFlag = null;
         responseText = null;
     }
@@ -97,7 +96,7 @@
      * @param $responseCont Form response container jQuery object
      * @param callBackFn Callback function
      */
-    Inventory.AJAX.submit = function ($form, $responseCont, callBackFn) {
+    $.ajaxWrap.submit = function ($form, $responseCont, callBackFn) {
 
         // Init request
         initRequest($responseCont, callBackFn);
@@ -127,33 +126,20 @@
      * @param $responseCont Response container jQuery object
      * @param callBackFn Callback function
      */
-    Inventory.AJAX.retrieve = function (url, $responseCont, callBackFn) {
+    $.ajaxWrap.retrieve = function (url, $responseCont, callBackFn) {
 
         // Init request
         initRequest($responseCont, callBackFn);
 
         $.ajax({
             url: url,
+            dataType: 'html',
         }).done(function (response) {
             // Show response
             $responseContainer.html(response);
 
             // Perform callback
             callBack();
-
-            // Eval JS in response
-            let text = response.match(/<script>.*<\/script>/gu);
-
-            if (text) {
-                $.each(text, function (index, value) {
-                    // Remove tags
-                    value = value.replace('<script>', '');
-                    value = value.replace('</script>', '');
-
-                    // Execute code
-                    eval(value);
-                });
-            }
         });
     };
 
@@ -164,13 +150,14 @@
      * @param $responseCont Response container ID
      * @param callBackFn Callback function
      */
-    Inventory.AJAX.execute = function (url, $responseCont, callBackFn) {
+    $.ajaxWrap.execute = function (url, $responseCont, callBackFn) {
 
         // Init request
         initRequest($responseCont, callBackFn);
 
         $.ajax({
             url: url,
+            dataType: 'json',
         }).done(function (response) {
             parseResponse(response);
 
@@ -181,5 +168,5 @@
         });
     };
 
-    return Inventory;
-}(Inventory || {}, jQuery));
+    return $;
+}(jQuery));

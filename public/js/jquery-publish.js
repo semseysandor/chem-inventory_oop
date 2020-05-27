@@ -10,7 +10,9 @@
  | https://choosealicense.com/licenses/mit/      |
  +-----------------------------------------------+
  */
-
+/**
+ * jQuery plugin for pub/sub handling
+ */
 (function ($) {
     'use strict';
 
@@ -18,6 +20,14 @@
 
     /**
      * Defaults
+     *
+     *   publisher: publisher jQuery object
+     *   subscriber: subscriber jQuery object
+     *   publishDelegate: Event delegation
+     *   browserEvent: original event to register
+     *   publishEvent: publisher event
+     *   eventData: event data
+     *   callBack: callback fn handle published event
      */
     $.pubsub.defaults = {
         publisher: null,
@@ -30,7 +40,7 @@
     };
 
     /**
-     * Connect a publisher and a subscriber
+     * Directly connect a publisher and a subscriber
      *
      * @param options
      *   publisher: publisher jQuery object
