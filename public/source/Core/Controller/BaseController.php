@@ -14,6 +14,7 @@
 
 namespace Inventory\Core\Controller;
 
+use Inventory\Application;
 use Inventory\Core\BaseBaO;
 use Inventory\Core\Containers\Service;
 use Inventory\Core\Containers\Template;
@@ -192,5 +193,14 @@ class BaseController implements IComponent
         $this->assemble();
 
         return $this->getTemplateContainer();
+    }
+
+    /**
+     * Return NO CONTENT HTTP status response
+     */
+    protected function returnNoContent()
+    {
+        http_response_code(204);
+        Application::staticExit();
     }
 }

@@ -12,8 +12,13 @@
 *}
 <meta charset="UTF-8">
 <title>ChemInv</title>
-<link rel="stylesheet" type="text/css" href="legacy/style/message.css" media="screen"/>
+{* Stylesheets *}
 <link rel="stylesheet" type="text/css" href="css/inventory.css" media="screen"/>
+<link rel="stylesheet" type="text/css" href="css/containers.css" media="screen"/>
+<link rel="stylesheet" type="text/css" href="css/message.css" media="screen"/>
+<link rel="stylesheet" type="text/css" href="css/inventory.css" media="screen"/>
+<link rel="stylesheet" type="text/css" href="css/inventory.css" media="screen"/>
+{* JavaScript *}
 <script src="js/jquery-3.5.0.js"></script>
 <script src="js/Inventory.js"></script>
 <script src="js/jquery-AJAXWrap.js"></script>

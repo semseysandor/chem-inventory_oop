@@ -63,8 +63,7 @@ class Forms extends Page
 
         // No content if not allowed type or entity
         if (!in_array($this->type, self::ALLOWED_FORM_TYPES) || !in_array($this->entity, self::ALLOWED_ENTITIES)) {
-            http_response_code(204);
-            Application::staticExit();
+            $this->returnNoContent();
         }
     }
 

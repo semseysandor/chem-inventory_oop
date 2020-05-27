@@ -133,4 +133,30 @@ class Compound extends BaseBaO
 
         return $this->retrieve($params);
     }
+
+    /**
+     * Insert new compound
+     *
+     * @param array $data Fields and values
+     *
+     * @return mixed
+     *
+     * @throws \Inventory\Core\Exception\BadArgument
+     * @throws \Inventory\Core\Exception\FieldMissing
+     * @throws \Inventory\Core\Exception\SQLException
+     */
+    public function insertCompound(array $data)
+    {
+        $fields = [];
+        $dao = $this->getDaO(\Inventory\Entity\Compound\DAO\Compound::class);
+
+        // Parse data and load to DaO
+        foreach ($data as $key => $item) {
+            array_push($fields, $key);
+            $dao->$key = $item;
+        }
+
+        // Insert compound
+        return $dao->initInsert()->setInsert($fields)->execute();
+    }
 }
