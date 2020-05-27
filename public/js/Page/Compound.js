@@ -11,9 +11,7 @@
  +-----------------------------------------------+
  */
 
-/**
- * Load batches
- */
+// Load batches when click on compound row
 $(function () {
     'use strict';
 
