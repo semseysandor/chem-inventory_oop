@@ -12,21 +12,16 @@
  */
 
 /**
- * Load batches
+ * jQuery utility plugin
  */
-$(function () {
+(function ($) {
     'use strict';
 
-    // Click on compounds
-    $('#compound-list').on('click', 'tr[level=compound]', function () {
+    /**
+     * Clear contents of elements
+     */
+    $.fn.clear = function () {
+        this.html();
+    };
+}(jQuery));
 
-        let $compoundRow = $(this);
-        let $batchRow = $compoundRow.find('div[level=batch]');
-
-        // If batch row empty --> fetch
-        if (!$.trim($batchRow.html())) {
-            $.ajaxWrap.retrieve('/batch/' + $compoundRow.attr('compound'), $batchRow);
-        }
-        $batchRow.toggle();
-    });
-});
