@@ -21,7 +21,7 @@
   ],
   "autoload": {
     "psr-4": {
-        "Inventory\\": "source/",
+        "Inventory\\": "src/",
         "Inventory\\Test\\": "tests/",
         "Inventory\\Test\\Unit\\": "tests/unit",
         "Inventory\\Test\\Integration\\": "tests/integration"
