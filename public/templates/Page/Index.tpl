@@ -25,7 +25,7 @@
                 {/foreach}
             </div>
             <div class="float-right">
-                <button id="add-compound-btn" class="button site">Add compound</button>
+                <button id="add-compound-btn" class="button site"><i class="fas fa-plus"></i> Add compound</button>
             </div>
         </div>
         <div id="sub-category-selector">

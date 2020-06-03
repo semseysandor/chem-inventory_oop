@@ -25,6 +25,7 @@
 <link rel="stylesheet" type="text/css" href="css/rwd.css" media="screen"/>
 <link rel="stylesheet" type="text/css" href="css/special.css" media="screen"/>
 <link rel="stylesheet" type="text/css" href="css/table.css" media="screen"/>
+<link rel="stylesheet" type="text/css" href="ico/fa-icon.css" media="screen"/>
 {* JavaScript *}
 <script src="js/jquery-3.5.0.js"></script>
 <script src="js/Inventory.js"></script>
