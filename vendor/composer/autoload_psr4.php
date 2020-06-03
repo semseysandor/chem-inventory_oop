@@ -13,7 +13,7 @@ return array(
     'Inventory\\Test\\Unit\\' => array($baseDir . '/tests/unit'),
     'Inventory\\Test\\Integration\\' => array($baseDir . '/tests/integration'),
     'Inventory\\Test\\' => array($baseDir . '/tests'),
-    'Inventory\\' => array($baseDir . '/public/source'),
+    'Inventory\\' => array($baseDir . '/source'),
     'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src/Doctrine/Instantiator'),
     'DeepCopy\\' => array($vendorDir . '/myclabs/deep-copy/src/DeepCopy'),
 );

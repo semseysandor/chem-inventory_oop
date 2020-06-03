@@ -36,22 +36,22 @@ class Renderer implements IComponent
     /**
      * Templates directory
      */
-    private const TEMPLATE_DIR = ROOT.'/templates/';
+    private const TEMPLATE_DIR = ROOT.'/public/templates/';
 
     /**
      * Config directory
      */
-    private const CONFIG_DIR = ROOT.'/templates/config/';
+    private const CONFIG_DIR = ROOT.'/public/templates/config/';
 
     /**
      * Compiled templates directory
      */
-    private const TEMPLATE_COMPILE_DIR = ROOT.'/cache/templates_compile/';
+    private const TEMPLATE_COMPILE_DIR = ROOT.'/public/cache/templates_compile/';
 
     /**
      * Cached templates directory
      */
-    private const TEMPLATE_CACHE_DIR = ROOT.'/cache/templates_cache/';
+    private const TEMPLATE_CACHE_DIR = ROOT.'/public/cache/templates_cache/';
 
     /**
      * Template file extension

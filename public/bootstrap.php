@@ -15,21 +15,17 @@
 // Strict typing
 declare(strict_types=1);
 
-/**
- * Filesystem Path to root
- */
-// define('ROOT', __DIR__);
-const ROOT = __DIR__;
+// Filesystem Path to root
+const ROOT = __DIR__.'/..';
 
+// Environment
 const ENV_PRODUCTION = true;
-/**
- * Autoloader
- */
-include ROOT.'/../vendor/autoload.php';
+
+// Autoloader
+include ROOT.'/vendor/autoload.php';
 
 // Set error reporting level
 error_reporting((ENV_PRODUCTION ? 0 : E_ALL));
-// error_reporting(0);
 
 /**
  * Translate function

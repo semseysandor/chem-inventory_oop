@@ -21,10 +21,10 @@
   ],
   "autoload": {
     "psr-4": {
-      "Inventory\\": "public/source/",
-      "Inventory\\Test\\": "tests/",
-      "Inventory\\Test\\Unit\\": "tests/unit",
-      "Inventory\\Test\\Integration\\": "tests/integration"
+        "Inventory\\": "source/",
+        "Inventory\\Test\\": "tests/",
+        "Inventory\\Test\\Unit\\": "tests/unit",
+        "Inventory\\Test\\Integration\\": "tests/integration"
     }
   },
   "require": {

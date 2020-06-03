@@ -30,7 +30,7 @@ class Settings
     /**
      * Config file
      */
-    public const DEFAULT_CONFIG_FILE = ROOT.'/config.php';
+    public const DEFAULT_CONFIG_FILE = ROOT.'/public/config.php';
 
     /**
      * Array to hold settings
