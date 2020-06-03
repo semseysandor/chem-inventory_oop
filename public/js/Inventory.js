@@ -28,6 +28,10 @@ let Inventory = {
         // Put response in container
         let response = '';
 
+        if (!message) {
+            return '';
+        }
+
         if (flag === 'pos') { // Positive response
             response += '<div class="message positive"><i class="fas fa-smile fa-lg"></i>';
         } else {
@@ -38,13 +42,7 @@ let Inventory = {
             }
         }
 
-        if (message) {
-            response += message.toString() + '</div>';
-        } else {
-            response += '</div>';
-        }
-
-        return response;
+        return response + message.toString() + '</div>';
     },
 
     /**
@@ -64,6 +62,16 @@ let Inventory = {
         'use strict';
         window.location.reload();
     },
+
+    closePopup: function () {
+        'use strict';
+        Inventory.$popup.clear();
+    },
+
+    closeMessageCenter: function () {
+        'use strict';
+        Inventory.$responseContainer.clear();
+    },
 };
 
 /**
@@ -80,6 +88,9 @@ $(function () {
 
     /** Pop-up section */
     Inventory.$popup = $('#popup');
+
+    /** Page body */
+    Inventory.$body = $('body');
 });
 
 /**
@@ -95,4 +106,13 @@ $(function () {
         .ajaxStop(function () {
             $body.css('cursor', 'auto');
         });
+});
+
+$(function () {
+    Inventory.$body.click(function (event) {
+
+        let target = event.target;
+
+        // console.log(event.target);
+    });
 });

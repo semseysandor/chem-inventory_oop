@@ -19,12 +19,16 @@ $(function () {
     $('#compound-list').on('click', 'tr[level=compound]', function () {
 
         let $compoundRow = $(this);
-        let $batchRow = $compoundRow.find('div[level=batch]');
+        let $batchRow = $compoundRow.next();
+        let $batches = $batchRow.children().first();
 
-        // If batch row empty --> fetch
-        if (!$.trim($batchRow.html())) {
-            $.ajaxWrap.retrieve('/batch/' + $compoundRow.attr('compound'), $batchRow);
+        // If batches empty --> fetch
+        if (!$.trim($batches.html())) {
+            $.ajaxWrap.retrieve('/batch/' + $compoundRow.attr('compound'), $batches);
         }
+
+        // Show batches
         $batchRow.toggle();
+        $batches.toggle();
     });
 });
