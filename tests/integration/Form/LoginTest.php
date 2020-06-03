@@ -66,6 +66,8 @@ class LoginTest extends IntegrationTestCase
 
         // Create form
         $this->form = new Login([], [], new Template(), $this->service);
+
+        // Set session token
         $_SESSION['TOKEN'] = '12fe';
     }
 
@@ -91,15 +93,11 @@ class LoginTest extends IntegrationTestCase
      */
     public function testTokenMismatch()
     {
-        $_SESSION['TOKEN'] = 'invalid';
-
         // Mock request data
-        $data = [
+        $request = [
             'other' => 'test',
-            'token' => '12fe',
+            'token' => 'invalid',
         ];
-        $data = json_encode($data, JSON_UNESCAPED_UNICODE);
-        $request = ['data' => $data];
 
         $this->setProtectedProperty($this->form, 'requestData', $request);
 
@@ -121,12 +119,10 @@ class LoginTest extends IntegrationTestCase
     public function testMissingUserNameError()
     {
         // Mock request data
-        $data = [
+        $request = [
             'other' => 'test',
             'token' => '12fe',
         ];
-        $data = json_encode($data, JSON_UNESCAPED_UNICODE);
-        $request = ['data' => $data];
 
         $this->setProtectedProperty($this->form, 'requestData', $request);
 
@@ -148,13 +144,11 @@ class LoginTest extends IntegrationTestCase
     public function testNonExistentUser()
     {
         // Mock request data
-        $data = [
+        $request = [
             'user' => 'NON-EXISTENT',
             'pass' => 'test',
             'token' => '12fe',
         ];
-        $data = json_encode($data, JSON_UNESCAPED_UNICODE);
-        $request = ['data' => $data];
 
         $this->setProtectedProperty($this->form, 'requestData', $request);
 
@@ -209,13 +203,11 @@ class LoginTest extends IntegrationTestCase
         $this->createUser();
 
         // Set form
-        $data = [
+        $request = [
             'user' => 'user',
             'pass' => 'INVALID',
             'token' => '12fe',
         ];
-        $data = json_encode($data, JSON_UNESCAPED_UNICODE);
-        $request = ['data' => $data];
 
         $this->setProtectedProperty($this->form, 'requestData', $request);
 
@@ -239,13 +231,11 @@ class LoginTest extends IntegrationTestCase
     public function testValidPassword()
     {
         // Set form
-        $data = [
+        $request = [
             'user' => 'user',
             'pass' => 'test',
             'token' => '12fe',
         ];
-        $data = json_encode($data, JSON_UNESCAPED_UNICODE);
-        $request = ['data' => $data];
 
         $this->setProtectedProperty($this->form, 'requestData', $request);
 
