@@ -11,7 +11,7 @@
  +-----------------------------------------------+
 *}
 {config_load "elements.conf"}
-<div>
+<div class="card">
     <form id="{block id}{/block}" method="post" action="{block action}{/block}">
         <div>
             <input type="hidden" name="token" value="{$token}">

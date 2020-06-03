@@ -81,9 +81,19 @@
         // Clear responseContainer
         $responseContainer.html('');
 
+        // No response --> return
+        if (!response) {
+            return;
+        }
+
         // Parse response
-        responseFlag = response.flag;
-        responseText = response.text;
+        if (response.hasOwnProperty('flag')) {
+            responseFlag = response.flag;
+        }
+
+        if (response.hasOwnProperty('text')) {
+            responseText = response.text;
+        }
 
         // Show response
         $responseContainer.html(Inventory.messageHTML(responseText, responseFlag));

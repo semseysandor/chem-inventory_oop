@@ -11,13 +11,7 @@
  +-----------------------------------------------+
  */
 
-/**
- * Stylesheet for LelTar
- *
- * Buttons
- */
-
-/* General */
+/** General */
 .button {
     display: block;
     width: 100%;
@@ -36,7 +30,7 @@
     }
 }
 
-/* Menu & Category & Pagination & Submit */
+/** Menu & Category & Pagination & Submit */
 button.menu,
 div.admin {padding: .5em;}
 button.menu,
@@ -47,19 +41,19 @@ button.submit {
     border-color: hsl(120, 60%, 20%);
 }
 
-/* Site specific */
+/** Site specific */
 button.site {
     background-color: hsl(328, 100%, 54%);
     border-color: hsl(328, 100%, 24%);
 }
 
-/* Logout */
+/** Logout */
 button.logout {
     background-color: hsl(33, 100%, 50%);
     border-color: hsl(33, 100%, 20%);
 }
 
-/* Selected buttons */
+/** Selected buttons */
 button.selected,
 button.restart,
 div.admin {
@@ -67,13 +61,13 @@ div.admin {
     border-color: hsl(210, 100%, 26%);
 }
 
-/* Delete */
+/** Delete */
 button.delete, button.close {
     background-color: hsl(0, 100%, 50%);
     border-color: hsl(0, 100%, 20%);
 }
 
-/* Barcode */
+/** Barcode */
 button.barcode,
 span.barcode {
     font-family: "Lucida Console", Monaco, monospace;
@@ -83,7 +77,7 @@ span.barcode {
     cursor: pointer;
 }
 
-/* Hovers */
+/** Hovers */
 button.menu:hover,
 button.category:hover,
 button.pagination:hover,
@@ -100,11 +94,11 @@ button.barcode:hover {
     text-decoration: underline;
 }
 
-/* Links */
+/** Links */
 a:link, a:visited {
     text-decoration: none;
     color: black;
 }
 
-/* Pagination */
+/** Pagination */
 nav.pagination span {float: left;}

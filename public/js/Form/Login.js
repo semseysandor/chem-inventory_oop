@@ -22,3 +22,11 @@ $(function () {
     });
 });
 
+// Close msg center on click
+$(function () {
+    'use strict';
+    Inventory.$body.click(function () {
+        Inventory.closeMessageCenter();
+    });
+});
+

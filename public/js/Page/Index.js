@@ -35,6 +35,14 @@ $(function () {
         // Hide all sub category buttons
         $('button.sub-category-buttons').hide();
 
+        // Remove selected from all buttons
+        $('#category-selector').children().each(function () {
+            $(this).removeClass('selected');
+        });
+
+        // Add selected to clicked button
+        $(this).addClass('selected');
+
         // Show only related subcategories only if there is more than one
         buttons = $('button[parent="' + categoryID + '"]');
         if (buttons.length > 1) {
@@ -51,6 +59,14 @@ $(function () {
     // Click on a sub-category selector button
     $('#sub-category-selector').on('click', 'button', function () {
         $.ajaxWrap.retrieve('/subcategory/' + $(this).attr('sub-category'), Inventory.$main);
+
+        // Remove selected from all buttons
+        $('#sub-category-selector').children().each(function () {
+            $(this).removeClass('selected');
+        });
+
+        // Add selected to clicked button
+        $(this).addClass('selected');
     });
 });
 

@@ -10,3 +10,11 @@
  | https://choosealicense.com/licenses/mit/      |
  +-----------------------------------------------+
 *}
+<footer>
+    <div><strong>ChemInv OOP</strong> v0.6</div>
+    <div>
+        <div class="rwd">Developed by</div>
+        <div class="rwd"><em>Sandor Semsey</em></div>
+    </div>
+    <div>&copy;2020</div>
+</footer>

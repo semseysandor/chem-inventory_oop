@@ -14,18 +14,17 @@
 {block id}login-form{/block}
 {block action}log-in{/block}
 {block form_content}
-    <div>
-        <label>
-            User Name
-            <input type="text" name="user" autofocus required/>
-        </label>
-    </div>
-    <div>
-        <label>
-            Password
-            <input type="password" name="pass" required/>
-        </label>
-    </div>
+    <table class="form">
+        <caption>Login</caption>
+        <tr>
+            <th>User Name</th>
+            <td><input type="text" name="user" autofocus required/></td>
+        </tr>
+        <tr>
+            <th>Password</th>
+            <td><input type="password" name="pass" required/></td>
+        </tr>
+    </table>
 {/block}
 {block form_submit}
     {include #button_submit# id="login-form-submit" title="Login"}

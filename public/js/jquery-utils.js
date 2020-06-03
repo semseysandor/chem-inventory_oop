@@ -21,7 +21,7 @@
      * Clear contents of elements
      */
     $.fn.clear = function () {
-        this.html();
+        this.html('');
     };
 }(jQuery));
 

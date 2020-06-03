@@ -11,8 +11,10 @@
  +-----------------------------------------------+
 *}
 {extends file='base/page.tpl'}
+{block header}
+    {include 'common/header.logo.tpl'}
+{/block}
 {block body}
-    <h1>Login</h1>
     {include file='Form/Login.tpl'}
 {/block}
 

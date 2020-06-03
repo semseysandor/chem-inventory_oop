@@ -17,6 +17,9 @@
     {include file='base/head.tpl'}
 </head>
 <body>
+<header class="block">
+    {block header}{/block}
+</header>
 <div id="response"></div>
 {block body}{/block}
 

@@ -17,7 +17,13 @@ $(function () {
 
     let $form = $('#add-compound-form');
 
+    // Submit button
     $.pubsub.submitForm($('#add-compound-submit'), $form, function () {
-        $.ajaxWrap.submit($form, Inventory.$responseContainer);
+        $.ajaxWrap.submit($form, Inventory.$responseContainer, Inventory.closePopup);
+    });
+
+    // Cancel button
+    $('#add-compound-cancel').click(function () {
+        Inventory.closePopup();
     });
 });
