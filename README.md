@@ -70,4 +70,6 @@ This is a free software ;)
 
 If you need more information feel free to contact me:
 
-Sandor Semsey <semseysandor@gmail.com>
+Sandor Semsey
+
+<semseysandor@gmail.com>
