@@ -1,6 +1,6 @@
-# README
-##teszt
-## ChemInventory
+# Chem Inventory
+
+## Overview
 
 This is a chemical inventory suitable for a medium-sized company.
 A very similar system is actually used in the industry.
@@ -23,39 +23,51 @@ so you can manipulate them with a database management software or plain SQL.
 Barcodes are assigned to each pack, so you can use labels for identification
 in the lab. (barcode printing is not implemented yet in this application)
 
-Uploading the CoA and MSDS documents are possible for each batch.
-
 Adding and editing batches and packs is only allowed for admins.
 Users can add/edit compounds and upload documents, whereas guests only can view
 and search the database.
 
-## FEATURES
+## Features
 
-* LDAP authentication
 * Three user access levels (guest/user/admin)
-* Add/edit compounds, batches and packs
-* Inactivate packs when getting empty
-* Changelog for audit trails
-* Search chemicals with autocomplete
-* Generate barcodes
-* Drawing chemical structures
+* Add/edit compounds, batches and packs (Partially implemented in this edition)
+* Inactivate packs when getting empty (Not implemented in this edition)
+* Changelog for audit trails (Not implemented in this edition)
+* Search chemicals with autocomplete (Not implemented in this edition)
+* Generate barcodes (Not implemented in this edition)
+* Drawing chemical structures (Not implemented in this edition)
 
-## INSTALLATION
+## Technical Details
+* Fully OOP
+* Custom-made core framework:
+    - Routing
+    - Session Management
+    - Controllers
+    - DataBase Handling
+    - Exception handling
+    - Rendering
+    - etc.
+* Backend: PHP
+* Template engine: Smarty
+* jQuery
+* Not all inventory feature implemented
 
-1. Install a web server (like Apache) with support for PHP5
-2. Install a LDAP server
-3. **Copy all the source (/src) files** to host on your web server
-4. Setup a MySQL server and **import DB_structure.sql**
-5. **Edit config.php** with your credentials (database & LDAP)
-6. (optional) Load the database with sample data (DB_sample_data.sql)
+## Installation
 
-## LICENSE
+1. Clone or download repository
+1. Set `/public` directory to be the web server document root
+1. Setup a MySQL server and **import DB_structure.sql**
+1. **Edit config.php** with your credentials (database)
+1. (optional) Load the database with sample data (DB_sample_data.sql)
 
-**GNU General Public License v3.0**
+## License
+
+[MIT license](LICENSE)
 
 This is a free software ;)
 
-## CONTACT
+## Contact
 
 If you need more information feel free to contact me:
-semseysandor@gmail.com
+
+Sandor Semsey <semseysandor@gmail.com>
