@@ -9,7 +9,3 @@
 ## Vendor files (3rd party code)
 # Exclude vendor dir
 /vendor/
-# Keep production dependencies
-!/vendor/composer/
-!/vendor/smarty/
-!/vendor/autoload.php
