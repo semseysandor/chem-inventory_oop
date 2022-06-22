@@ -30,7 +30,7 @@
   "require": {
     "ext-mysqli": "*",
     "ext-json": "*",
-    "smarty/smarty": "v3.1.39"
+    "smarty/smarty": "v3.1.45"
   },
   "require-dev": {
     "phpunit/phpunit": "8.5.2"
